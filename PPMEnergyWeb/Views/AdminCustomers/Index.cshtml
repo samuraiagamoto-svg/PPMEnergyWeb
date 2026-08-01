@@ -1,0 +1,280 @@
+﻿@model IEnumerable<PPMEnergyWeb.Models.ApplicationUser>
+
+@{
+    ViewData["Title"] = "รายชื่อลูกค้า";
+    Layout = "_LayoutAdmin";
+
+    int page = ViewBag.Page;
+    int totalPages = ViewBag.TotalPages;
+    int total = ViewBag.Total;
+    string? search = ViewBag.Search;
+    string? sortBy = ViewBag.SortBy;
+    string? customerType = ViewBag.CustomerType; // 🌟 เพิ่มตัวแปรประเภทลูกค้าสำหรับคุมแท็บ
+}
+
+<div class="space-y-6">
+
+    @* ── Page Header ─────────────────────────────────────────── *@
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+            <nav class="flex text-xs font-medium text-gray-400 mb-1 space-x-2">
+                <span>ระบบ</span><span>/</span>
+                <span class="text-gray-600">รายชื่อลูกค้า</span>
+            </nav>
+            <h1 class="text-2xl font-bold text-gray-900 tracking-tight">รายชื่อลูกค้า</h1>
+        </div>
+        @* 🌟 ส่งพารามิเตอร์ customerType ไปที่ Excel ด้วย เพื่อให้โหลดเฉพาะกลุ่มที่กำลังดูอยู่ *@
+        <a asp-action="ExportExcel" asp-route-search="@search" asp-route-customerType="@customerType"
+           class="inline-flex items-center px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold rounded-xl transition-all shadow-sm">
+            <i class="fa-solid fa-file-excel mr-2"></i> Export Excel
+        </a>
+    </div>
+
+    @* ── Stat Cards ───────────────────────────────────────────── *@
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+        <div class="bg-white p-5 rounded-2xl border border-gray-200/80 shadow-sm col-span-2 sm:col-span-1 flex items-center space-x-4">
+            <div class="w-12 h-12 rounded-xl bg-ppmgreen/10 flex items-center justify-center text-ppmgreen">
+                <i class="fa-solid fa-users text-xl"></i>
+            </div>
+            <div>
+                <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider">ลูกค้าทั้งหมด</p>
+                <h3 class="text-2xl font-bold text-gray-900">@ViewBag.CountAll <span class="text-sm font-medium text-gray-500">คน</span></h3>
+            </div>
+        </div>
+        <div class="bg-white p-5 rounded-2xl border border-gray-200/80 shadow-sm flex items-center space-x-4">
+            <div class="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600">
+                <i class="fa-solid fa-envelope-circle-check text-xl"></i>
+            </div>
+            <div>
+                <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider">ยืนยันอีเมล</p>
+                <h3 class="text-2xl font-bold text-gray-900">@Model.Count(u => u.EmailConfirmed)</h3>
+            </div>
+        </div>
+        <div class="bg-white p-5 rounded-2xl border border-gray-200/80 shadow-sm flex items-center space-x-4">
+            <div class="w-12 h-12 rounded-xl bg-amber-50 flex items-center justify-center text-amber-500">
+                <i class="fa-solid fa-clock text-xl"></i>
+            </div>
+            <div>
+                <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider">ยังไม่ยืนยัน</p>
+                <h3 class="text-2xl font-bold text-gray-900">@Model.Count(u => !u.EmailConfirmed)</h3>
+            </div>
+        </div>
+        <div class="bg-white p-5 rounded-2xl border border-gray-200/80 shadow-sm flex items-center space-x-4">
+            <div class="w-12 h-12 rounded-xl bg-purple-50 flex items-center justify-center text-purple-500">
+                <i class="fa-solid fa-right-from-bracket text-xl"></i>
+            </div>
+            <div>
+                <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider">หน้านี้</p>
+                <h3 class="text-2xl font-bold text-gray-900">@Model.Count() <span class="text-sm font-medium text-gray-500">คน</span></h3>
+            </div>
+        </div>
+    </div>
+
+    @* ── Table Card ───────────────────────────────────────────── *@
+    <div class="bg-white rounded-2xl border border-gray-200/80 shadow-sm overflow-hidden">
+
+        @* 🌟 ── UI Tabs: ปุ่มสลับประเภทลูกค้า (เพิ่มเข้ามาใหม่ตรงนี้) ── *@
+        <div class="flex border-b border-gray-200 bg-white px-5 pt-3 space-x-2">
+            <a asp-action="Index"
+               asp-route-customerType=""
+               asp-route-search="@search"
+               asp-route-sortBy="@sortBy"
+               class="px-4 py-3 text-sm font-semibold border-b-2 transition-all @(string.IsNullOrEmpty(customerType) ? "border-ppmgreen text-ppmgreen" : "border-transparent text-gray-500 hover:text-gray-700")">
+                ทั้งหมด (@ViewBag.CountAll)
+            </a>
+
+            <a asp-action="Index"
+               asp-route-customerType="hasQuote"
+               asp-route-search="@search"
+               asp-route-sortBy="@sortBy"
+               class="px-4 py-3 text-sm font-semibold border-b-2 transition-all @(customerType == "hasQuote" ? "border-ppmgreen text-ppmgreen" : "border-transparent text-gray-500 hover:text-gray-700")">
+                ขอใบเสนอราคาแล้ว (@ViewBag.CountHasQuote)
+            </a>
+
+            <a asp-action="Index"
+               asp-route-customerType="noQuote"
+               asp-route-search="@search"
+               asp-route-sortBy="@sortBy"
+               class="px-4 py-3 text-sm font-semibold border-b-2 transition-all @(customerType == "noQuote" ? "border-ppmgreen text-ppmgreen" : "border-transparent text-gray-500 hover:text-gray-700")">
+                ยังไม่เคยขอใบเสนอราคา (@ViewBag.CountNoQuote)
+            </a>
+        </div>
+
+        @* Search & Sort Bar *@
+        <div class="p-5 border-b border-gray-100 bg-gray-50/50">
+            <form method="get" asp-action="Index" class="flex flex-col sm:flex-row gap-3">
+                @* 🌟 ซ่อนค่า customerType ไว้ในฟอร์ม เวลาแอดมินกดเซิร์ช/กดกรองประเภทเดิมจะได้ไม่หลุดหลงแท็บ *@
+                <input type="hidden" name="customerType" value="@customerType" />
+
+                <div class="relative flex-1 max-w-md">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+                        <i class="fa-solid fa-magnifying-glass text-sm"></i>
+                    </span>
+                    <input type="text" name="search" value="@search"
+                           placeholder="ค้นหาชื่อ, อีเมล, เบอร์โทร..."
+                           class="w-full pl-9 pr-4 py-2 bg-white border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-ppmgreen/20 focus:border-ppmgreen outline-none transition-all text-gray-700" />
+                </div>
+                <select name="sortBy"
+                        class="px-4 py-2 bg-white border border-gray-200 rounded-xl text-sm font-semibold text-gray-700 focus:ring-2 focus:ring-ppmgreen/20 focus:border-ppmgreen outline-none">
+                    <option value="" selected="@(sortBy == null)">เรียงตาม: ชื่อผู้ใช้</option>
+                    <option value="email" selected="@(sortBy == "email")">เรียงตาม: อีเมล</option>
+                    <option value="phone" selected="@(sortBy == "phone")">เรียงตาม: เบอร์โทร</option>
+                </select>
+                <button type="submit" class="px-4 py-2 bg-ppmgreen text-white text-sm font-semibold rounded-xl hover:bg-ppmgreen-dark transition-colors">
+                    <i class="fa-solid fa-filter mr-1.5"></i> กรอง
+                </button>
+                @if (!string.IsNullOrEmpty(search))
+                {
+                    @* 🌟 ล้างค่าค้นหาแต่ยังคงประเภทแท็บเดิมไว้ *@
+                    <a asp-action="Index" asp-route-customerType="@customerType" asp-route-sortBy="@sortBy" class="px-4 py-2 bg-gray-100 text-gray-600 text-sm font-semibold rounded-xl hover:bg-gray-200 transition-colors">
+                        <i class="fa-solid fa-xmark mr-1.5"></i> ล้าง
+                    </a>
+                }
+            </form>
+        </div>
+
+        @* Table *@
+        <div class="overflow-x-auto">
+            <table class="w-full text-sm text-left text-gray-600">
+                <thead class="bg-gray-50 text-gray-500 uppercase text-[11px] font-bold tracking-wider border-b border-gray-200">
+                    <tr>
+                        <th class="px-6 py-3.5">#</th>
+                        <th class="px-6 py-3.5">ชื่อผู้ใช้</th>
+                        <th class="px-6 py-3.5">บริษัท</th>
+                        <th class="px-6 py-3.5">อีเมล</th>
+                        <th class="px-6 py-3.5">เบอร์โทร</th>
+                        <th class="px-6 py-3.5">ที่อยู่จัดส่ง</th>
+                        <th class="px-6 py-3.5 text-right">เครื่องมือ</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-100">
+                    @if (!Model.Any())
+                    {
+                        <tr>
+                            <td colspan="7" class="px-6 py-16 text-center">
+                                <div class="max-w-xs mx-auto text-gray-400 space-y-2">
+                                    <i class="fa-solid fa-users-slash text-4xl text-gray-300"></i>
+                                    <p class="font-medium text-sm">ไม่พบข้อมูลลูกค้าในกลุ่มนี้</p>
+                                    @if (!string.IsNullOrEmpty(search))
+                                    {
+                                        <p class="text-xs">ลองเปลี่ยนคำค้นหาดูครับ</p>
+                                    }
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                    @{
+                        int rowNum = (page - 1) * (int)ViewBag.PageSize + 1;
+                    }
+                    @foreach (var user in Model)
+                    {
+                        <tr class="hover:bg-gray-50/70 transition-colors">
+                            <td class="px-6 py-4 text-xs text-gray-400 font-mono">@rowNum</td>
+                            <td class="px-6 py-4">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-8 h-8 rounded-full bg-ppmgreen/10 flex items-center justify-center text-ppmgreen text-xs font-bold shrink-0">
+                                        @(user.UserName?.Length > 0 ? user.UserName[0].ToString().ToUpper() : "?")
+                                    </div>
+                                    <span class="font-semibold text-gray-800">@(user.UserName ?? "-")</span>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4">
+                                @if (!string.IsNullOrEmpty(user.CompanyName))
+                                {
+                                    <span class="font-semibold text-gray-700">@user.CompanyName</span>
+                                }
+                                else
+                                {
+                                    <span class="text-gray-400 text-xs">ไม่ได้ระบุ</span>
+                                }
+                            </td>
+                            <td class="px-6 py-4 text-gray-600">
+                                @if (!string.IsNullOrEmpty(user.Email))
+                                {
+                                    <a href="mailto:@user.Email" class="hover:text-ppmgreen transition-colors">@user.Email</a>
+                                }
+                                else
+                                {
+
+                                    <span class="text-gray-400">-</span>
+                                }
+                            </td>
+                            <td class="px-6 py-4">
+                                @if (!string.IsNullOrEmpty(user.PhoneNumber))
+                                {
+                                    <a href="tel:@user.PhoneNumber" class="font-medium text-gray-700 hover:text-ppmgreen transition-colors">
+                                        <i class="fa-solid fa-phone text-[10px] mr-1 text-gray-400"></i>@user.PhoneNumber
+                                    </a>
+                                }
+                                else
+                                {
+
+                                    <span class="text-gray-400 text-xs">ไม่ได้ระบุ</span>
+                                }
+                            </td>
+                            <td class="px-6 py-4 max-w-[200px]">
+                                @if (!string.IsNullOrEmpty(user.ShippingAddress))
+                                {
+                                    <span class="text-xs text-gray-600 line-clamp-2">@user.ShippingAddress</span>
+                                }
+                                else
+                                {
+
+                                    <span class="text-gray-400 text-xs">ไม่ได้ระบุ</span>
+                                }
+                            </td>
+                            <td class="px-6 py-4 text-right whitespace-nowrap space-x-1.5">
+                                <a asp-action="Details" asp-route-id="@user.Id"
+                                   class="inline-flex items-center px-3 py-1.5 bg-white text-blue-600 hover:bg-blue-50 border border-blue-200 rounded-lg text-xs font-semibold transition-all">
+                                    <i class="fa-solid fa-eye mr-1.5"></i> ดูข้อมูล
+                                </a>
+                                <form asp-action="Delete" asp-route-id="@user.Id" method="post" class="inline-block"
+                                      onsubmit="return confirm('ลบลูกค้า: @user.UserName ?\nการดำเนินการนี้ไม่สามารถย้อนกลับได้')">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="inline-flex items-center px-3 py-1.5 bg-white text-red-500 hover:bg-red-50 border border-red-200 rounded-lg text-xs font-semibold transition-all">
+                                        <i class="fa-solid fa-trash-can mr-1.5"></i> ลบ
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        rowNum++;
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        @* Pagination (เพิ่ม asp-route-customerType เพื่อให้เปลี่ยนหน้าแล้วไม่หลุดกลุ่มที่เลือก) *@
+        @if (totalPages > 1)
+        {
+            <div class="px-6 py-4 border-t border-gray-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                <p class="text-xs text-gray-500">
+                    แสดง <span class="font-semibold text-gray-800">@(((page - 1) * ViewBag.PageSize) + 1)–@(Math.Min(page * ViewBag.PageSize, total))</span>
+                    จากทั้งหมด <span class="font-semibold text-gray-800">@total</span> คน
+                </p>
+                <div class="flex items-center space-x-1">
+                    @if (page > 1)
+                    {
+                        <a asp-action="Index" asp-route-page="@(page - 1)" asp-route-search="@search" asp-route-sortBy="@sortBy" asp-route-customerType="@customerType"
+                           class="px-3 py-1.5 bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 text-xs font-semibold rounded-lg transition-colors">
+                            <i class="fa-solid fa-chevron-left text-[10px]"></i>
+                        </a>
+                    }
+                    @for (int p = Math.Max(1, page - 2); p <= Math.Min(totalPages, page + 2); p++)
+                    {
+                        <a asp-action="Index" asp-route-page="@p" asp-route-search="@search" asp-route-sortBy="@sortBy" asp-route-customerType="@customerType"
+                           class="px-3 py-1.5 border text-xs font-semibold rounded-lg transition-colors @(p == page ? "bg-ppmgreen text-white border-ppmgreen" : "bg-white border-gray-200 text-gray-600 hover:bg-gray-50")">
+                            @p
+                        </a>
+                    }
+                    @if (page < totalPages)
+                    {
+                        <a asp-action="Index" asp-route-page="@(page + 1)" asp-route-search="@search" asp-route-sortBy="@sortBy" asp-route-customerType="@customerType"
+                           class="px-3 py-1.5 bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 text-xs font-semibold rounded-lg transition-colors">
+                            <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                        </a>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+</div>

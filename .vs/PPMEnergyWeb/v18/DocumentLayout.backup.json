@@ -1,0 +1,521 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\Lenovo\\OneDrive\\Desktop\\main_PPMEnergyWeb\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{BE6A3B90-C54A-4CCC-8F3A-036F8EA1F5EB}|PPMEnergyWeb\\PPMEnergyWeb.csproj|c:\\users\\lenovo\\onedrive\\desktop\\main_ppmenergyweb\\ppmenergyweb\\views\\adminproducts\\index.cshtml||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BE6A3B90-C54A-4CCC-8F3A-036F8EA1F5EB}|PPMEnergyWeb\\PPMEnergyWeb.csproj|solutionrelative:ppmenergyweb\\views\\adminproducts\\index.cshtml||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BE6A3B90-C54A-4CCC-8F3A-036F8EA1F5EB}|PPMEnergyWeb\\PPMEnergyWeb.csproj|c:\\users\\lenovo\\onedrive\\desktop\\main_ppmenergyweb\\ppmenergyweb\\controllers\\adminproductscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BE6A3B90-C54A-4CCC-8F3A-036F8EA1F5EB}|PPMEnergyWeb\\PPMEnergyWeb.csproj|solutionrelative:ppmenergyweb\\controllers\\adminproductscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BE6A3B90-C54A-4CCC-8F3A-036F8EA1F5EB}|PPMEnergyWeb\\PPMEnergyWeb.csproj|c:\\users\\lenovo\\onedrive\\desktop\\main_ppmenergyweb\\ppmenergyweb\\views\\adminsuppliers\\_supplierformfields.cshtml||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BE6A3B90-C54A-4CCC-8F3A-036F8EA1F5EB}|PPMEnergyWeb\\PPMEnergyWeb.csproj|solutionrelative:ppmenergyweb\\views\\adminsuppliers\\_supplierformfields.cshtml||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BE6A3B90-C54A-4CCC-8F3A-036F8EA1F5EB}|PPMEnergyWeb\\PPMEnergyWeb.csproj|c:\\users\\lenovo\\onedrive\\desktop\\main_ppmenergyweb\\ppmenergyweb\\views\\shared\\_layoutadmin.cshtml||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BE6A3B90-C54A-4CCC-8F3A-036F8EA1F5EB}|PPMEnergyWeb\\PPMEnergyWeb.csproj|solutionrelative:ppmenergyweb\\views\\shared\\_layoutadmin.cshtml||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BE6A3B90-C54A-4CCC-8F3A-036F8EA1F5EB}|PPMEnergyWeb\\PPMEnergyWeb.csproj|c:\\users\\lenovo\\onedrive\\desktop\\main_ppmenergyweb\\ppmenergyweb\\data\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BE6A3B90-C54A-4CCC-8F3A-036F8EA1F5EB}|PPMEnergyWeb\\PPMEnergyWeb.csproj|solutionrelative:ppmenergyweb\\data\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BE6A3B90-C54A-4CCC-8F3A-036F8EA1F5EB}|PPMEnergyWeb\\PPMEnergyWeb.csproj|c:\\users\\lenovo\\onedrive\\desktop\\main_ppmenergyweb\\ppmenergyweb\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BE6A3B90-C54A-4CCC-8F3A-036F8EA1F5EB}|PPMEnergyWeb\\PPMEnergyWeb.csproj|solutionrelative:ppmenergyweb\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BE6A3B90-C54A-4CCC-8F3A-036F8EA1F5EB}|PPMEnergyWeb\\PPMEnergyWeb.csproj|c:\\users\\lenovo\\onedrive\\desktop\\main_ppmenergyweb\\ppmenergyweb\\views\\shared\\_layout.cshtml||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BE6A3B90-C54A-4CCC-8F3A-036F8EA1F5EB}|PPMEnergyWeb\\PPMEnergyWeb.csproj|solutionrelative:ppmenergyweb\\views\\shared\\_layout.cshtml||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BE6A3B90-C54A-4CCC-8F3A-036F8EA1F5EB}|PPMEnergyWeb\\PPMEnergyWeb.csproj|c:\\users\\lenovo\\onedrive\\desktop\\main_ppmenergyweb\\ppmenergyweb\\models\\applicationuser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BE6A3B90-C54A-4CCC-8F3A-036F8EA1F5EB}|PPMEnergyWeb\\PPMEnergyWeb.csproj|solutionrelative:ppmenergyweb\\models\\applicationuser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Lenovo\\OneDrive\\Desktop\\main_PPMEnergyWeb\\Views\\Shared\\_Layout.cshtml||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Views\\Shared\\_Layout.cshtml||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BE6A3B90-C54A-4CCC-8F3A-036F8EA1F5EB}|PPMEnergyWeb\\PPMEnergyWeb.csproj|c:\\users\\lenovo\\onedrive\\desktop\\main_ppmenergyweb\\ppmenergyweb\\views\\products\\details.cshtml||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BE6A3B90-C54A-4CCC-8F3A-036F8EA1F5EB}|PPMEnergyWeb\\PPMEnergyWeb.csproj|solutionrelative:ppmenergyweb\\views\\products\\details.cshtml||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BE6A3B90-C54A-4CCC-8F3A-036F8EA1F5EB}|PPMEnergyWeb\\PPMEnergyWeb.csproj|c:\\users\\lenovo\\onedrive\\desktop\\main_ppmenergyweb\\ppmenergyweb\\views\\admincustomers\\index.cshtml||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BE6A3B90-C54A-4CCC-8F3A-036F8EA1F5EB}|PPMEnergyWeb\\PPMEnergyWeb.csproj|solutionrelative:ppmenergyweb\\views\\admincustomers\\index.cshtml||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BE6A3B90-C54A-4CCC-8F3A-036F8EA1F5EB}|PPMEnergyWeb\\PPMEnergyWeb.csproj|c:\\users\\lenovo\\onedrive\\desktop\\main_ppmenergyweb\\ppmenergyweb\\views\\admincustomers\\details.cshtml||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BE6A3B90-C54A-4CCC-8F3A-036F8EA1F5EB}|PPMEnergyWeb\\PPMEnergyWeb.csproj|solutionrelative:ppmenergyweb\\views\\admincustomers\\details.cshtml||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BE6A3B90-C54A-4CCC-8F3A-036F8EA1F5EB}|PPMEnergyWeb\\PPMEnergyWeb.csproj|c:\\users\\lenovo\\onedrive\\desktop\\main_ppmenergyweb\\ppmenergyweb\\views\\account\\register.cshtml||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BE6A3B90-C54A-4CCC-8F3A-036F8EA1F5EB}|PPMEnergyWeb\\PPMEnergyWeb.csproj|solutionrelative:ppmenergyweb\\views\\account\\register.cshtml||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BE6A3B90-C54A-4CCC-8F3A-036F8EA1F5EB}|PPMEnergyWeb\\PPMEnergyWeb.csproj|c:\\users\\lenovo\\onedrive\\desktop\\main_ppmenergyweb\\ppmenergyweb\\models\\registerviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BE6A3B90-C54A-4CCC-8F3A-036F8EA1F5EB}|PPMEnergyWeb\\PPMEnergyWeb.csproj|solutionrelative:ppmenergyweb\\models\\registerviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BE6A3B90-C54A-4CCC-8F3A-036F8EA1F5EB}|PPMEnergyWeb\\PPMEnergyWeb.csproj|c:\\users\\lenovo\\onedrive\\desktop\\main_ppmenergyweb\\ppmenergyweb\\controllers\\admincustomerscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BE6A3B90-C54A-4CCC-8F3A-036F8EA1F5EB}|PPMEnergyWeb\\PPMEnergyWeb.csproj|solutionrelative:ppmenergyweb\\controllers\\admincustomerscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BE6A3B90-C54A-4CCC-8F3A-036F8EA1F5EB}|PPMEnergyWeb\\PPMEnergyWeb.csproj|c:\\users\\lenovo\\onedrive\\desktop\\main_ppmenergyweb\\ppmenergyweb\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BE6A3B90-C54A-4CCC-8F3A-036F8EA1F5EB}|PPMEnergyWeb\\PPMEnergyWeb.csproj|solutionrelative:ppmenergyweb\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BE6A3B90-C54A-4CCC-8F3A-036F8EA1F5EB}|PPMEnergyWeb\\PPMEnergyWeb.csproj|c:\\users\\lenovo\\onedrive\\desktop\\main_ppmenergyweb\\ppmenergyweb\\controllers\\cartcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BE6A3B90-C54A-4CCC-8F3A-036F8EA1F5EB}|PPMEnergyWeb\\PPMEnergyWeb.csproj|solutionrelative:ppmenergyweb\\controllers\\cartcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BE6A3B90-C54A-4CCC-8F3A-036F8EA1F5EB}|PPMEnergyWeb\\PPMEnergyWeb.csproj|c:\\users\\lenovo\\onedrive\\desktop\\main_ppmenergyweb\\ppmenergyweb\\views\\ownerreport\\index.cshtml||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BE6A3B90-C54A-4CCC-8F3A-036F8EA1F5EB}|PPMEnergyWeb\\PPMEnergyWeb.csproj|solutionrelative:ppmenergyweb\\views\\ownerreport\\index.cshtml||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BE6A3B90-C54A-4CCC-8F3A-036F8EA1F5EB}|PPMEnergyWeb\\PPMEnergyWeb.csproj|c:\\users\\lenovo\\onedrive\\desktop\\main_ppmenergyweb\\ppmenergyweb\\views\\ownerreport\\quotes.cshtml||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BE6A3B90-C54A-4CCC-8F3A-036F8EA1F5EB}|PPMEnergyWeb\\PPMEnergyWeb.csproj|solutionrelative:ppmenergyweb\\views\\ownerreport\\quotes.cshtml||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BE6A3B90-C54A-4CCC-8F3A-036F8EA1F5EB}|PPMEnergyWeb\\PPMEnergyWeb.csproj|c:\\users\\lenovo\\onedrive\\desktop\\main_ppmenergyweb\\ppmenergyweb\\views\\ownerreport\\customers.cshtml||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BE6A3B90-C54A-4CCC-8F3A-036F8EA1F5EB}|PPMEnergyWeb\\PPMEnergyWeb.csproj|solutionrelative:ppmenergyweb\\views\\ownerreport\\customers.cshtml||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BE6A3B90-C54A-4CCC-8F3A-036F8EA1F5EB}|PPMEnergyWeb\\PPMEnergyWeb.csproj|c:\\users\\lenovo\\onedrive\\desktop\\main_ppmenergyweb\\ppmenergyweb\\views\\quote\\index.cshtml||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BE6A3B90-C54A-4CCC-8F3A-036F8EA1F5EB}|PPMEnergyWeb\\PPMEnergyWeb.csproj|solutionrelative:ppmenergyweb\\views\\quote\\index.cshtml||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BE6A3B90-C54A-4CCC-8F3A-036F8EA1F5EB}|PPMEnergyWeb\\PPMEnergyWeb.csproj|c:\\users\\lenovo\\onedrive\\desktop\\main_ppmenergyweb\\ppmenergyweb\\controllers\\quotecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BE6A3B90-C54A-4CCC-8F3A-036F8EA1F5EB}|PPMEnergyWeb\\PPMEnergyWeb.csproj|solutionrelative:ppmenergyweb\\controllers\\quotecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BE6A3B90-C54A-4CCC-8F3A-036F8EA1F5EB}|PPMEnergyWeb\\PPMEnergyWeb.csproj|c:\\users\\lenovo\\onedrive\\desktop\\main_ppmenergyweb\\ppmenergyweb\\views\\admincategories\\create.cshtml||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BE6A3B90-C54A-4CCC-8F3A-036F8EA1F5EB}|PPMEnergyWeb\\PPMEnergyWeb.csproj|solutionrelative:ppmenergyweb\\views\\admincategories\\create.cshtml||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BE6A3B90-C54A-4CCC-8F3A-036F8EA1F5EB}|PPMEnergyWeb\\PPMEnergyWeb.csproj|c:\\users\\lenovo\\onedrive\\desktop\\main_ppmenergyweb\\ppmenergyweb\\models\\quote.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BE6A3B90-C54A-4CCC-8F3A-036F8EA1F5EB}|PPMEnergyWeb\\PPMEnergyWeb.csproj|solutionrelative:ppmenergyweb\\models\\quote.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BE6A3B90-C54A-4CCC-8F3A-036F8EA1F5EB}|PPMEnergyWeb\\PPMEnergyWeb.csproj|c:\\users\\lenovo\\onedrive\\desktop\\main_ppmenergyweb\\ppmenergyweb\\appsettings.development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{BE6A3B90-C54A-4CCC-8F3A-036F8EA1F5EB}|PPMEnergyWeb\\PPMEnergyWeb.csproj|solutionrelative:ppmenergyweb\\appsettings.development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BE6A3B90-C54A-4CCC-8F3A-036F8EA1F5EB}|PPMEnergyWeb\\PPMEnergyWeb.csproj|c:\\users\\lenovo\\onedrive\\desktop\\main_ppmenergyweb\\ppmenergyweb\\models\\quotedetail.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BE6A3B90-C54A-4CCC-8F3A-036F8EA1F5EB}|PPMEnergyWeb\\PPMEnergyWeb.csproj|solutionrelative:ppmenergyweb\\models\\quotedetail.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BE6A3B90-C54A-4CCC-8F3A-036F8EA1F5EB}|PPMEnergyWeb\\PPMEnergyWeb.csproj|c:\\users\\lenovo\\onedrive\\desktop\\main_ppmenergyweb\\ppmenergyweb\\models\\quotehub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BE6A3B90-C54A-4CCC-8F3A-036F8EA1F5EB}|PPMEnergyWeb\\PPMEnergyWeb.csproj|solutionrelative:ppmenergyweb\\models\\quotehub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BE6A3B90-C54A-4CCC-8F3A-036F8EA1F5EB}|PPMEnergyWeb\\PPMEnergyWeb.csproj|c:\\users\\lenovo\\onedrive\\desktop\\main_ppmenergyweb\\ppmenergyweb\\controllers\\ownerreportcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BE6A3B90-C54A-4CCC-8F3A-036F8EA1F5EB}|PPMEnergyWeb\\PPMEnergyWeb.csproj|solutionrelative:ppmenergyweb\\controllers\\ownerreportcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BE6A3B90-C54A-4CCC-8F3A-036F8EA1F5EB}|PPMEnergyWeb\\PPMEnergyWeb.csproj|c:\\users\\lenovo\\onedrive\\desktop\\main_ppmenergyweb\\ppmenergyweb\\migrations\\20260718041428_addcreateddatetouser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BE6A3B90-C54A-4CCC-8F3A-036F8EA1F5EB}|PPMEnergyWeb\\PPMEnergyWeb.csproj|solutionrelative:ppmenergyweb\\migrations\\20260718041428_addcreateddatetouser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BE6A3B90-C54A-4CCC-8F3A-036F8EA1F5EB}|PPMEnergyWeb\\PPMEnergyWeb.csproj|c:\\users\\lenovo\\onedrive\\desktop\\main_ppmenergyweb\\ppmenergyweb\\migrations\\20260722014827_addcompanynametouser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BE6A3B90-C54A-4CCC-8F3A-036F8EA1F5EB}|PPMEnergyWeb\\PPMEnergyWeb.csproj|solutionrelative:ppmenergyweb\\migrations\\20260722014827_addcompanynametouser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BE6A3B90-C54A-4CCC-8F3A-036F8EA1F5EB}|PPMEnergyWeb\\PPMEnergyWeb.csproj|c:\\users\\lenovo\\onedrive\\desktop\\main_ppmenergyweb\\ppmenergyweb\\migrations\\20260729142025_addsuppliertables.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BE6A3B90-C54A-4CCC-8F3A-036F8EA1F5EB}|PPMEnergyWeb\\PPMEnergyWeb.csproj|solutionrelative:ppmenergyweb\\migrations\\20260729142025_addsuppliertables.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 53,
+          "SelectedChildIndex": 2,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{b1e99781-ab81-11d0-b683-00aa00a3ee26}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "AdminProductsController.cs",
+              "DocumentMoniker": "C:\\Users\\Lenovo\\OneDrive\\Desktop\\main_PPMEnergyWeb\\PPMEnergyWeb\\Controllers\\AdminProductsController.cs",
+              "RelativeDocumentMoniker": "PPMEnergyWeb\\Controllers\\AdminProductsController.cs",
+              "ToolTip": "C:\\Users\\Lenovo\\OneDrive\\Desktop\\main_PPMEnergyWeb\\PPMEnergyWeb\\Controllers\\AdminProductsController.cs",
+              "RelativeToolTip": "PPMEnergyWeb\\Controllers\\AdminProductsController.cs",
+              "ViewState": "AgIAAE0BAAAAAAAAAAAIwGMBAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-29T15:02:34.474Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\Lenovo\\OneDrive\\Desktop\\main_PPMEnergyWeb\\PPMEnergyWeb\\Views\\AdminProducts\\Index.cshtml",
+              "RelativeDocumentMoniker": "PPMEnergyWeb\\Views\\AdminProducts\\Index.cshtml",
+              "ToolTip": "C:\\Users\\Lenovo\\OneDrive\\Desktop\\main_PPMEnergyWeb\\PPMEnergyWeb\\Views\\AdminProducts\\Index.cshtml",
+              "RelativeToolTip": "PPMEnergyWeb\\Views\\AdminProducts\\Index.cshtml",
+              "ViewState": "AgIAAH8BAAAAAAAAAAArwIwBAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-07-29T14:41:18.101Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 30,
+              "Title": "20260729142025_AddSupplierTables.cs",
+              "DocumentMoniker": "C:\\Users\\Lenovo\\OneDrive\\Desktop\\main_PPMEnergyWeb\\PPMEnergyWeb\\Migrations\\20260729142025_AddSupplierTables.cs",
+              "RelativeDocumentMoniker": "PPMEnergyWeb\\Migrations\\20260729142025_AddSupplierTables.cs",
+              "ToolTip": "C:\\Users\\Lenovo\\OneDrive\\Desktop\\main_PPMEnergyWeb\\PPMEnergyWeb\\Migrations\\20260729142025_AddSupplierTables.cs",
+              "RelativeToolTip": "PPMEnergyWeb\\Migrations\\20260729142025_AddSupplierTables.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-29T14:20:25.344Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "_SupplierFormFields.cshtml",
+              "DocumentMoniker": "C:\\Users\\Lenovo\\OneDrive\\Desktop\\main_PPMEnergyWeb\\PPMEnergyWeb\\Views\\AdminSuppliers\\_SupplierFormFields.cshtml",
+              "RelativeDocumentMoniker": "PPMEnergyWeb\\Views\\AdminSuppliers\\_SupplierFormFields.cshtml",
+              "ToolTip": "C:\\Users\\Lenovo\\OneDrive\\Desktop\\main_PPMEnergyWeb\\PPMEnergyWeb\\Views\\AdminSuppliers\\_SupplierFormFields.cshtml",
+              "RelativeToolTip": "PPMEnergyWeb\\Views\\AdminSuppliers\\_SupplierFormFields.cshtml",
+              "ViewState": "AgIAAFsAAAAAAAAAAAAIwGwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-07-29T14:17:26.772Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "_LayoutAdmin.cshtml",
+              "DocumentMoniker": "C:\\Users\\Lenovo\\OneDrive\\Desktop\\main_PPMEnergyWeb\\PPMEnergyWeb\\Views\\Shared\\_LayoutAdmin.cshtml",
+              "RelativeDocumentMoniker": "PPMEnergyWeb\\Views\\Shared\\_LayoutAdmin.cshtml",
+              "ToolTip": "C:\\Users\\Lenovo\\OneDrive\\Desktop\\main_PPMEnergyWeb\\PPMEnergyWeb\\Views\\Shared\\_LayoutAdmin.cshtml",
+              "RelativeToolTip": "PPMEnergyWeb\\Views\\Shared\\_LayoutAdmin.cshtml",
+              "ViewState": "AgIAAHwAAAAAAAAAAAAIwI0AAAAHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-07-29T14:14:10.498Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 29,
+              "Title": "20260722014827_AddCompanyNameToUser.cs",
+              "DocumentMoniker": "C:\\Users\\Lenovo\\OneDrive\\Desktop\\main_PPMEnergyWeb\\PPMEnergyWeb\\Migrations\\20260722014827_AddCompanyNameToUser.cs",
+              "RelativeDocumentMoniker": "PPMEnergyWeb\\Migrations\\20260722014827_AddCompanyNameToUser.cs",
+              "ToolTip": "C:\\Users\\Lenovo\\OneDrive\\Desktop\\main_PPMEnergyWeb\\PPMEnergyWeb\\Migrations\\20260722014827_AddCompanyNameToUser.cs",
+              "RelativeToolTip": "PPMEnergyWeb\\Migrations\\20260722014827_AddCompanyNameToUser.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-22T01:48:27.996Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "_Layout.cshtml",
+              "DocumentMoniker": "C:\\Users\\Lenovo\\OneDrive\\Desktop\\main_PPMEnergyWeb\\Views\\Shared\\_Layout.cshtml",
+              "RelativeDocumentMoniker": "Views\\Shared\\_Layout.cshtml",
+              "ToolTip": "C:\\Users\\Lenovo\\OneDrive\\Desktop\\main_PPMEnergyWeb\\Views\\Shared\\_Layout.cshtml",
+              "RelativeToolTip": "Views\\Shared\\_Layout.cshtml",
+              "ViewState": "AgIAANsBAAAAAAAAAAAUwO4BAAAHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-07-22T01:27:16.926Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "Details.cshtml",
+              "DocumentMoniker": "C:\\Users\\Lenovo\\OneDrive\\Desktop\\main_PPMEnergyWeb\\PPMEnergyWeb\\Views\\Products\\Details.cshtml",
+              "RelativeDocumentMoniker": "PPMEnergyWeb\\Views\\Products\\Details.cshtml",
+              "ToolTip": "C:\\Users\\Lenovo\\OneDrive\\Desktop\\main_PPMEnergyWeb\\PPMEnergyWeb\\Views\\Products\\Details.cshtml",
+              "RelativeToolTip": "PPMEnergyWeb\\Views\\Products\\Details.cshtml",
+              "ViewState": "AgIAAEYBAAAAAAAAAAAUwFkBAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-07-22T01:27:00.803Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\Lenovo\\OneDrive\\Desktop\\main_PPMEnergyWeb\\PPMEnergyWeb\\Views\\AdminCustomers\\Index.cshtml",
+              "RelativeDocumentMoniker": "PPMEnergyWeb\\Views\\AdminCustomers\\Index.cshtml",
+              "ToolTip": "C:\\Users\\Lenovo\\OneDrive\\Desktop\\main_PPMEnergyWeb\\PPMEnergyWeb\\Views\\AdminCustomers\\Index.cshtml",
+              "RelativeToolTip": "PPMEnergyWeb\\Views\\AdminCustomers\\Index.cshtml",
+              "ViewState": "AgIAAAQBAAAAAAAAAAAUwBcBAAAGAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-07-22T01:26:15.129Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "Details.cshtml",
+              "DocumentMoniker": "C:\\Users\\Lenovo\\OneDrive\\Desktop\\main_PPMEnergyWeb\\PPMEnergyWeb\\Views\\AdminCustomers\\Details.cshtml",
+              "RelativeDocumentMoniker": "PPMEnergyWeb\\Views\\AdminCustomers\\Details.cshtml",
+              "ToolTip": "C:\\Users\\Lenovo\\OneDrive\\Desktop\\main_PPMEnergyWeb\\PPMEnergyWeb\\Views\\AdminCustomers\\Details.cshtml",
+              "RelativeToolTip": "PPMEnergyWeb\\Views\\AdminCustomers\\Details.cshtml",
+              "ViewState": "AgIAAKIAAAAAAAAAAAAiwLcAAAAGAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-07-22T01:26:04.819Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "Register.cshtml",
+              "DocumentMoniker": "C:\\Users\\Lenovo\\OneDrive\\Desktop\\main_PPMEnergyWeb\\PPMEnergyWeb\\Views\\Account\\Register.cshtml",
+              "RelativeDocumentMoniker": "PPMEnergyWeb\\Views\\Account\\Register.cshtml",
+              "ToolTip": "C:\\Users\\Lenovo\\OneDrive\\Desktop\\main_PPMEnergyWeb\\PPMEnergyWeb\\Views\\Account\\Register.cshtml",
+              "RelativeToolTip": "PPMEnergyWeb\\Views\\Account\\Register.cshtml",
+              "ViewState": "AgIAAJYAAAAAAAAAAAAiwKsAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-07-22T01:25:33.698Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "RegisterViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\Lenovo\\OneDrive\\Desktop\\main_PPMEnergyWeb\\PPMEnergyWeb\\Models\\RegisterViewModel.cs",
+              "RelativeDocumentMoniker": "PPMEnergyWeb\\Models\\RegisterViewModel.cs",
+              "ToolTip": "C:\\Users\\Lenovo\\OneDrive\\Desktop\\main_PPMEnergyWeb\\PPMEnergyWeb\\Models\\RegisterViewModel.cs",
+              "RelativeToolTip": "PPMEnergyWeb\\Models\\RegisterViewModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-22T01:24:34.802Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "AdminCustomersController.cs",
+              "DocumentMoniker": "C:\\Users\\Lenovo\\OneDrive\\Desktop\\main_PPMEnergyWeb\\PPMEnergyWeb\\Controllers\\AdminCustomersController.cs",
+              "RelativeDocumentMoniker": "PPMEnergyWeb\\Controllers\\AdminCustomersController.cs",
+              "ToolTip": "C:\\Users\\Lenovo\\OneDrive\\Desktop\\main_PPMEnergyWeb\\PPMEnergyWeb\\Controllers\\AdminCustomersController.cs",
+              "RelativeToolTip": "PPMEnergyWeb\\Controllers\\AdminCustomersController.cs",
+              "ViewState": "AgIAALIAAAAAAAAAAAAIwMUAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-22T01:23:43.295Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "CartController.cs",
+              "DocumentMoniker": "C:\\Users\\Lenovo\\OneDrive\\Desktop\\main_PPMEnergyWeb\\PPMEnergyWeb\\Controllers\\CartController.cs",
+              "RelativeDocumentMoniker": "PPMEnergyWeb\\Controllers\\CartController.cs",
+              "ToolTip": "C:\\Users\\Lenovo\\OneDrive\\Desktop\\main_PPMEnergyWeb\\PPMEnergyWeb\\Controllers\\CartController.cs",
+              "RelativeToolTip": "PPMEnergyWeb\\Controllers\\CartController.cs",
+              "ViewState": "AgIAAGgAAAAAAAAAAAD4v3IAAAAjAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-22T01:22:57.303Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "AccountController.cs",
+              "DocumentMoniker": "C:\\Users\\Lenovo\\OneDrive\\Desktop\\main_PPMEnergyWeb\\PPMEnergyWeb\\Controllers\\AccountController.cs",
+              "RelativeDocumentMoniker": "PPMEnergyWeb\\Controllers\\AccountController.cs",
+              "ToolTip": "C:\\Users\\Lenovo\\OneDrive\\Desktop\\main_PPMEnergyWeb\\PPMEnergyWeb\\Controllers\\AccountController.cs",
+              "RelativeToolTip": "PPMEnergyWeb\\Controllers\\AccountController.cs",
+              "ViewState": "AgIAABgBAAAAAAAAAAAIwCsBAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-22T01:20:51.333Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "QuoteController.cs",
+              "DocumentMoniker": "C:\\Users\\Lenovo\\OneDrive\\Desktop\\main_PPMEnergyWeb\\PPMEnergyWeb\\Controllers\\QuoteController.cs",
+              "RelativeDocumentMoniker": "PPMEnergyWeb\\Controllers\\QuoteController.cs",
+              "ToolTip": "C:\\Users\\Lenovo\\OneDrive\\Desktop\\main_PPMEnergyWeb\\PPMEnergyWeb\\Controllers\\QuoteController.cs",
+              "RelativeToolTip": "PPMEnergyWeb\\Controllers\\QuoteController.cs",
+              "ViewState": "AgIAAOMBAAAAAAAAAAAiwO4BAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-18T13:50:45.897Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "_Layout.cshtml",
+              "DocumentMoniker": "C:\\Users\\Lenovo\\OneDrive\\Desktop\\main_PPMEnergyWeb\\PPMEnergyWeb\\Views\\Shared\\_Layout.cshtml",
+              "RelativeDocumentMoniker": "PPMEnergyWeb\\Views\\Shared\\_Layout.cshtml",
+              "ToolTip": "C:\\Users\\Lenovo\\OneDrive\\Desktop\\main_PPMEnergyWeb\\PPMEnergyWeb\\Views\\Shared\\_Layout.cshtml",
+              "RelativeToolTip": "PPMEnergyWeb\\Views\\Shared\\_Layout.cshtml",
+              "ViewState": "AgIAAPAAAAAAAAAAAAAvwP4AAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-07-18T04:33:32.579Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "ApplicationDbContext.cs",
+              "DocumentMoniker": "C:\\Users\\Lenovo\\OneDrive\\Desktop\\main_PPMEnergyWeb\\PPMEnergyWeb\\Data\\ApplicationDbContext.cs",
+              "RelativeDocumentMoniker": "PPMEnergyWeb\\Data\\ApplicationDbContext.cs",
+              "ToolTip": "C:\\Users\\Lenovo\\OneDrive\\Desktop\\main_PPMEnergyWeb\\PPMEnergyWeb\\Data\\ApplicationDbContext.cs",
+              "RelativeToolTip": "PPMEnergyWeb\\Data\\ApplicationDbContext.cs",
+              "ViewState": "AgIAACUAAAAAAAAAAAAswDUAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-18T04:19:44.068Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\Lenovo\\OneDrive\\Desktop\\main_PPMEnergyWeb\\PPMEnergyWeb\\Program.cs",
+              "RelativeDocumentMoniker": "PPMEnergyWeb\\Program.cs",
+              "ToolTip": "C:\\Users\\Lenovo\\OneDrive\\Desktop\\main_PPMEnergyWeb\\PPMEnergyWeb\\Program.cs",
+              "RelativeToolTip": "PPMEnergyWeb\\Program.cs",
+              "ViewState": "AgIAAFoAAAAAAAAAAAAswGoAAAAXAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-18T04:19:34.747Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 24,
+              "Title": "appsettings.Development.json",
+              "DocumentMoniker": "C:\\Users\\Lenovo\\OneDrive\\Desktop\\main_PPMEnergyWeb\\PPMEnergyWeb\\appsettings.Development.json",
+              "RelativeDocumentMoniker": "PPMEnergyWeb\\appsettings.Development.json",
+              "ToolTip": "C:\\Users\\Lenovo\\OneDrive\\Desktop\\main_PPMEnergyWeb\\PPMEnergyWeb\\appsettings.Development.json",
+              "RelativeToolTip": "PPMEnergyWeb\\appsettings.Development.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-07-18T04:19:26.454Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 28,
+              "Title": "20260718041428_AddCreatedDateToUser.cs",
+              "DocumentMoniker": "C:\\Users\\Lenovo\\OneDrive\\Desktop\\main_PPMEnergyWeb\\PPMEnergyWeb\\Migrations\\20260718041428_AddCreatedDateToUser.cs",
+              "RelativeDocumentMoniker": "PPMEnergyWeb\\Migrations\\20260718041428_AddCreatedDateToUser.cs",
+              "ToolTip": "C:\\Users\\Lenovo\\OneDrive\\Desktop\\main_PPMEnergyWeb\\PPMEnergyWeb\\Migrations\\20260718041428_AddCreatedDateToUser.cs",
+              "RelativeToolTip": "PPMEnergyWeb\\Migrations\\20260718041428_AddCreatedDateToUser.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-18T04:14:28.419Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\Lenovo\\OneDrive\\Desktop\\main_PPMEnergyWeb\\PPMEnergyWeb\\Views\\OwnerReport\\Index.cshtml",
+              "RelativeDocumentMoniker": "PPMEnergyWeb\\Views\\OwnerReport\\Index.cshtml",
+              "ToolTip": "C:\\Users\\Lenovo\\OneDrive\\Desktop\\main_PPMEnergyWeb\\PPMEnergyWeb\\Views\\OwnerReport\\Index.cshtml",
+              "RelativeToolTip": "PPMEnergyWeb\\Views\\OwnerReport\\Index.cshtml",
+              "ViewState": "AgIAAF4AAAAAAAAAAAAAAAkBAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-07-18T04:08:15.939Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "Quotes.cshtml",
+              "DocumentMoniker": "C:\\Users\\Lenovo\\OneDrive\\Desktop\\main_PPMEnergyWeb\\PPMEnergyWeb\\Views\\OwnerReport\\Quotes.cshtml",
+              "RelativeDocumentMoniker": "PPMEnergyWeb\\Views\\OwnerReport\\Quotes.cshtml",
+              "ToolTip": "C:\\Users\\Lenovo\\OneDrive\\Desktop\\main_PPMEnergyWeb\\PPMEnergyWeb\\Views\\OwnerReport\\Quotes.cshtml",
+              "RelativeToolTip": "PPMEnergyWeb\\Views\\OwnerReport\\Quotes.cshtml",
+              "ViewState": "AgIAACcAAAAAAAAAAAAmwDAAAAAQAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-07-14T01:37:07.525Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\Lenovo\\OneDrive\\Desktop\\main_PPMEnergyWeb\\PPMEnergyWeb\\Views\\Quote\\Index.cshtml",
+              "RelativeDocumentMoniker": "PPMEnergyWeb\\Views\\Quote\\Index.cshtml",
+              "ToolTip": "C:\\Users\\Lenovo\\OneDrive\\Desktop\\main_PPMEnergyWeb\\PPMEnergyWeb\\Views\\Quote\\Index.cshtml",
+              "RelativeToolTip": "PPMEnergyWeb\\Views\\Quote\\Index.cshtml",
+              "ViewState": "AgIAAFMBAAAAAAAAAAAuwGABAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-07-13T18:18:35.633Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "Customers.cshtml",
+              "DocumentMoniker": "C:\\Users\\Lenovo\\OneDrive\\Desktop\\main_PPMEnergyWeb\\PPMEnergyWeb\\Views\\OwnerReport\\Customers.cshtml",
+              "RelativeDocumentMoniker": "PPMEnergyWeb\\Views\\OwnerReport\\Customers.cshtml",
+              "ToolTip": "C:\\Users\\Lenovo\\OneDrive\\Desktop\\main_PPMEnergyWeb\\PPMEnergyWeb\\Views\\OwnerReport\\Customers.cshtml",
+              "RelativeToolTip": "PPMEnergyWeb\\Views\\OwnerReport\\Customers.cshtml",
+              "ViewState": "AgIAAHsAAAAAAAAAAAAIwIUAAABKAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-07-13T18:17:32.076Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 25,
+              "Title": "QuoteDetail.cs",
+              "DocumentMoniker": "C:\\Users\\Lenovo\\OneDrive\\Desktop\\main_PPMEnergyWeb\\PPMEnergyWeb\\Models\\QuoteDetail.cs",
+              "RelativeDocumentMoniker": "PPMEnergyWeb\\Models\\QuoteDetail.cs",
+              "ToolTip": "C:\\Users\\Lenovo\\OneDrive\\Desktop\\main_PPMEnergyWeb\\PPMEnergyWeb\\Models\\QuoteDetail.cs",
+              "RelativeToolTip": "PPMEnergyWeb\\Models\\QuoteDetail.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAuwBkAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-13T18:16:53.639Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 26,
+              "Title": "QuoteHub.cs",
+              "DocumentMoniker": "C:\\Users\\Lenovo\\OneDrive\\Desktop\\main_PPMEnergyWeb\\PPMEnergyWeb\\Models\\QuoteHub.cs",
+              "RelativeDocumentMoniker": "PPMEnergyWeb\\Models\\QuoteHub.cs",
+              "ToolTip": "C:\\Users\\Lenovo\\OneDrive\\Desktop\\main_PPMEnergyWeb\\PPMEnergyWeb\\Models\\QuoteHub.cs",
+              "RelativeToolTip": "PPMEnergyWeb\\Models\\QuoteHub.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-13T18:16:34.617Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "ApplicationUser.cs",
+              "DocumentMoniker": "C:\\Users\\Lenovo\\OneDrive\\Desktop\\main_PPMEnergyWeb\\PPMEnergyWeb\\Models\\ApplicationUser.cs",
+              "RelativeDocumentMoniker": "PPMEnergyWeb\\Models\\ApplicationUser.cs",
+              "ToolTip": "C:\\Users\\Lenovo\\OneDrive\\Desktop\\main_PPMEnergyWeb\\PPMEnergyWeb\\Models\\ApplicationUser.cs",
+              "RelativeToolTip": "PPMEnergyWeb\\Models\\ApplicationUser.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAADwvwsAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-13T18:15:25.913Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 27,
+              "Title": "OwnerReportController.cs",
+              "DocumentMoniker": "C:\\Users\\Lenovo\\OneDrive\\Desktop\\main_PPMEnergyWeb\\PPMEnergyWeb\\Controllers\\OwnerReportController.cs",
+              "RelativeDocumentMoniker": "PPMEnergyWeb\\Controllers\\OwnerReportController.cs",
+              "ToolTip": "C:\\Users\\Lenovo\\OneDrive\\Desktop\\main_PPMEnergyWeb\\PPMEnergyWeb\\Controllers\\OwnerReportController.cs",
+              "RelativeToolTip": "PPMEnergyWeb\\Controllers\\OwnerReportController.cs",
+              "ViewState": "AgIAAEUAAAAAAAAAAAAAwEcAAAAqAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-13T13:31:23.399Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 23,
+              "Title": "Quote.cs",
+              "DocumentMoniker": "C:\\Users\\Lenovo\\OneDrive\\Desktop\\main_PPMEnergyWeb\\PPMEnergyWeb\\Models\\Quote.cs",
+              "RelativeDocumentMoniker": "PPMEnergyWeb\\Models\\Quote.cs",
+              "ToolTip": "C:\\Users\\Lenovo\\OneDrive\\Desktop\\main_PPMEnergyWeb\\PPMEnergyWeb\\Models\\Quote.cs",
+              "RelativeToolTip": "PPMEnergyWeb\\Models\\Quote.cs",
+              "ViewState": "AgIAAAoAAAAAAAAAAAAQwC4AAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-10T02:48:45.07Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
+              "Title": "Create.cshtml",
+              "DocumentMoniker": "C:\\Users\\Lenovo\\OneDrive\\Desktop\\main_PPMEnergyWeb\\PPMEnergyWeb\\Views\\AdminCategories\\Create.cshtml",
+              "RelativeDocumentMoniker": "PPMEnergyWeb\\Views\\AdminCategories\\Create.cshtml",
+              "ToolTip": "C:\\Users\\Lenovo\\OneDrive\\Desktop\\main_PPMEnergyWeb\\PPMEnergyWeb\\Views\\AdminCategories\\Create.cshtml",
+              "RelativeToolTip": "PPMEnergyWeb\\Views\\AdminCategories\\Create.cshtml",
+              "ViewState": "AgIAAMUAAAAAAAAAAAAYwNgAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-07-04T06:15:09.256Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

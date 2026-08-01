@@ -1,0 +1,495 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@inject PPMEnergyWeb.Data.ApplicationDbContext DbContext
+
+@{
+    // ดึง Main Categories + Sub-categories จาก DB
+    var mainCategories = DbContext.Categories
+        .Where(c => c.ParentCategoryId == null)
+        .OrderBy(c => c.DisplayOrder)
+        .ToList();
+
+    var allSubCategories = DbContext.Categories
+        .Where(c => c.ParentCategoryId != null)
+        .OrderBy(c => c.DisplayOrder)
+        .ToList();
+}
+
+    @if (User.IsInRole("Owner"))
+{
+    <a asp-controller="OwnerReport" asp-action="Index"
+       class="px-3.5 py-2 rounded-lg text-sm font-bold text-gray-600 hover:text-ppmgreen transition-all flex items-center gap-1.5">
+        <i class="fa-solid fa-chart-line text-ppmgreen text-xs"></i> รายงาน
+    </a>
+}
+
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - PPM Energy (Thailand)</title>
+    <link rel="icon" type="image/png" href="~/images/ppmlogo.png" />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        ppmgreen: {
+                            DEFAULT: '#0a8f08',
+                            light: '#f0fff0',
+                            dark: '#087506'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        @@import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;700;800&display=swap');
+
+        body {
+            font-family: 'Sarabun', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* ── Level-1 dropdown (Main Categories list) ───── */
+        .nav-dropdown {
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(6px);
+            transition: opacity 0.18s ease, transform 0.18s ease, visibility 0.18s;
+            pointer-events: none;
+        }
+
+        .nav-item:hover .nav-dropdown,
+        .nav-item:focus-within .nav-dropdown {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        .nav-item:hover > a .chevron {
+            transform: rotate(180deg);
+        }
+
+        .chevron {
+            transition: transform 0.18s ease;
+        }
+
+        /* ── Level-2 flyout (Sub-categories, slides right) */
+        .sub-flyout {
+            opacity: 0;
+            visibility: hidden;
+            transform: translateX(-6px);
+            transition: opacity 0.15s ease, transform 0.15s ease, visibility 0.15s;
+            pointer-events: none;
+            position: absolute;
+            top: 0;
+            left: 100%;
+            min-width: 220px;
+            padding-left: 6px;
+        }
+
+        .cat-row:hover .sub-flyout,
+        .cat-row:focus-within .sub-flyout {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(0);
+            pointer-events: auto;
+        }
+        /* highlight active row when sub is open */
+        .cat-row:hover .cat-row-inner {
+            background-color: rgb(240 253 240); /* ppmgreen/5 */
+            color: #0a8f08;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 flex flex-col min-h-screen">
+
+    <div class="bg-[#0f172a] text-[11px] text-gray-400 py-2.5 hidden md:block border-b border-white/5">
+        <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center font-bold uppercase tracking-widest">
+            <div class="flex gap-8">
+                <a href="tel:035245899" class="hover:text-ppmgreen transition-colors flex items-center gap-2">
+                    <i class="fa-solid fa-phone text-ppmgreen"></i> 035-245-899
+                </a>
+                <a href="mailto:ppm.energy1989@gmail.com" class="hover:text-ppmgreen transition-colors flex items-center gap-2">
+                    <i class="fa-solid fa-envelope text-ppmgreen"></i> ppm.energy1989@gmail.com
+                </a>
+            </div>
+            <div class="flex gap-6 items-center">
+                <span class="flex items-center gap-2"><i class="fa-solid fa-clock text-ppmgreen text-[10px]"></i> MON–FRI: 09:00–17:00</span>
+                <div class="flex gap-3 ml-4 border-l border-white/10 pl-4">
+                    <a href="#" class="hover:text-white"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="#" class="hover:text-white"><i class="fa-brands fa-line"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <header class="bg-white/90 backdrop-blur-md border-b border-gray-100 sticky top-0 z-50 shadow-sm">
+        <nav class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-20">
+
+                <div class="flex items-center flex-shrink-0">
+                    <a asp-controller="Home" asp-action="Index" class="flex items-center group gap-3">
+                        <img src="~/images/ppm.png" alt="PPM Logo" class="h-12 w-auto transition-transform group-hover:scale-105"
+                             onerror="this.src='https://ui-avatars.com/api/?name=PPM&background=0a8f08&color=fff'" />
+                        <div class="flex flex-col">
+                            <span class="text-lg font-black text-gray-900 leading-none tracking-tight uppercase">PPM ENERGY</span>
+                            <span class="text-[10px] font-bold text-ppmgreen tracking-[0.3em] uppercase">Thailand</span>
+                        </div>
+                    </a>
+                </div>
+
+                @{
+                    var currentController = ViewContext.RouteData.Values["Controller"]?.ToString();
+                    var currentAction = ViewContext.RouteData.Values["Action"]?.ToString();
+                }
+
+                <div class="hidden md:flex items-center space-x-2 lg:space-x-4 mx-4">
+
+                    <a asp-controller="Home" asp-action="Index"
+                       class="px-3.5 py-2 rounded-lg text-sm font-bold transition-all @(currentController == "Home" && currentAction == "Index" ? "text-ppmgreen bg-ppmgreen/5" : "text-gray-600 hover:text-ppmgreen")">
+                        หน้าแรก
+                    </a>
+
+                    <div class="nav-item relative py-2">
+                        <a asp-controller="Products" asp-action="Index" class="flex items-center gap-1.5 px-3.5 py-2 text-sm font-bold cursor-pointer @(currentController == "Products" ? "text-ppmgreen" : "text-gray-600 hover:text-ppmgreen")">
+                            หมวดหมู่สินค้า
+                            <i class="fa-solid fa-chevron-down text-[10px] chevron"></i>
+                        </a>
+
+                        <div class="nav-dropdown absolute top-[100%] left-0 pt-2 z-[100]" style="min-width:230px;">
+                            <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-visible py-1.5">
+
+                                @foreach (var main in mainCategories)
+                                {
+                                    var subs = allSubCategories.Where(s => s.ParentCategoryId == main.Id).ToList();
+
+                                    @if (subs.Any())
+                                    {
+                                        <div class="cat-row relative px-1.5">
+                                            <a asp-controller="Products" asp-action="Index"
+                                               asp-route-category="@main.CategoryCode"
+                                               class="cat-row-inner flex items-center justify-between gap-3 px-3 py-2.5 rounded-xl text-gray-700 hover:text-ppmgreen transition-colors cursor-pointer w-full">
+                                                <span class="text-sm font-bold flex-1 leading-tight text-left">
+                                                    @main.DisplayName
+                                                </span>
+                                                <i class="fa-solid fa-chevron-right text-[10px] text-gray-400 flex-shrink-0"></i>
+                                            </a>
+
+                                            <div class="sub-flyout">
+                                                <div class="bg-white rounded-2xl shadow-xl border border-gray-100 py-1.5 overflow-hidden">
+                                                    <div class="px-3 pb-1.5 mb-1 border-b border-gray-50">
+                                                        <p class="text-[10px] font-black uppercase tracking-widest text-ppmgreen">@main.DisplayName</p>
+                                                    </div>
+                                                    @foreach (var sub in subs)
+                                                    {
+                                                        <a asp-controller="Products" asp-action="Index"
+                                                           asp-route-category="@main.CategoryCode"
+                                                           asp-route-sub="@sub.CategoryCode"
+                                                           class="flex items-center gap-2.5 px-4 py-2.5 hover:bg-ppmgreen/5 hover:text-ppmgreen transition-colors text-sm text-gray-600 font-semibold mx-1.5 rounded-xl">
+                                                            <i class="fa-solid fa-chevron-right text-[9px] text-gray-300"></i>
+                                                            @sub.DisplayName
+                                                        </a>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="px-1.5">
+                                            <a asp-controller="Products" asp-action="Index"
+                                               asp-route-category="@main.CategoryCode"
+                                               class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-bold text-gray-700 hover:bg-ppmgreen/5 hover:text-ppmgreen transition-colors">
+                                                @main.DisplayName
+                                            </a>
+                                        </div>
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                    <a asp-controller="Home" asp-action="Services"
+                       class="px-3.5 py-2 rounded-lg text-sm font-bold transition-all @(currentAction == "Services" ? "text-ppmgreen bg-ppmgreen/5" : "text-gray-600 hover:text-ppmgreen")">
+                        บริการของเรา
+                    </a>
+
+                    <a asp-controller="About" asp-action="Index"
+                       class="px-3.5 py-2 rounded-lg text-sm font-bold transition-all @(currentController == "About" ? "text-ppmgreen bg-ppmgreen/5" : "text-gray-600 hover:text-ppmgreen")">
+                        เกี่ยวกับบริษัท
+                    </a>
+
+                    <a asp-controller="Home" asp-action="Contact"
+                       class="px-3.5 py-2 rounded-lg text-sm font-bold text-gray-600 hover:text-ppmgreen transition-all">
+                        ติดต่อเรา
+                    </a>
+                </div>
+
+                <div class="flex items-center gap-3 flex-shrink-0">
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        @{
+                            var cartItems = PPMEnergyWeb.Helpers.CartHelper.GetCart(Context.Session);
+                        }
+                        <a asp-controller="Cart" asp-action="Index" class="relative w-10 h-10 flex items-center justify-center rounded-full bg-gray-50 hover:bg-gray-100 border border-gray-200 hover:border-ppmgreen transition-all text-gray-600 hover:text-ppmgreen">
+                            <i class="fa-solid fa-cart-shopping text-sm"></i>
+                            @if (cartItems.Count > 0)
+                            {
+                                <span class="absolute -top-1.5 -right-1.5 min-w-[18px] h-[18px] px-1 flex items-center justify-center rounded-full bg-ppmgreen text-white text-[10px] font-black shadow-sm">@cartItems.Count</span>
+                            }
+                        </a>
+                        <div class="nav-item relative">
+                            <button class="bg-gray-50 px-4 py-2 rounded-full flex items-center gap-2 border border-gray-200 hover:border-ppmgreen transition-all">
+                                <div class="w-6 h-6 bg-ppmgreen rounded-full flex items-center justify-center text-[10px] text-white font-bold uppercase">@User.Identity?.Name?[0]</div>
+                                <span class="text-xs font-bold text-gray-700 hidden sm:inline">@User.Identity?.Name</span>
+                                <i class="fa-solid fa-chevron-down text-[8px] text-gray-400 chevron"></i>
+                            </button>
+                            <div class="nav-dropdown absolute right-0 w-48 mt-2 bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden" style="top:100%">
+                                <form asp-controller="Account" asp-action="Logout" method="post">
+                                    <button type="submit" class="w-full text-left px-5 py-4 text-sm text-red-600 hover:bg-red-50 transition-colors font-bold flex items-center">
+                                        <i class="fa-solid fa-power-off mr-3 text-xs"></i> ออกจากระบบ
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="hidden sm:flex items-center gap-2">
+                            <a asp-controller="Account" asp-action="Login" class="text-gray-600 hover:text-ppmgreen font-bold text-sm px-4 py-2">เข้าสู่ระบบ</a>
+                            <a asp-controller="Account" asp-action="Register" class="bg-ppmgreen text-white px-6 py-2.5 rounded-full hover:bg-ppmgreen-dark font-bold text-sm shadow-lg shadow-ppmgreen/20 transition-all hover:-translate-y-0.5">สมัครสมาชิก</a>
+                        </div>
+                    }
+                    <button id="mobile-menu-button" class="md:hidden w-10 h-10 flex items-center justify-center rounded-xl bg-gray-50 text-gray-800">
+                        <i class="fa-solid fa-bars-staggered"></i>
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <div id="mobile-menu" class="hidden md:hidden border-t border-gray-100 bg-white px-4 pb-6">
+            <div class="flex flex-col space-y-1 pt-4">
+
+                <a asp-controller="Home" asp-action="Index"
+                   class="p-4 hover:bg-gray-50 rounded-xl text-gray-700 font-bold flex items-center gap-3">
+                    <i class="fa-solid fa-house text-ppmgreen"></i> หน้าแรก
+                </a>
+
+                <div>
+                    <button id="mobile-products-btn"
+                            class="w-full p-4 hover:bg-gray-50 rounded-xl text-gray-700 font-bold flex items-center justify-between gap-3">
+                        <span class="flex items-center gap-3">
+                            <i class="fa-solid fa-box text-ppmgreen"></i> หมวดหมู่สินค้า
+                        </span>
+                        <i class="fa-solid fa-chevron-down text-xs text-gray-400 transition-transform" id="mobile-products-chevron"></i>
+                    </button>
+
+                    <div id="mobile-products-list" class="hidden pl-4 space-y-1 pb-2">
+                        @foreach (var main in mainCategories)
+                        {
+                            var subs = allSubCategories.Where(s => s.ParentCategoryId == main.Id).ToList();
+                            <div>
+                                <a asp-controller="Products" asp-action="Index"
+                                   asp-route-category="@main.CategoryCode"
+                                   class="flex items-center gap-2 p-3 rounded-lg hover:bg-ppmgreen/5 text-gray-700 font-bold text-sm">
+                                    <i class="fa-solid fa-tag text-ppmgreen text-xs"></i>
+                                    @main.DisplayName
+                                </a>
+                                @if (subs.Any())
+                                {
+                                    <div class="pl-6 space-y-0.5">
+                                        @foreach (var sub in subs)
+                                        {
+                                            <a asp-controller="Products" asp-action="Index"
+                                               asp-route-category="@main.CategoryCode"
+                                               asp-route-sub="@sub.CategoryCode"
+                                               class="flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-gray-50 text-gray-500 text-sm">
+                                                <i class="fa-solid fa-chevron-right text-[9px] text-gray-300"></i>
+                                                @sub.DisplayName
+                                            </a>
+                                        }
+                                    </div>
+                                }
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <a asp-controller="Home" asp-action="Services"
+                   class="p-4 hover:bg-gray-50 rounded-xl text-gray-700 font-bold flex items-center gap-3">
+                    <i class="fa-solid fa-screwdriver-wrench text-ppmgreen"></i> บริการของเรา
+                </a>
+
+                <a asp-controller="About" asp-action="Index"
+                   class="p-4 hover:bg-gray-50 rounded-xl text-gray-700 font-bold flex items-center gap-3">
+                    <i class="fa-solid fa-building text-ppmgreen"></i> เกี่ยวกับบริษัท
+                </a>
+
+                <a asp-controller="Home" asp-action="Contact"
+                   class="p-4 hover:bg-gray-50 rounded-xl text-gray-700 font-bold flex items-center gap-3">
+                    <i class="fa-solid fa-phone text-ppmgreen"></i> ติดต่อเรา
+                </a>
+
+                @if (!SignInManager.IsSignedIn(User))
+                {
+                    <div class="grid grid-cols-2 gap-3 pt-4">
+                        <a asp-controller="Account" asp-action="Login"
+                           class="text-center py-3 rounded-xl border border-gray-200 font-bold text-gray-600">
+                            เข้าสู่ระบบ
+                        </a>
+                        <a asp-controller="Account" asp-action="Register"
+                           class="text-center py-3 rounded-xl bg-ppmgreen text-white font-bold">
+                            สมัครสมาชิก
+                        </a>
+                    </div>
+                }
+                else
+                {
+                    <div class="pt-4 border-t border-gray-100 mt-2">
+                        <div class="flex items-center gap-3 px-4 py-2.5 mb-3 bg-gray-50 rounded-xl">
+                            <div class="w-8 h-8 bg-ppmgreen rounded-full flex items-center justify-center text-xs text-white font-bold uppercase">
+                                @User.Identity?.Name?[0]
+                            </div>
+                            <div class="flex flex-col">
+                                <span class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Logged In As</span>
+                                <span class="text-sm font-bold text-gray-700">@User.Identity?.Name</span>
+                            </div>
+                        </div>
+
+                        <form asp-controller="Account" asp-action="Logout" method="post">
+                            <button type="submit" class="w-full text-center py-3 rounded-xl bg-red-50 text-red-600 font-bold hover:bg-red-100 transition-colors flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-power-off text-sm"></i> ออกจากระบบ
+                            </button>
+                        </form>
+                    </div>
+                }
+            </div>
+        </div>
+    </header>
+
+    <main role="main" class="flex-grow">
+        @RenderBody()
+    </main>
+
+    <footer class="text-white pt-12 pb-6 mt-auto relative overflow-hidden bg-cover bg-center bg-no-repeat bg-[#0f172a]" style="background-image: url('/images/BGppm.jpg');">
+        <div class="absolute inset-0 bg-black/60"></div>
+        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-ppmgreen to-transparent opacity-30 z-10"></div>
+
+        <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <img src="~/images/ppm.png" class="h-10 mb-4 brightness-0 invert opacity-90" alt="PPM Logo" />
+                    <p class="text-gray-300 text-sm leading-relaxed mb-4">
+                        บริษัท พีพีเอ็ม เอ็นเนอจี (ประเทศไทย) จำกัด (สำนักงานใหญ่)<br />
+                        ผู้นำด้านพลังงานและเครื่องจักรกลอุตสาหกรรม
+                    </p>
+                </div>
+
+                <div>
+                    <h4 class="text-xs font-black uppercase tracking-widest text-ppmgreen mb-4 border-l-2 border-ppmgreen pl-3">เมนูหลัก</h4>
+                    <ul class="space-y-2 text-sm text-gray-300 font-medium">
+                        <li><a asp-controller="Home" asp-action="Index" class="hover:text-ppmgreen transition-colors">หน้าแรก</a></li>
+                        <li><a asp-controller="Products" asp-action="Index" class="hover:text-ppmgreen transition-colors">หมวดหมู่สินค้า</a></li>
+                        <li><a asp-controller="Home" asp-action="Services" class="hover:text-ppmgreen transition-colors">บริการของเรา</a></li>
+                        <li><a asp-controller="About" asp-action="Index" class="hover:text-ppmgreen transition-colors">เกี่ยวกับบริษัท</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-xs font-black uppercase tracking-widest text-ppmgreen mb-4 border-l-2 border-ppmgreen pl-3">กลุ่มสินค้า</h4>
+                    <ul class="space-y-2 text-sm text-gray-300 font-medium">
+                        @foreach (var main in mainCategories)
+                        {
+                            <li>
+                                <a asp-controller="Products" asp-action="Index"
+                                   asp-route-category="@main.CategoryCode"
+                                   class="hover:text-ppmgreen transition-colors">
+                                    @main.DisplayName
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-xs font-black uppercase tracking-widest text-ppmgreen mb-4 border-l-2 border-ppmgreen pl-3">ติดต่อเรา</h4>
+                    <div class="space-y-3 text-sm text-gray-300 font-medium">
+                        <div class="flex items-start gap-3">
+                            <i class="fa-solid fa-location-dot mt-1 text-ppmgreen"></i>
+                            <span>16 หมู่ที่ 2 ตำบลบ้านช้าง อำเภออุทัย<br />จังหวัดพระนครศรีอยุธยา 13210</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <i class="fa-solid fa-phone text-ppmgreen"></i>
+                            <span>035-245-899, 097-035-4469</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <i class="fa-solid fa-envelope text-ppmgreen"></i>
+                            <span>ppm.energy1989@gmail.com</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-6 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="text-[10px] font-bold text-gray-400 uppercase tracking-[0.3em]">
+                    &copy; @DateTime.Now.Year PPM ENERGY (THAILAND) CO., LTD. ALL RIGHTS RESERVED. | Developed by Sitthiporn,Techarat,Phattharapong.
+                </p>
+                
+                <!-- Floating Chat Buttons -->
+                <div class="fixed bottom-6 right-5 z-[999] flex flex-col gap-3">
+
+                    <!-- LINE -->
+                    <a href="https://line.me/ti/p/~Atsanee102230" target="_blank"
+                       class="w-14 h-14 bg-[#06C755] rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform">
+                        <i class="fa-brands fa-line text-white text-2xl"></i>
+                    </a>
+
+                    <!-- Facebook -->
+                    <a href="https://www.facebook.com/share/1CoDbkqSnF/?mibextid=wwXIfr" target="_blank"
+                       class="w-14 h-14 bg-[#1877F2] rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform">
+                        <i class="fa-brands fa-facebook-f text-white text-2xl"></i>
+                    </a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        // Mobile menu toggle
+        const btn = document.getElementById('mobile-menu-button');
+        const menu = document.getElementById('mobile-menu');
+        btn?.addEventListener('click', () => menu.classList.toggle('hidden'));
+
+        // Mobile products accordion
+        const productsBtn = document.getElementById('mobile-products-btn');
+        const productsList = document.getElementById('mobile-products-list');
+        const productsChevron = document.getElementById('mobile-products-chevron');
+        productsBtn?.addEventListener('click', () => {
+            productsList.classList.toggle('hidden');
+            productsChevron.classList.toggle('rotate-180');
+        });
+
+        // Close mobile menu on link click
+        menu?.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => menu.classList.add('hidden'));
+        });
+    </script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,255 @@
+@model PPMEnergyWeb.Models.Quote
+@{
+    Layout = null;
+    string quoteNumber = ViewBag.QuoteNumber;
+    decimal subtotal   = ViewBag.Subtotal;
+    decimal vat        = ViewBag.Vat;
+    decimal total      = ViewBag.Total;
+    string totalText   = ViewBag.TotalText;
+    int buddhistYear   = Model.CreatedDate.Year + 543;
+}
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>ใบเสนอราคา @quoteNumber</title>
+<style>
+@@import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700;800&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Sarabun',sans-serif;font-size:14px;color:#1a1a1a;background:#f0f0f0}
+
+/* Action bar */
+.action-bar{background:#1f2937;padding:12px 24px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.action-bar span{color:#9ca3af;font-size:13px}
+.btn-group{display:flex;gap:8px}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 18px;border-radius:8px;
+     font-size:13px;font-weight:700;cursor:pointer;border:none;font-family:'Sarabun',sans-serif;text-decoration:none}
+.btn-print{background:#009933;color:white}
+.btn-back{background:#374151;color:#d1d5db}
+.btn:hover{opacity:.85}
+
+/* หน้าเอกสาร */
+.page-wrapper{max-width:860px;margin:20px auto;background:white;box-shadow:0 4px 24px rgba(0,0,0,.15);border-radius:6px;overflow:hidden}
+.doc{padding:36px 44px}
+
+/* Header */
+.header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px}
+.company-name{font-size:14px;font-weight:800;color:#009933;letter-spacing:.5px}
+.company-info{font-size:11.5px;color:#374151;line-height:1.75;margin-top:4px}
+.doc-title{font-size:30px;font-weight:800;color:#009933;letter-spacing:2px;text-align:right;margin-bottom:10px}
+.meta-table{border-collapse:collapse;margin-left:auto}
+.meta-table td{padding:3px 8px;font-size:12.5px;border:1px solid #e5e7eb}
+.meta-table td:first-child{color:#6b7280;font-weight:600;background:#f9fafb}
+.meta-table td:last-child{font-weight:600;min-width:150px}
+
+hr.divider{border:none;border-top:2px solid #009933;margin:16px 0}
+
+/* ข้อมูลลูกค้า + งาน */
+.info-grid{display:grid;grid-template-columns:1fr 1fr 160px;gap:16px;margin-bottom:20px}
+.info-box h4{font-size:11px;font-weight:700;color:#009933;text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px}
+.info-box p{font-size:12.5px;color:#374151;line-height:1.8}
+
+/* ตารางสินค้า */
+.items-table{width:100%;border-collapse:collapse;margin-bottom:12px}
+.items-table thead tr{background:#009933;color:white}
+.items-table thead th{padding:9px 11px;font-size:12.5px;font-weight:600;text-align:left}
+.items-table thead th.r{text-align:right}
+.items-table tbody tr{border-bottom:1px solid #f3f4f6}
+.items-table tbody tr:nth-child(even){background:#f9fafb}
+.items-table tbody td{padding:9px 11px;font-size:13px;vertical-align:top}
+.items-table tbody td.r{text-align:right}
+
+/* ยอดสรุป */
+.summary-wrap{display:flex;justify-content:flex-end;margin-top:4px}
+.summary-table{border-collapse:collapse;min-width:260px}
+.summary-table tr{border-bottom:1px solid #f3f4f6}
+.summary-table td{padding:6px 12px;font-size:13px}
+.s-label{color:#6b7280;font-weight:600}
+.s-value{text-align:right;font-weight:600}
+.vat{color:#dc2626}
+.grand td{background:#f0fdf4;font-size:15px;font-weight:800;color:#009933;padding:9px 12px}
+
+/* ตัวอักษร */
+.total-text{margin-top:10px;padding:9px 14px;background:#f9fafb;border-left:3px solid #009933;font-size:12.5px;color:#374151}
+.total-text b{color:#111827}
+
+/* หมายเหตุ */
+.remark{margin-top:20px}
+.remark h4{font-size:11px;font-weight:700;color:#009933;text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px}
+.remark ol{padding-left:16px;font-size:12px;color:#374151;line-height:1.85}
+
+/* ลายเซ็น */
+.sig-row{display:flex;justify-content:space-between;align-items:flex-end;margin-top:44px}
+.sig-box{text-align:center;width:200px}
+.sig-label{font-size:11.5px;color:#6b7280;margin-bottom:36px}
+.sig-line{border-top:1px solid #9ca3af;margin:0 auto 6px;width:160px}
+.sig-role{font-size:12px;color:#374151;font-weight:600}
+.sig-date{font-size:11.5px;color:#9ca3af;margin-top:4px}
+
+/* Print */
+@@media print{
+  body{background:white;font-size:12.5px}
+  .action-bar{display:none!important}
+  .page-wrapper{box-shadow:none;margin:0;border-radius:0;max-width:100%}
+  .doc{padding:16px 24px}
+  @@page{size:A4;margin:8mm}
+}
+</style>
+</head>
+<body>
+
+<!-- Action Bar -->
+<div class="action-bar">
+  <span>ใบเสนอราคา #@quoteNumber</span>
+  <div class="btn-group">
+    <a href="javascript:history.back()" class="btn btn-back">← กลับ</a>
+    <button onclick="window.print()" class="btn btn-print">🖨️ พิมพ์ / บันทึก PDF</button>
+  </div>
+</div>
+
+<div class="page-wrapper">
+  <div class="doc">
+
+    <!-- Header -->
+    <div class="header">
+      <div>
+        <div class="company-name">PPM ENERGY (THAILAND) CO.,LTD.</div>
+        <div class="company-info">
+          บริษัท พีพีเอ็ม เอ็นเนอร์จี(ประเทศไทย) จำกัด (สำนักงานใหญ่)<br>
+          เลขที่ 16 หมู่ 2 ตำบลบ้านช้าง อำเภออุทัย จังหวัดพระนครศรีอยุธยา 13210<br>
+          เลขประจำตัวผู้เสียภาษี 0145566002624<br>
+          โทร. 035-245-899 &nbsp;|&nbsp; มือถือ 097-035-4469<br>
+          ppm.energy1989@gmail.com
+        </div>
+      </div>
+      <div>
+        <div class="doc-title">ใบเสนอราคา</div>
+        <table class="meta-table">
+          <tr><td>เลขที่</td><td>@quoteNumber</td></tr>
+          <tr><td>วันที่</td><td>@Model.CreatedDate.ToString("dd/MM/")@buddhistYear</td></tr>
+          <tr><td>ผู้ขาย</td><td>@(string.IsNullOrEmpty(Model.SalesPersonName) ? "-" : Model.SalesPersonName)</td></tr>
+          <tr><td>ชื่องาน</td><td>@(Model.QuoteDetails.FirstOrDefault()?.ProductName ?? "-")</td></tr>
+          <tr><td>เบอร์โทร</td><td>@Model.Phone</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ข้อมูลลูกค้า -->
+    <div class="info-grid">
+      <div class="info-box">
+        <h4>ลูกค้า</h4>
+        <p>
+          <b>@Model.CompanyName</b><br>
+          ผู้ติดต่อ: @Model.ContactName<br>
+          เลขประจำตัวผู้เสียภาษี: -<br>
+          โทร: @Model.Phone
+        </p>
+      </div>
+      <div class="info-box">
+        <h4>สถานที่จัดส่ง</h4>
+        <p>@Model.DeliveryLocation</p>
+        @if (!string.IsNullOrEmpty(Model.Note))
+        {
+          <p style="margin-top:8px"><b>หมายเหตุ:</b> @Model.Note</p>
+        }
+      </div>
+      <div class="info-box">
+        <h4>อีเมล</h4>
+        <p>@Model.Email</p>
+      </div>
+    </div>
+
+    <!-- ตารางสินค้า -->
+    <table class="items-table">
+      <thead>
+        <tr>
+          <th style="width:36px">#</th>
+          <th>รายละเอียด</th>
+          <th class="r" style="width:80px">จำนวน</th>
+          <th style="width:64px">หน่วย</th>
+          <th class="r" style="width:120px">ราคาต่อหน่วย</th>
+          <th class="r" style="width:120px">ยอดรวม</th>
+        </tr>
+      </thead>
+      <tbody>
+        @{ int row = 1; }
+        @foreach (var d in Model.QuoteDetails)
+        {
+          decimal lineTotal = d.Price * (decimal)d.Quantity;
+          <tr>
+            <td>@row</td>
+            <td><b>@d.ProductName</b></td>
+            <td class="r">@d.Quantity.ToString("N0")</td>
+            <td>ตัน</td>
+            <td class="r">@d.Price.ToString("N2")</td>
+            <td class="r">@lineTotal.ToString("N2")</td>
+          </tr>
+          row++;
+        }
+        @* ถ้าไม่มีรายการสินค้า หรือ price = 0 แสดงแถวว่างเผื่อเขียนเพิ่ม *@
+        @if (!Model.QuoteDetails.Any() || Model.QuoteDetails.All(d => d.Price == 0))
+        {
+          for (int i = row; i < row + 3; i++)
+          {
+            <tr><td>@i</td><td>&nbsp;</td><td></td><td></td><td></td><td></td></tr>
+          }
+        }
+      </tbody>
+    </table>
+
+    <!-- ยอดสรุป -->
+    <div class="summary-wrap">
+      <table class="summary-table">
+        <tr><td class="s-label">รวมเป็นเงิน</td><td class="s-value">@subtotal.ToString("N2") บาท</td></tr>
+        <tr><td class="s-label vat">ภาษีมูลค่าเพิ่ม 7%</td><td class="s-value vat">@vat.ToString("N2") บาท</td></tr>
+        <tr class="grand"><td>จำนวนเงินรวมทั้งสิ้น</td><td style="text-align:right">@total.ToString("N2") บาท</td></tr>
+      </table>
+    </div>
+
+    <!-- ตัวอักษร -->
+    <div class="total-text">(<b>@totalText</b>)</div>
+
+    <!-- หมายเหตุ -->
+    <div class="remark">
+      <h4>หมายเหตุ</h4>
+      <ol>
+        <li>โปรดชำระเงินด้วยยอดเต็มจำนวนรวมภาษีมูลค่าเพิ่มเข้าบัญชีบริษัท พีพีเอ็ม เอ็นเนอร์จี(ประเทศไทย) จำกัด ธนาคารกสิกรไทย ออมทรัพย์ เลขที่ 158-8-30750-2 จักขอบพระคุณยิ่ง กรณีชำระล่าช้าบริษัทฯ อาจพิจารณาเรียกเก็บค่าปรับในอัตราสูงสุดตามที่กฎหมายกำหนดพร้อมค่าใช้จ่ายติดตามทวงถาม ขออภัยและขอบพระคุณหากลูกค้าชำระตามกำหนด</li>
+        <li>ใบเสร็จรับเงินจะสมบูรณ์เมื่อมีหลักฐานการชำระเงินเข้าบัญชีบริษัทฯ ถูกต้องครบถ้วนตามใบส่งสินค้า/ใบแจ้งหนี้/ใบกำกับภาษี</li>
+        <li>บริษัทฯ ขอสงวนสิทธิ์เป็นผู้พิจารณา</li>
+        <li>กรณีที่ลูกค้าไม่สามารถรับสินค้าได้ตามวันที่กำหนด อาจมีค่าใช้จ่ายเรียกเก็บเพิ่ม</li>
+        <li>กรณีลูกค้าแจ้งปัญหาภายหลังการส่งมอบสินค้าเกินกว่า 7 วัน</li>
+      </ol>
+    </div>
+
+    <!-- ลายเซ็น -->
+    <div class="sig-row">
+      <div class="sig-box">
+        <div class="sig-label">ในนาม @Model.CompanyName</div>
+        <div class="sig-line"></div>
+        <div class="sig-role">ผู้อนุมัติสั่งซื้อ(ลูกค้า)</div>
+        <div class="sig-date">วันที่ ............................................</div>
+      </div>
+      <div class="sig-box">
+        <img src="/images/PPM_logo.png" alt="PPM Logo" style="height:52px;object-fit:contain"
+             onerror="this.style.display='none'">
+        <div style="font-size:11px;color:#009933;font-weight:700;margin-top:3px">PPM ENERGY (THAILAND) CO.,LTD.</div>
+      </div>
+      <div class="sig-box">
+        <div class="sig-label">ในนาม บริษัท พีพีเอ็ม เอ็นเนอร์จี(ประเทศไทย) จำกัด</div>
+        <div class="sig-line"></div>
+        <div class="sig-role">ผู้อนุมัติเสนอราคา</div>
+        <div class="sig-date">@Model.CreatedDate.ToString("dd/MM/")@buddhistYear</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+if (new URLSearchParams(window.location.search).get('print') === '1')
+  window.addEventListener('load', () => setTimeout(() => window.print(), 600));
+</script>
+</body>
+</html>

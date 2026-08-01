@@ -1,0 +1,296 @@
+@using PPMEnergyWeb.Models
+@model IEnumerable<PPMEnergyWeb.Models.Quote>
+
+@{
+    ViewData["Title"] = "รายงานใบเสนอราคา";
+    Layout = "_LayoutOwner";
+    int page       = (int)(ViewBag.Page ?? 1);
+    int totalPages = (int)(ViewBag.TotalPages ?? 1);
+    int totalCount = (int)(ViewBag.TotalCount ?? 0);
+
+    // กำหนดสถานะปัจจุบัน ถ้าไม่มีส่งมา ให้เริ่มต้นที่ "New" (ใหม่)
+    string currentStatus = string.IsNullOrEmpty((string)ViewBag.Status) ? QuoteStatus.New.ToString() : (string)ViewBag.Status;
+}
+
+<div class="space-y-6">
+    @* Header & Top Navigation *@
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+            <a asp-action="Index" class="inline-flex items-center text-xs font-bold text-gray-400 hover:text-[#006633] transition-colors mb-1 group">
+                <i class="fa-solid fa-arrow-left mr-1.5 text-[10px] group-hover:-translate-x-1 transition-transform"></i> กลับไปยัง Dashboard
+            </a>
+            <h1 class="text-2xl font-bold text-gray-900 tracking-tight">📄 รายงานใบเสนอราคา</h1>
+            <p class="text-sm text-gray-500 mt-0.5">รายการขอใบเสนอราคาในระบบทั้งหมด (<span class="font-bold text-gray-800">@totalCount</span> รายการ)</p>
+        </div>
+
+        @* Export Excel *@
+        <div>
+            <a asp-action="ExportQuotesExcel"
+               asp-route-search="@ViewBag.Search"
+               asp-route-status="@currentStatus"
+               asp-route-dateFrom="@ViewBag.DateFrom"
+               asp-route-dateTo="@ViewBag.DateTo"
+               class="inline-flex items-center justify-center gap-2 bg-[#006633] hover:bg-[#005229] text-white px-5 py-2.5 rounded-xl font-bold text-xs shadow-sm hover:shadow transition-all duration-200">
+                <i class="fa-solid fa-file-excel text-sm"></i> Export Excel
+            </a>
+        </div>
+    </div>
+
+    @* Filter Container *@
+    <form method="get" id="filterForm" class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 sm:p-5 space-y-4">
+        
+        @* Hidden Input สำหรับเก็บค่า status จากการกดปุ่ม *@
+        <input type="hidden" name="status" id="statusInput" value="@currentStatus" />
+
+        @* 1. Status Filter Pills (ปุ่มแยกสถานะ) *@
+        <div>
+            <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">เลือกสถานะใบเสนอราคา</label>
+            <div class="flex flex-wrap gap-2">
+                
+                @* ปุ่ม: ใหม่ (New) *@
+                <button type="button" onclick="selectStatus('@QuoteStatus.New')"
+                        class="px-4 py-2 rounded-xl text-xs font-bold transition-all border flex items-center gap-1.5 @(currentStatus == QuoteStatus.New.ToString() ? "bg-blue-600 text-white border-blue-600 shadow-sm" : "bg-blue-50/60 text-blue-600 border-blue-100 hover:bg-blue-100")">
+                    <span class="w-2 h-2 rounded-full @(currentStatus == QuoteStatus.New.ToString() ? "bg-white animate-pulse" : "bg-blue-500")"></span>
+                    ใหม่
+                </button>
+
+                @* ปุ่ม: กำลังดำเนินการ (Processing) *@
+                <button type="button" onclick="selectStatus('@QuoteStatus.Processing')"
+                        class="px-4 py-2 rounded-xl text-xs font-bold transition-all border flex items-center gap-1.5 @(currentStatus == QuoteStatus.Processing.ToString() ? "bg-amber-500 text-white border-amber-500 shadow-sm" : "bg-amber-50/60 text-amber-600 border-amber-100 hover:bg-amber-100")">
+                    <i class="fa-solid fa-spinner text-[10px] @(currentStatus == QuoteStatus.Processing.ToString() ? "fa-spin" : "")"></i>
+                    กำลังดำเนินการ
+                </button>
+
+                @* ปุ่ม: ส่งใบเสนอราคาแล้ว (QuotationSent) *@
+                <button type="button" onclick="selectStatus('@QuoteStatus.QuotationSent')"
+                        class="px-4 py-2 rounded-xl text-xs font-bold transition-all border flex items-center gap-1.5 @(currentStatus == QuoteStatus.QuotationSent.ToString() ? "bg-purple-600 text-white border-purple-600 shadow-sm" : "bg-purple-50/60 text-purple-600 border-purple-100 hover:bg-purple-100")">
+                    <i class="fa-regular fa-paper-plane text-[10px]"></i>
+                    ส่งใบเสนอราคาแล้ว
+                </button>
+
+                @* ปุ่ม: ปิดการขายได้ (Won) *@
+                <button type="button" onclick="selectStatus('@QuoteStatus.Won')"
+                        class="px-4 py-2 rounded-xl text-xs font-bold transition-all border flex items-center gap-1.5 @(currentStatus == QuoteStatus.Won.ToString() ? "bg-[#006633] text-white border-[#006633] shadow-sm" : "bg-green-50/60 text-[#006633] border-green-100 hover:bg-green-100")">
+                    <i class="fa-solid fa-check-circle text-[10px]"></i>
+                    ปิดการขายได้
+                </button>
+
+                @* ปุ่ม: ไม่สำเร็จ (Lost) *@
+                <button type="button" onclick="selectStatus('@QuoteStatus.Lost')"
+                        class="px-4 py-2 rounded-xl text-xs font-bold transition-all border flex items-center gap-1.5 @(currentStatus == QuoteStatus.Lost.ToString() ? "bg-red-600 text-white border-red-600 shadow-sm" : "bg-red-50/60 text-red-600 border-red-100 hover:bg-red-100")">
+                    <i class="fa-solid fa-xmark text-[10px]"></i>
+                    ไม่สำเร็จ
+                </button>
+
+            </div>
+        </div>
+
+        @* 2. Search & Date Inputs *@
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2 border-t border-gray-100">
+            @* Search Box *@
+            <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400">
+                    <i class="fa-solid fa-magnifying-glass text-xs"></i>
+                </div>
+                <input type="text" name="search" value="@ViewBag.Search"
+                       placeholder="ค้นหา บริษัท / ชื่อ / อีเมล..."
+                       class="w-full pl-9 pr-4 py-2 bg-gray-50/80 border border-gray-200 focus:border-[#006633] focus:bg-white rounded-xl text-xs font-medium text-gray-800 placeholder-gray-400 focus:outline-none transition-all" />
+            </div>
+
+            @* Date From *@
+            <div class="relative">
+                <input type="date" name="dateFrom" value="@ViewBag.DateFrom"
+                       class="w-full px-3.5 py-2 bg-gray-50/80 border border-gray-200 focus:border-[#006633] focus:bg-white rounded-xl text-xs font-medium text-gray-700 focus:outline-none transition-all" />
+            </div>
+
+            @* Date To *@
+            <div class="relative">
+                <input type="date" name="dateTo" value="@ViewBag.DateTo"
+                       class="w-full px-3.5 py-2 bg-gray-50/80 border border-gray-200 focus:border-[#006633] focus:bg-white rounded-xl text-xs font-medium text-gray-700 focus:outline-none transition-all" />
+            </div>
+        </div>
+
+        <div class="flex items-center gap-2">
+            <button type="submit"
+                    class="px-5 py-2 bg-[#006633] hover:bg-[#005229] text-white rounded-xl font-bold text-xs shadow-sm hover:shadow transition-all flex items-center gap-1.5">
+                <i class="fa-solid fa-filter text-[10px]"></i> ค้นหาเพิ่มเติม
+            </button>
+            <a asp-action="Quotes"
+               class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-600 rounded-xl font-bold text-xs transition-all">
+                ล้างตัวกรองทั้งหมด
+            </a>
+        </div>
+    </form>
+
+    @* Data Table Card *@
+    <div class="bg-white rounded-2xl border border-gray-100 shadow-[0_2px_10px_-3px_rgba(6,81,237,0.05)] overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="w-full text-sm text-left">
+                <thead class="bg-gray-50/80 text-gray-500 uppercase text-[11px] font-bold tracking-wider border-b border-gray-100">
+                    <tr>
+                        <th class="px-5 py-4 w-12 text-center rounded-tl-lg">#</th>
+                        <th class="px-5 py-4">วันที่ขอ</th>
+                        <th class="px-5 py-4">บริษัท / ผู้ติดต่อ</th>
+                        <th class="px-5 py-4">ช่องทางติดต่อ</th>
+                        <th class="px-5 py-4">สถานที่จัดส่ง</th>
+                        <th class="px-5 py-4 text-center rounded-tr-lg">สถานะ</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-50 text-gray-600">
+                    @if (!Model.Any())
+                    {
+                        <tr>
+                            <td colspan="6" class="px-6 py-16 text-center">
+                                <div class="flex flex-col items-center justify-center text-gray-400">
+                                    <i class="fa-regular fa-folder-open text-4xl mb-3 text-gray-300"></i>
+                                    <p class="text-sm font-medium">ไม่พบใบเสนอราคาตามเงื่อนไขที่ค้นหา</p>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                    else
+                    {
+                        int i = (page - 1) * 20 + 1;
+                        foreach (var q in Model)
+                        {
+                            <tr class="hover:bg-gray-50/50 transition-colors duration-200 group">
+                                <td class="px-5 py-4 text-xs font-bold text-gray-400 text-center">
+                                    @(i++)
+                                </td>
+
+                                <td class="px-5 py-4 text-xs font-medium text-gray-500 whitespace-nowrap">
+                                    <div class="font-bold text-gray-800">@q.CreatedDate.ToString("dd MMM yyyy")</div>
+                                    <div class="text-[11px] text-gray-400 mt-0.5">@q.CreatedDate.ToString("HH:mm น.")</div>
+                                </td>
+
+                                <td class="px-5 py-4">
+                                    <div class="flex items-center gap-3">
+                                        <div class="h-9 w-9 rounded-full bg-[#006633]/10 flex items-center justify-center text-[#006633] font-bold text-xs shrink-0">
+                                            @(string.IsNullOrEmpty(q.CompanyName) ? "?" : q.CompanyName.Substring(0, 1).ToUpper())
+                                        </div>
+                                        <div>
+                                            <div class="font-bold text-gray-900 group-hover:text-[#006633] transition-colors">
+                                                @(string.IsNullOrEmpty(q.CompanyName) ? "ไม่ได้ระบุบริษัท" : q.CompanyName)
+                                            </div>
+                                            <div class="text-[12px] text-gray-400 mt-0.5">
+                                                <i class="fa-regular fa-user mr-1 text-[10px]"></i>@(string.IsNullOrEmpty(q.ContactName) ? "-" : q.ContactName)
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+
+                                <td class="px-5 py-4 text-xs font-medium text-gray-600">
+                                    <div class="flex items-center text-gray-700">
+                                        <i class="fa-solid fa-envelope mr-1.5 text-gray-400 text-[10px]"></i>@q.Email
+                                    </div>
+                                    <div class="flex items-center text-gray-400 text-[11px] mt-0.5">
+                                        <i class="fa-solid fa-phone mr-1.5 text-gray-400 text-[9px]"></i>@(string.IsNullOrEmpty(q.Phone) ? "—" : q.Phone)
+                                    </div>
+                                </td>
+
+                                <td class="px-5 py-4 text-xs text-gray-500 max-w-[220px] truncate" title="@q.DeliveryLocation">
+                                    @if (!string.IsNullOrEmpty(q.DeliveryLocation))
+                                    {
+                                        <span class="inline-flex items-center">
+                                            <i class="fa-solid fa-location-dot mr-1.5 text-gray-400 text-[10px] shrink-0"></i>
+                                            <span class="truncate">@q.DeliveryLocation</span>
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-gray-300">—</span>
+                                    }
+                                </td>
+
+                                <td class="px-5 py-4 text-center">
+                                    @if (q.Status == QuoteStatus.New)
+                                    {
+                                        <span class="inline-flex items-center px-3 py-1 rounded-full bg-blue-50 text-blue-600 border border-blue-100 text-[11px] font-bold">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-blue-500 mr-1.5 animate-pulse"></span> ใหม่
+                                        </span>
+                                    }
+                                    else if (q.Status == QuoteStatus.Processing)
+                                    {
+                                        <span class="inline-flex items-center px-3 py-1 rounded-full bg-amber-50 text-amber-600 border border-amber-100 text-[11px] font-bold">
+                                            <i class="fa-solid fa-spinner fa-spin mr-1.5 text-[10px]"></i> กำลังดำเนินการ
+                                        </span>
+                                    }
+                                    else if (q.Status == QuoteStatus.QuotationSent)
+                                    {
+                                        <span class="inline-flex items-center px-3 py-1 rounded-full bg-purple-50 text-purple-600 border border-purple-100 text-[11px] font-bold">
+                                            <i class="fa-regular fa-paper-plane mr-1.5 text-[10px]"></i> ส่งใบเสนอราคาแล้ว
+                                        </span>
+                                    }
+                                    else if (q.Status == QuoteStatus.Won)
+                                    {
+                                        <span class="inline-flex items-center px-3 py-1 rounded-full bg-green-50 text-[#006633] border border-green-200 text-[11px] font-bold">
+                                            <i class="fa-solid fa-check-circle mr-1.5 text-[10px]"></i> ปิดการขายได้
+                                        </span>
+                                    }
+                                    else if (q.Status == QuoteStatus.Lost)
+                                    {
+                                        <span class="inline-flex items-center px-3 py-1 rounded-full bg-red-50 text-red-600 border border-red-100 text-[11px] font-bold">
+                                            <i class="fa-solid fa-xmark mr-1.5 text-[10px]"></i> ไม่สำเร็จ
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="inline-flex items-center px-3 py-1 rounded-full bg-gray-50 text-gray-600 border border-gray-200 text-[11px] font-bold">
+                                            @q.Status.ToString()
+                                        </span>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        @* Pagination *@
+        @if (totalPages > 1)
+        {
+            <div class="p-4 bg-gray-50/50 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-3">
+                <p class="text-xs text-gray-500 font-medium">
+                    กำลังแสดงหน้า <span class="font-bold text-gray-800">@@page</span> จากทั้งหมด <span class="font-bold text-gray-800">@totalPages</span> หน้า
+                </p>
+                <div class="flex items-center gap-1.5">
+                    @if (page > 1)
+                    {
+                        <a asp-action="Quotes"
+                           asp-route-page="@(page - 1)"
+                           asp-route-search="@ViewBag.Search"
+                           asp-route-status="@currentStatus"
+                           asp-route-dateFrom="@ViewBag.DateFrom"
+                           asp-route-dateTo="@ViewBag.DateTo"
+                           class="inline-flex items-center px-3 py-1.5 bg-white border border-gray-200 text-gray-600 rounded-xl text-xs font-bold hover:bg-gray-50 hover:text-gray-900 transition-all shadow-sm">
+                            <i class="fa-solid fa-chevron-left mr-1 text-[9px]"></i> ก่อนหน้า
+                        </a>
+                    }
+                    @if (page < totalPages)
+                    {
+                        <a asp-action="Quotes"
+                           asp-route-page="@(page + 1)"
+                           asp-route-search="@ViewBag.Search"
+                           asp-route-status="@currentStatus"
+                           asp-route-dateFrom="@ViewBag.DateFrom"
+                           asp-route-dateTo="@ViewBag.DateTo"
+                           class="inline-flex items-center px-3 py-1.5 bg-[#006633] text-white rounded-xl text-xs font-bold hover:bg-[#005229] transition-all shadow-sm">
+                            ถัดไป <i class="fa-solid fa-chevron-right ml-1 text-[9px]"></i>
+                        </a>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // ฟังก์ชันเมื่อกดเลือกปุ่มสถานะ
+        function selectStatus(statusValue) {
+            document.getElementById('statusInput').value = statusValue;
+            document.getElementById('filterForm').submit();
+        }
+    </script>
+}

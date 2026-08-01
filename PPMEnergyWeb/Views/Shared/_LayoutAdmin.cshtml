@@ -1,0 +1,142 @@
+﻿<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - PPM Energy Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        ppmgreen: {
+                            DEFAULT: '#0a8f08',
+                            light: '#f0fff0',
+                            dark: '#087506'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .animate-fadeIn {
+            animation: fadeIn 0.3s ease-out forwards;
+        }
+
+        @@keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(5px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 h-screen flex overflow-hidden font-sans">
+
+    <aside class="w-64 bg-slate-900 text-white flex-shrink-0 hidden md:flex flex-col">
+        <div class="p-6 border-b border-slate-800">
+            <div class="flex items-center space-x-3">
+                <img src="~/images/ppm.png" class="h-10 w-auto brightness-0 invert" onerror="this.src='https://ui-avatars.com/api/?name=PPM&background=0a8f08&color=fff'" />
+                <span class="font-black text-xl tracking-tighter">PPM <span class="text-ppmgreen">ADMIN</span></span>
+            </div>
+        </div>
+
+        <nav class="flex-grow p-4 space-y-2 overflow-y-auto">
+            <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest px-4 mb-2">Main Menu</p>
+
+            <a asp-controller="Admin" asp-action="Index"
+               class="flex items-center space-x-3 p-3 rounded-xl transition-all @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Admin" ? "bg-ppmgreen text-white shadow-lg shadow-ppmgreen/20" : "text-slate-400 hover:bg-slate-800 hover:text-white")">
+                <i class="fa-solid fa-chart-line w-5"></i>
+                <span class="font-medium">แผงควบคุม</span>
+            </a>
+
+            <a asp-controller="AdminProducts" asp-action="Index"
+               class="flex items-center space-x-3 p-3 rounded-xl transition-all @(ViewContext.RouteData.Values["Controller"]?.ToString() == "AdminProducts" ? "bg-ppmgreen text-white shadow-lg shadow-ppmgreen/20" : "text-slate-400 hover:bg-slate-800 hover:text-white")">
+                <i class="fa-solid fa-boxes-stacked w-5"></i>
+                <span class="font-medium">จัดการสินค้า</span>
+            </a>
+
+            <a asp-controller="Quote" asp-action="Index"
+               class="flex items-center justify-between p-3 rounded-xl transition-all @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Quote" ? "bg-ppmgreen text-white shadow-lg shadow-ppmgreen/20" : "text-slate-400 hover:bg-slate-800 hover:text-white")">
+                <div class="flex items-center space-x-3">
+                    <i class="fa-solid fa-file-invoice-dollar w-5"></i>
+                    <span class="font-medium">รายการขอใบเสนอราคา</span>
+                </div>
+            </a>
+
+            <a asp-controller="AdminCategories" asp-action="Index"
+               class="flex items-center space-x-3 p-3 rounded-xl transition-all
+                    @(ViewContext.RouteData.Values["Controller"]?.ToString() == "AdminCategories" ? "bg-ppmgreen text-white shadow-lg shadow-ppmgreen/20" : "text-slate-400 hover:bg-slate-800 hover:text-white")">
+                <i class="fa-solid fa-layer-group w-5"></i>
+                <span class="font-medium">จัดการหมวดหมู่</span>
+            </a>
+
+            <a asp-controller="AdminCustomers" asp-action="Index"
+               class="flex items-center space-x-3 p-3 rounded-xl transition-all @(ViewContext.RouteData.Values["Controller"]?.ToString() == "AdminCustomers" ? "bg-ppmgreen text-white shadow-lg shadow-ppmgreen/20" : "text-slate-400 hover:bg-slate-800 hover:text-white")">
+                <i class="fa-solid fa-users w-5"></i>
+                <span class="font-medium">รายชื่อลูกค้า</span>
+            </a>
+
+            <a asp-controller="AdminSuppliers" asp-action="Index"
+               class="flex items-center space-x-3 p-3 rounded-xl transition-all @(ViewContext.RouteData.Values["Controller"]?.ToString() == "AdminSuppliers" ? "bg-ppmgreen text-white shadow-lg shadow-ppmgreen/20" : "text-slate-400 hover:bg-slate-800 hover:text-white")">
+                <i class="fa-solid fa-industry w-5"></i>
+                <span class="font-medium">ซัพพลายเออร์</span>
+            </a>
+
+            <div class="pt-4 border-t border-slate-800 mt-4">
+                <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest px-4 mb-2">Website Info</p>
+                <a asp-controller="Home" asp-action="Index" target="_blank" class="flex items-center space-x-3 p-3 rounded-xl text-slate-400 hover:text-blue-400 transition-all">
+                    <i class="fa-solid fa-arrow-up-right-from-square w-5"></i>
+                    <span class="font-medium text-sm">ดูหน้าเว็บลูกค้า</span>
+                </a>
+            </div>
+        </nav>
+
+        <div class="p-4 border-t border-slate-800">
+            <form asp-controller="Account" asp-action="Logout" method="post">
+                <button type="submit" class="w-full flex items-center space-x-3 p-3 rounded-xl text-red-400 hover:bg-red-500/10 transition-all">
+                    <i class="fa-solid fa-power-off w-5"></i>
+                    <span class="font-bold">ออกจากระบบ</span>
+                </button>
+            </form>
+        </div>
+    </aside>
+
+    <div class="flex-grow flex flex-col min-w-0 overflow-hidden">
+        <header class="bg-white border-b border-gray-200 h-16 flex items-center justify-between px-8 flex-shrink-0">
+            <div class="flex items-center">
+                <button class="md:hidden mr-4 text-gray-500"><i class="fa-solid fa-bars text-xl"></i></button>
+                <h2 class="font-bold text-gray-800 truncate">@ViewData["Title"]</h2>
+            </div>
+            <div class="flex items-center space-x-4">
+                <div class="text-right hidden sm:block">
+                    <p class="text-xs font-bold text-gray-800 leading-none">@User.Identity?.Name</p>
+                    <p class="text-[10px] text-ppmgreen font-bold uppercase tracking-widest">Administrator</p>
+                </div>
+                <div class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 border border-gray-200">
+                    <i class="fa-solid fa-user-shield"></i>
+                </div>
+            </div>
+        </header>
+
+        <main class="flex-grow overflow-y-auto p-8">
+            <div class="animate-fadeIn">
+                @RenderBody()
+            </div>
+        </main>
+    </div>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,107 @@
+﻿@model PPMEnergyWeb.Models.Supplier
+@using PPMEnergyWeb.Models
+@{
+    var mainCats = (List<Category>)ViewData["MainCats"]!;
+    var selectedIds = (List<int>)ViewData["SelectedIds"]!;
+}
+
+@if (Model != null && Model.Id != 0)
+{
+    <input type="hidden" asp-for="Id" />
+}
+
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+    <div class="sm:col-span-2">
+        <label asp-for="CompanyName" class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5">ชื่อบริษัท <span class="text-red-500">*</span></label>
+        <input asp-for="CompanyName" placeholder="เช่น บริษัท ตัวอย่างวัสดุก่อสร้าง จำกัด"
+               class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm font-semibold text-gray-800 focus:ring-2 focus:ring-ppmgreen/20 focus:border-ppmgreen outline-none transition-all" />
+        <span asp-validation-for="CompanyName" class="text-xs font-semibold text-red-500"></span>
+    </div>
+
+    <div>
+        <label asp-for="ContactPersonName" class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5">ชื่อผู้ติดต่อ</label>
+        <input asp-for="ContactPersonName" placeholder="ชื่อเซลล์ / ฝ่ายขาย"
+               class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm font-semibold text-gray-800 focus:ring-2 focus:ring-ppmgreen/20 focus:border-ppmgreen outline-none transition-all" />
+    </div>
+
+    <div>
+        <label asp-for="Phone" class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5">เบอร์โทรศัพท์</label>
+        <input asp-for="Phone" placeholder="08X-XXX-XXXX"
+               class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm font-semibold text-gray-800 focus:ring-2 focus:ring-ppmgreen/20 focus:border-ppmgreen outline-none transition-all" />
+    </div>
+
+    <div>
+        <label asp-for="Email" class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5">อีเมล (Gmail)</label>
+        <input asp-for="Email" type="email" placeholder="example@gmail.com"
+               class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm font-semibold text-gray-800 focus:ring-2 focus:ring-ppmgreen/20 focus:border-ppmgreen outline-none transition-all" />
+    </div>
+
+    <div>
+        <label asp-for="LineId" class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5">LINE ID</label>
+        <input asp-for="LineId" placeholder="@@lineid หรือเบอร์ที่ผูก LINE"
+               class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm font-semibold text-gray-800 focus:ring-2 focus:ring-ppmgreen/20 focus:border-ppmgreen outline-none transition-all" />
+    </div>
+
+    <div class="sm:col-span-2">
+        <label asp-for="Address" class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5">ที่อยู่บริษัท</label>
+        <textarea asp-for="Address" rows="2" placeholder="ที่อยู่สำหรับติดต่อ/ออกเอกสาร"
+                  class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm font-semibold text-gray-800 focus:ring-2 focus:ring-ppmgreen/20 focus:border-ppmgreen outline-none transition-all resize-none"></textarea>
+    </div>
+
+    <div>
+        <label asp-for="TaxId" class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5">เลขประจำตัวผู้เสียภาษี</label>
+        <input asp-for="TaxId" placeholder="เลข 13 หลัก"
+               class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm font-semibold text-gray-800 focus:ring-2 focus:ring-ppmgreen/20 focus:border-ppmgreen outline-none transition-all" />
+    </div>
+
+    <div>
+        <label asp-for="CreditTerm" class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5">เครดิตเทอม</label>
+        <input asp-for="CreditTerm" placeholder="เช่น เงินสด, เครดิต 30 วัน"
+               class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm font-semibold text-gray-800 focus:ring-2 focus:ring-ppmgreen/20 focus:border-ppmgreen outline-none transition-all" />
+    </div>
+
+    <div class="sm:col-span-2">
+        <label asp-for="Note" class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5">หมายเหตุ</label>
+        <textarea asp-for="Note" rows="2" placeholder="เงื่อนไขพิเศษ, ประวัติการต่อรอง ฯลฯ"
+                  class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm font-semibold text-gray-800 focus:ring-2 focus:ring-ppmgreen/20 focus:border-ppmgreen outline-none transition-all resize-none"></textarea>
+    </div>
+
+    <div class="sm:col-span-2 flex items-center gap-2 bg-gray-50 px-4 py-3 rounded-xl border border-gray-200">
+        <input asp-for="IsActive" type="checkbox" class="w-4 h-4 rounded border-gray-300 text-ppmgreen focus:ring-ppmgreen/30" />
+        <label asp-for="IsActive" class="text-sm font-semibold text-gray-700">ใช้งานอยู่ (ยังติดต่อซื้อขายกันอยู่)</label>
+    </div>
+
+    <div class="sm:col-span-2">
+        <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">หมวดหมู่สินค้าที่รับจากซัพพลายเออร์รายนี้</label>
+        <div class="border border-gray-200 rounded-xl p-4 space-y-3 max-h-72 overflow-y-auto bg-gray-50/50">
+            @if (!mainCats.Any())
+            {
+                <p class="text-xs text-gray-400">ยังไม่มีหมวดหมู่สินค้าในระบบ กรุณาไปสร้างหมวดหมู่ก่อน</p>
+            }
+            @foreach (var main in mainCats.OrderBy(c => c.DisplayOrder))
+            {
+                var subs = allCategories.Where(c => c.ParentCategoryId == main.Id).OrderBy(c => c.DisplayOrder).ToList();
+                <div>
+                    <label class="flex items-center gap-2 font-bold text-sm text-gray-800">
+                        <input type="checkbox" name="categoryIds" value="@main.Id" @(selectedIds.Contains(main.Id) ? "checked" : "")
+                               class="w-4 h-4 rounded border-gray-300 text-ppmgreen focus:ring-ppmgreen/30" />
+                        <i class="fa-solid fa-folder text-ppmgreen text-xs"></i> @main.DisplayName
+                    </label>
+                    @if (subs.Any())
+                    {
+                        <div class="pl-7 mt-1.5 space-y-1.5">
+                            @foreach (var sub in subs)
+                            {
+                                <label class="flex items-center gap-2 text-sm text-gray-600">
+                                    <input type="checkbox" name="categoryIds" value="@sub.Id" @(selectedIds.Contains(sub.Id) ? "checked" : "")
+                                           class="w-3.5 h-3.5 rounded border-gray-300 text-ppmgreen focus:ring-ppmgreen/30" />
+                                    <i class="fa-solid fa-folder-open text-blue-400 text-[10px]"></i> @sub.DisplayName
+                                </label>
+                            }
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+</div>

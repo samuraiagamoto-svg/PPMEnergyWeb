@@ -1,0 +1,184 @@
+﻿@model PPMEnergyWeb.Models.ApplicationUser
+
+@{
+    ViewData["Title"] = "ข้อมูลลูกค้า";
+    Layout = "_LayoutAdmin";
+    var quotes = ViewBag.Quotes as List<PPMEnergyWeb.Models.Quote> ?? new();
+}
+
+<div class="space-y-6 max-w-4xl mx-auto">
+
+    @* ── Back Button ────────────────────────────────────────── *@
+    <div class="flex items-center justify-between">
+        <a asp-action="Index" class="inline-flex items-center text-sm font-semibold text-gray-500 hover:text-ppmgreen transition-colors group">
+            <i class="fa-solid fa-arrow-left mr-2 text-xs transition-transform group-hover:-translate-x-1"></i> ย้อนกลับรายชื่อลูกค้า
+        </a>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+        @* ── Profile Column (ซ้าย) ────────────────────────────────── *@
+        <div class="space-y-4">
+
+            @* Profile Card *@
+            <div class="bg-white border border-gray-200/80 shadow-sm rounded-2xl p-6 text-center space-y-3">
+                <div class="w-20 h-20 rounded-full bg-ppmgreen/10 flex items-center justify-center text-ppmgreen text-3xl font-bold mx-auto">
+                    @(Model.UserName?.Length > 0 ? Model.UserName[0].ToString().ToUpper() : "?")
+                </div>
+                <div>
+                    <h2 class="text-lg font-bold text-gray-900 break-all">@(Model.UserName ?? "-")</h2>
+                    <p class="text-xs text-gray-500 break-all">@(Model.Email ?? "-")</p>
+                </div>
+                @if (!string.IsNullOrEmpty(Model.CompanyName))
+                {
+                    <div class="inline-flex items-center gap-1.5 text-xs font-bold text-gray-700 bg-gray-50 border border-gray-200 px-3 py-1.5 rounded-full">
+                        <i class="fa-solid fa-building text-gray-400"></i> @Model.CompanyName
+                    </div>
+                }
+                @if (Model.EmailConfirmed)
+                {
+                    <span class="inline-flex items-center text-xs bg-emerald-50 text-emerald-700 border border-emerald-200 font-bold px-3 py-1 rounded-full">
+                        <i class="fa-solid fa-circle-check mr-1.5"></i> ยืนยันอีเมลแล้ว
+                    </span>
+                }
+                else
+                {
+                    <span class="inline-flex items-center text-xs bg-amber-50 text-amber-600 border border-amber-200 font-bold px-3 py-1 rounded-full">
+                        <i class="fa-solid fa-clock mr-1.5"></i> รอยืนยันอีเมล
+                    </span>
+                }
+            </div>
+
+            @* Contact Info *@
+            <div class="bg-white border border-gray-200/80 shadow-sm rounded-2xl p-5 space-y-3">
+                <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider">ข้อมูลติดต่อ</h3>
+                <div class="space-y-3 text-sm">
+                    @if (!string.IsNullOrEmpty(Model.Email))
+                    {
+                        <div class="flex items-start space-x-2.5">
+                            <i class="fa-solid fa-envelope text-gray-400 text-xs mt-1 w-4 shrink-0"></i>
+                            <a href="mailto:@Model.Email" class="text-gray-700 hover:text-ppmgreen transition-colors break-all font-medium">@Model.Email</a>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="flex items-start space-x-2.5 text-gray-400">
+                            <i class="fa-solid fa-envelope text-xs mt-1 w-4 shrink-0"></i>
+                            <span>ไม่ได้ระบุอีเมล</span>
+                        </div>
+                    }
+
+                    @if (!string.IsNullOrEmpty(Model.PhoneNumber))
+                    {
+                        <div class="flex items-center space-x-2.5">
+                            <i class="fa-solid fa-phone text-gray-400 text-xs w-4 shrink-0"></i>
+                            <a href="tel:@Model.PhoneNumber" class="text-gray-700 hover:text-ppmgreen transition-colors font-semibold">@Model.PhoneNumber</a>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="flex items-center space-x-2.5 text-gray-400">
+                            <i class="fa-solid fa-phone text-xs w-4 shrink-0"></i>
+                            <span>ไม่ได้ระบุเบอร์โทร</span>
+                        </div>
+                    }
+
+                    <div class="flex items-start space-x-2.5 border-t border-gray-100 pt-2.5 mt-2.5">
+                        <i class="fa-solid fa-location-dot text-gray-400 text-xs mt-1 w-4 shrink-0"></i>
+                        <div class="text-gray-600 text-xs leading-relaxed whitespace-pre-line break-words">
+                            <span class="block font-semibold text-gray-400 mb-0.5">ที่อยู่จัดส่ง:</span>
+                            @(string.IsNullOrEmpty(Model.ShippingAddress) ? "ไม่ได้ระบุที่อยู่" : Model.ShippingAddress)
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @* Danger Zone *@
+            <div class="bg-red-50/50 border border-red-100 rounded-2xl p-4">
+                <h3 class="text-xs font-bold text-red-700 mb-2.5 uppercase tracking-wider">Danger Zone</h3>
+                <form asp-action="Delete" asp-route-id="@Model.Id" method="post"
+                      onsubmit="return confirm('ลบลูกค้า: @Model.UserName ?\nการดำเนินการนี้จะลบข้อมูลที่เกี่ยวข้องทั้งหมดและไม่สามารถกู้คืนได้!')">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="w-full px-4 py-2.5 bg-red-600 hover:bg-red-700 text-white text-xs font-bold rounded-xl transition-colors shadow-sm">
+                        <i class="fa-solid fa-trash-can mr-2"></i> ลบบัญชีลูกค้า
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        @* ── Quote History Column (ขวา) ───────────────────────────── *@
+        <div class="lg:col-span-2 bg-white border border-gray-200/80 shadow-sm rounded-2xl overflow-hidden flex flex-col justify-between">
+            <div>
+                @* 📍 วางปุ่มตรงนี้ในส่วนหัวฝั่งขวา เพื่อความสวยงามเป็นสัดส่วน *@
+                <div class="p-5 border-b border-gray-100 bg-gray-50/50 flex items-center justify-between flex-wrap gap-3">
+                    <div>
+                        <h3 class="text-sm font-bold text-gray-900">ประวัติการขอใบเสนอราคา</h3>
+                        <p class="text-xs text-gray-500 mt-0.5">ทั้งหมด @quotes.Count รายการ</p>
+                    </div>
+                    
+                    
+                </div>
+
+                @if (!quotes.Any())
+                {
+                    <div class="py-24 text-center text-gray-400 space-y-2">
+                        <i class="fa-solid fa-file-invoice text-4xl text-gray-300"></i>
+                        <p class="text-sm font-medium">ยังไม่มีประวัติการขอใบเสนอราคา</p>
+                    </div>
+                }
+                else
+                {
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left text-gray-600">
+                            <thead class="bg-gray-50 text-gray-500 uppercase text-[11px] font-bold tracking-wider border-b border-gray-100">
+                                <tr>
+                                    <th class="px-5 py-3.5">เลขที่</th>
+                                    <th class="px-5 py-3.5">วันที่ขอ</th>
+                                    <th class="px-5 py-3.5">สถานะ</th>
+                                    <th class="px-5 py-3.5 text-right">เครื่องมือ</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-100">
+                                @foreach (var q in quotes)
+                                {
+                                    <tr class="hover:bg-gray-50/70 transition-colors">
+                                        <td class="px-5 py-4 font-mono font-bold text-gray-800 text-xs">#@q.Id</td>
+                                        <td class="px-5 py-4 text-xs text-gray-600">@q.CreatedDate.ToString("dd MMM yyyy HH:mm")</td>
+                                        <td class="px-5 py-4">
+                                            @if (q.Status != PPMEnergyWeb.Models.QuoteStatus.New)
+                                            {
+                                                <span class="inline-flex items-center text-[10px] font-bold px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
+                                                    <i class="fa-solid fa-circle-check mr-1"></i> ดำเนินการแล้ว
+                                                </span>
+                                            }
+                                            else
+                                            {
+                                                <span class="inline-flex items-center text-[10px] font-bold px-2.5 py-1 rounded-full bg-amber-50 text-amber-600 border border-amber-200">
+                                                    <i class="fa-solid fa-clock mr-1"></i> รอดำเนินการ
+                                                </span>
+                                            }
+                                        </td>
+                                       <td class="px-5 py-4 text-right">
+    <div class="inline-flex items-center justify-end gap-2">
+        <a asp-controller="Quote" asp-action="Details" asp-route-id="@q.Id"
+           title="ดูรายละเอียด"
+           class="inline-flex items-center text-gray-400 hover:text-blue-600 transition-colors p-1">
+            <i class="fa-solid fa-eye text-base"></i>
+        </a>
+        <a href="/Quote/PrintQuotation/@q.Id" target="_blank"
+           title="ออกใบเสนอราคา"
+           class="inline-flex items-center gap-1 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-[10px] font-bold rounded-lg transition-colors">
+            <i class="fa-solid fa-print text-xs"></i> ออกใบ
+        </a>
+    </div>
+</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

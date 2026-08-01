@@ -1,0 +1,217 @@
+﻿@model PPMEnergyWeb.Models.Category
+
+@{
+    ViewData["Title"] = "เพิ่มหมวดหมู่ใหม่";
+    Layout = "_LayoutAdmin";
+}
+
+<div class="space-y-6 max-w-5xl mx-auto">
+    @* Top Actions Bar *@
+    <div class="flex items-center justify-between">
+        <a asp-action="Index" class="inline-flex items-center text-sm font-semibold text-gray-500 hover:text-ppmgreen transition-colors">
+            <i class="fa-solid fa-arrow-left mr-2 text-xs"></i> ย้อนกลับไปหน้าตาราง
+        </a>
+    </div>
+
+    @* Split Layout Box *@
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+
+        @* Left Instruction Card *@
+        <div class="space-y-4">
+            <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200/60">
+                <h3 class="text-sm font-bold text-slate-900 flex items-center">
+                    <i class="fa-solid fa-circle-question text-ppmgreen mr-2"></i> คำแนะนำการเพิ่มหมวดหมู่
+                </h3>
+                <ul class="text-xs text-slate-600 mt-3 space-y-2.5 list-disc list-inside">
+                    <li><strong class="text-slate-800">หมวดหมู่หลัก:</strong> ไม่ต้องเลือกหมวดหมู่หลัก ระบบจะสร้างเป็นหมวดหมู่หลักให้อัตโนมัติ</li>
+                    <li><strong class="text-slate-800">หมวดหมู่ย่อย:</strong> เลือกหมวดหมู่หลักจาก dropdown เพื่อสร้างเป็นหมวดหมู่ย่อย</li>
+                    <li><strong class="text-slate-800">ชื่อหมวดหมู่:</strong> ชื่อที่แสดงบนหน้าเว็บไซต์และเมนูหลัก</li>
+                    <li><strong class="text-slate-800">รหัสหมวดหมู่ (URL):</strong> ระบบแปลงเป็นพิมพ์เล็กภาษาอังกฤษให้อัตโนมัติ เพื่อใช้ทำ SEO URL</li>
+                    <li><strong class="text-slate-800">ลำดับ:</strong> ค่าน้อยจะถูกจัดให้อยู่ก่อนเสมอ (เช่น 0 อยู่ก่อน 1)</li>
+                </ul>
+            </div>
+
+            @* Visual hint card *@
+            <div class="bg-ppmgreen/5 p-5 rounded-2xl border border-ppmgreen/20">
+                <h4 class="text-xs font-bold text-ppmgreen mb-2 flex items-center">
+                    <i class="fa-solid fa-sitemap mr-2"></i> โครงสร้างหมวดหมู่
+                </h4>
+                <div class="text-xs text-slate-600 space-y-1 font-mono">
+                    <div class="flex items-center space-x-1">
+                        <i class="fa-solid fa-folder text-ppmgreen text-[10px]"></i>
+                        <span class="font-semibold text-slate-800">โซล่าร์เซลล์</span>
+                        <span class="text-[10px] text-ppmgreen bg-ppmgreen/10 px-1.5 rounded-full">Main</span>
+                    </div>
+                    <div class="flex items-center space-x-1 pl-4">
+                        <i class="fa-solid fa-folder-open text-slate-400 text-[10px]"></i>
+                        <span>สำหรับบ้านพักอาศัย</span>
+                        <span class="text-[10px] text-blue-600 bg-blue-50 px-1.5 rounded-full">Sub</span>
+                    </div>
+                    <div class="flex items-center space-x-1 pl-4">
+                        <i class="fa-solid fa-folder-open text-slate-400 text-[10px]"></i>
+                        <span>สำหรับโรงงาน</span>
+                        <span class="text-[10px] text-blue-600 bg-blue-50 px-1.5 rounded-full">Sub</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @* Right Form Box *@
+        <div class="lg:col-span-2 bg-white border border-gray-200/80 shadow-sm rounded-2xl overflow-hidden">
+            <div class="p-6 border-b border-gray-100 bg-gray-50/30">
+                <h2 class="text-lg font-bold text-gray-900">ฟอร์มบันทึกข้อมูลหมวดหมู่สินค้า</h2>
+                <p class="text-xs text-gray-500">กรุณากรอกข้อมูลให้ครบถ้วน โดยระบบมีตัวช่วยแปลงข้อมูลให้เหมาะสม</p>
+            </div>
+
+            @* 🛠️ ปรับปรุงจุดที่ 1: เติม enctype="multipart/form-data" เพื่อให้ฟอร์มรองรับการส่งไฟล์ภาพหลังบ้าน *@
+            <form asp-action="Create" enctype="multipart/form-data" class="p-6 space-y-5">
+                @Html.AntiForgeryToken()
+
+                @if (!ViewData.ModelState.IsValid)
+                {
+                    <div class="p-4 bg-red-50 border border-red-200 rounded-xl text-xs text-red-700 flex items-start space-x-2">
+                        <i class="fa-solid fa-triangle-exclamation mt-0.5"></i>
+                        <div asp-validation-summary="All" class="font-medium"></div>
+                    </div>
+                }
+
+                @* ── ประเภทหมวดหมู่ (Toggle UI) ── *@
+                <div class="space-y-3">
+                    <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider">ประเภทหมวดหมู่</label>
+                    <div class="flex rounded-xl border border-gray-200 overflow-hidden">
+                        <button type="button" id="btnMain"
+                                onclick="setCategoryType('main')"
+                                class="flex-1 py-2.5 text-sm font-semibold flex items-center justify-center space-x-2 transition-all bg-ppmgreen text-white">
+                            <i class="fa-solid fa-folder"></i>
+                            <span>หมวดหมู่หลัก (Main)</span>
+                        </button>
+                        <button type="button" id="btnSub"
+                                onclick="setCategoryType('sub')"
+                                class="flex-1 py-2.5 text-sm font-semibold flex items-center justify-center space-x-2 transition-all bg-white text-gray-500 hover:bg-gray-50">
+                            <i class="fa-solid fa-folder-open"></i>
+                            <span>หมวดหมู่ย่อย (Sub)</span>
+                        </button>
+                    </div>
+                </div>
+
+                @* ── Dropdown เลือก Parent (ซ่อนถ้าเลือก Main) ── *@
+                <div id="parentSection" class="space-y-1.5 hidden">
+                    <label asp-for="ParentCategoryId" class="block text-xs font-bold text-gray-700 uppercase tracking-wider">
+                        หมวดหมู่หลักที่สังกัด <span class="text-red-500">*</span>
+                    </label>
+                    <select asp-for="ParentCategoryId"
+                            asp-items="ViewBag.ParentCategories"
+                            id="parentCategorySelect"
+                            class="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm font-semibold text-gray-800 focus:ring-2 focus:ring-ppmgreen/20 focus:border-ppmgreen outline-none transition-all">
+                        <option value="">— เลือกหมวดหมู่หลัก —</option>
+                    </select>
+                    <span asp-validation-for="ParentCategoryId" class="text-xs font-semibold text-red-500"></span>
+                    <p class="text-[11px] text-gray-400">
+                        <i class="fa-solid fa-circle-info mr-1 text-ppmgreen"></i>
+                        หมวดหมู่ย่อยจะถูกจัดกลุ่มอยู่ใต้หมวดหมู่หลักที่เลือก
+                    </p>
+                </div>
+
+                @* ── ชื่อหมวดหมู่ ── *@
+                <div class="space-y-1.5">
+                    <label asp-for="DisplayName" class="block text-xs font-bold text-gray-700 uppercase tracking-wider">
+                        ชื่อหมวดหมู่ (ภาษาไทย หรือ อังกฤษ) <span class="text-red-500">*</span>
+                    </label>
+                    <input asp-for="DisplayName" id="displayName" onkeyup="generateSlug()"
+                           class="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-ppmgreen/20 focus:border-ppmgreen outline-none transition-all font-semibold text-gray-800"
+                           placeholder="ตัวอย่างเช่น โซล่าร์เซลล์สำหรับบ้านพักอาศัย" required />
+                    <span asp-validation-for="DisplayName" class="text-xs font-semibold text-red-500"></span>
+                </div>
+
+                @* 🛠️ ปรับปรุงจุดที่ 2: เปลี่ยนจากพิมพ์ลิงก์ URL มาเป็นชุดกล่องเลือกรูปภาพจากในเครื่องคอมพิวเตอร์ (ImageFile) *@
+                <div class="space-y-1.5">
+                    <label asp-for="ImageFile" class="block text-xs font-bold text-gray-700 uppercase tracking-wider">
+                        รูปภาพหมวดหมู่สินค้า (Image Upload)
+                    </label>
+                    <input asp-for="ImageFile" type="file" accept="image/*"
+                           class="w-full px-4 py-2 bg-white border border-gray-200 rounded-xl text-sm file:mr-4 file:py-1.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-ppmgreen/10 file:text-ppmgreen hover:file:bg-ppmgreen/20 outline-none transition-all" />
+                    <span asp-validation-for="ImageFile" class="text-xs font-semibold text-red-500"></span>
+                    <p class="text-[11px] text-gray-400">
+                        <i class="fa-solid fa-image mr-1 text-ppmgreen"></i>
+                        คลิกเพื่อเลือกไฟล์รูปภาพจากเครื่อง (.jpg, .png, .webp) ระบบจะบันทึกลง Server ให้ทันที
+                    </p>
+                </div>
+
+                @* ── URL Slug ── *@
+                <div class="space-y-1.5">
+                    <label asp-for="CategoryCode" class="block text-xs font-bold text-gray-700 uppercase tracking-wider">
+                        รหัสหมวดหมู่ (URL Slug) <span class="text-red-500">*</span>
+                    </label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-xs font-medium text-gray-400 bg-gray-50 border-r border-gray-200 rounded-l-xl px-3">
+                            ppm-energy.com/category/
+                        </span>
+                        <input asp-for="CategoryCode" id="categoryCode"
+                               class="w-full pl-[175px] pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm font-mono font-bold text-gray-600 focus:ring-2 focus:ring-ppmgreen/20 focus:border-ppmgreen outline-none transition-all"
+                               placeholder="solar-residential" required />
+                    </div>
+                    <span asp-validation-for="CategoryCode" class="text-xs font-semibold text-red-500"></span>
+                    <p class="text-[11px] text-gray-400">
+                        <i class="fa-solid fa-wand-magic-sparkles mr-1 text-ppmgreen"></i>
+                        ระบบช่วยพิมพ์แปลงเป็นพิมพ์เล็กภาษาอังกฤษให้อัตโนมัติเมื่อกรอกช่องชื่อด้านบน
+                    </p>
+                </div>
+
+                <input type="hidden" asp-for="DisplayOrder" value="0" />
+
+                <div class="pt-4 border-t border-gray-100 flex items-center justify-end space-x-3">
+                    <a asp-action="Index" class="px-4 py-2.5 border border-gray-200 text-gray-700 hover:bg-gray-50 text-sm font-semibold rounded-xl transition-colors">
+                        ยกเลิก
+                    </a>
+                    <button type="submit" class="px-5 py-2.5 bg-ppmgreen text-white hover:bg-ppmgreen-dark text-sm font-bold rounded-xl transition-colors shadow-sm shadow-ppmgreen/10">
+                        <i class="fa-solid fa-floppy-disk mr-2"></i> บันทึกหมวดหมู่ใหม่
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // ─── Toggle Main / Sub ───────────────────────────────────────────
+        function setCategoryType(type) {
+            const parentSection = document.getElementById('parentSection');
+            const parentSelect  = document.getElementById('parentCategorySelect');
+            const btnMain = document.getElementById('btnMain');
+            const btnSub  = document.getElementById('btnSub');
+
+            if (type === 'main') {
+                parentSection.classList.add('hidden');
+                parentSelect.value = '';
+                parentSelect.removeAttribute('required');
+
+                btnMain.classList.add('bg-ppmgreen', 'text-white');
+                btnMain.classList.remove('bg-white', 'text-gray-500');
+                btnSub.classList.remove('bg-ppmgreen', 'text-white');
+                btnSub.classList.add('bg-white', 'text-gray-500');
+            } else {
+                parentSection.classList.remove('hidden');
+                parentSelect.setAttribute('required', 'required');
+
+                btnSub.classList.add('bg-ppmgreen', 'text-white');
+                btnSub.classList.remove('bg-white', 'text-gray-500');
+                btnMain.classList.remove('bg-ppmgreen', 'text-white');
+                btnMain.classList.add('bg-white', 'text-gray-500');
+            }
+        }
+
+        // ─── Auto-slug ────────────────────────────────────────────────────
+        function generateSlug() {
+            let str  = document.getElementById("displayName").value;
+            let slug = str.toLowerCase()
+                          .replace(/[^a-z0-9\s]/g, '')
+                          .replace(/\s+/g, '-')
+                          .replace(/-+/g, '-');
+            document.getElementById("categoryCode").value = slug;
+        }
+    </script>
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

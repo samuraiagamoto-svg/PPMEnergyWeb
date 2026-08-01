@@ -1,0 +1,266 @@
+@{
+    ViewData["Title"] = "Dashboard Overview";
+    Layout = "_LayoutOwner";
+}
+
+<div class="space-y-6">
+    @* ==========================================
+       Header Section
+       ========================================== *@
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+            <h1 class="text-2xl font-black text-gray-900 tracking-tight">Dashboard Overview</h1>
+            <p class="text-xs text-gray-400 mt-1">สรุปภาพรวมระบบและสถิติข้อมูลแบรนด์แบบ Real-time</p>
+        </div>
+        <div>
+            <span class="inline-flex items-center px-3 py-1 rounded-full bg-green-50 text-[#006633] text-[11px] font-bold border border-green-100">
+                <span class="w-1.5 h-1.5 rounded-full bg-[#006633] mr-1.5 animate-pulse"></span> SYSTEM LIVE
+            </span>
+        </div>
+    </div>
+
+    @* ==========================================
+       1. Top Summary 4 Cards
+       ========================================== *@
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+
+        @* Card 1: ใบเสนอราคาใหม่ / รอตรวจ *@
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 flex flex-col justify-between hover:shadow-md transition-all">
+            <div class="flex items-start justify-between">
+                <div>
+                    <p class="text-xs font-bold text-gray-400">ใบเสนอราคาใหม่ / รอตรวจ</p>
+                    <div class="flex items-center gap-2 mt-2">
+                        <h3 class="text-3xl font-black text-gray-900">@(ViewBag.PendingQuotes ?? 4)</h3>
+                        <span class="text-[10px] font-bold text-amber-600 bg-amber-50 border border-amber-200 px-1.5 py-0.5 rounded">New</span>
+                    </div>
+                </div>
+                <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-500 flex items-center justify-center text-lg shrink-0">
+                    <i class="fa-solid fa-file-invoice-dollar"></i>
+                </div>
+            </div>
+            <div class="mt-4 pt-3 border-t border-gray-50 flex items-center text-[11px] text-gray-400">
+                <i class="fa-regular fa-circle-check text-green-500 mr-1.5"></i> เดือนนี้สำเร็จแล้ว <span class="font-bold text-gray-700 ml-1">@(ViewBag.CompletedThisMonth ?? 0)</span> รายการ
+            </div>
+        </div>
+
+        @* Card 2: สินค้าทั้งหมดในคลัง *@
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 flex flex-col justify-between hover:shadow-md transition-all">
+            <div class="flex items-start justify-between">
+                <div>
+                    <p class="text-xs font-bold text-gray-400">สินค้าทั้งหมดในคลัง</p>
+                    <h3 class="text-3xl font-black text-gray-900 mt-2">@(ViewBag.TotalProducts ?? 42)</h3>
+                </div>
+                <div class="w-10 h-10 rounded-xl bg-green-50 text-[#006633] flex items-center justify-center text-lg shrink-0">
+                    <i class="fa-solid fa-boxes-stacked"></i>
+                </div>
+            </div>
+            <div class="mt-4 pt-3 border-t border-gray-50 flex items-center justify-between text-[11px]">
+                <span class="text-red-500 flex items-center">
+                    <i class="fa-solid fa-circle-exclamation mr-1"></i> ข้อมูลไม่ครบ @(ViewBag.IncompleteProducts ?? 26) รายการ
+                </span>
+                <a asp-action="Index" asp-controller="Products" class="text-gray-400 hover:text-[#006633] font-bold flex items-center">
+                    ไปจัดการ <i class="fa-solid fa-chevron-right text-[9px] ml-0.5"></i>
+                </a>
+            </div>
+        </div>
+
+        @* Card 3: รายชื่อลูกค้าทั้งหมด *@
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 flex flex-col justify-between hover:shadow-md transition-all">
+            <div class="flex items-start justify-between">
+                <div>
+                    <p class="text-xs font-bold text-gray-400">รายชื่อลูกค้าทั้งหมด</p>
+                    <h3 class="text-3xl font-black text-gray-900 mt-2">@(ViewBag.TotalUsers ?? 6)</h3>
+                </div>
+                <div class="w-10 h-10 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center text-lg shrink-0">
+                    <i class="fa-solid fa-users"></i>
+                </div>
+            </div>
+            <div class="mt-4 pt-3 border-t border-gray-50 flex items-center text-[11px] text-gray-400">
+                <i class="fa-solid fa-user-plus text-purple-500 mr-1.5"></i> มีการเคลื่อนไหวในเดือนนี้ <span class="font-bold text-gray-700 ml-1">@(ViewBag.ActiveUsersThisMonth ?? 2)</span> ราย
+            </div>
+        </div>
+
+        @* Card 4: หมวดหมู่สินค้า *@
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 flex flex-col justify-between hover:shadow-md transition-all">
+            <div class="flex items-start justify-between">
+                <div>
+                    <p class="text-xs font-bold text-gray-400">หมวดหมู่สินค้า</p>
+                    <h3 class="text-3xl font-black text-gray-900 mt-2">@(ViewBag.TotalCategories ?? 15)</h3>
+                </div>
+                <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-500 flex items-center justify-center text-lg shrink-0">
+                    <i class="fa-solid fa-layer-group"></i>
+                </div>
+            </div>
+            <div class="mt-4 pt-3 border-t border-gray-50 flex items-center text-[11px] text-gray-400 truncate">
+                <i class="fa-solid fa-tag text-blue-400 mr-1.5 shrink-0"></i> กลุ่มน้ำมันเตา และเครื่องจักรโรงงาน
+            </div>
+        </div>
+
+    </div>
+
+    @* ==========================================
+       2. Charts Row 1: Line Chart & Donut Chart
+       ========================================== *@
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+        
+        @* Line Chart: แนวโน้มการขอใบเสนอราคา *@
+        <div class="lg:col-span-2 bg-white rounded-2xl border border-gray-100 shadow-sm p-5 flex flex-col justify-between">
+            <div class="mb-4">
+                <h2 class="text-sm font-bold text-gray-900">แนวโน้มการขอใบเสนอราคา (Quotation Trends)</h2>
+                <p class="text-[11px] text-gray-400">สถิติจำนวนใบเสนอราคาที่ส่งเข้ามาในรอบ 7 วันล่าสุด</p>
+            </div>
+            <div class="h-[260px] w-full">
+                <canvas id="quotationTrendChart"></canvas>
+            </div>
+        </div>
+
+        @* Donut Chart: สัดส่วนสถานะใบเสนอราคา *@
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 flex flex-col justify-between">
+            <div class="mb-2">
+                <h2 class="text-sm font-bold text-gray-900">สัดส่วนสถานะใบเสนอราคา</h2>
+                <p class="text-[11px] text-gray-400">ภาพรวมการดำเนินงานของทีมขาย</p>
+            </div>
+            <div class="h-[240px] w-full flex items-center justify-center relative">
+                <canvas id="statusDonutChart"></canvas>
+            </div>
+        </div>
+
+    </div>
+
+    @* ==========================================
+       3. Charts Row 2: Bar Chart Top 5 สินค้ายอดนิยม
+       ========================================== *@
+    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+        <div class="mb-4">
+            <h2 class="text-sm font-bold text-gray-900">Top 5 สินค้ายอดนิยม (อ้างอิงตามจำนวนในใบเสนอราคา)</h2>
+            <p class="text-[11px] text-gray-400">เปรียบเทียบความต้องการของลูกค้าในแต่ละผลิตภัณฑ์</p>
+        </div>
+        <div class="h-[280px] w-full">
+            <canvas id="topProductsChart"></canvas>
+        </div>
+    </div>
+</div>
+
+@* ==========================================
+   Include Chart.js Scripts & Initialization
+   ========================================== *@
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            
+            // --- 1. Quotation Trend Line Chart ---
+            const ctxTrend = document.getElementById('quotationTrendChart').getContext('2d');
+            new Chart(ctxTrend, {
+                type: 'line',
+                data: {
+                    labels: ['16 Jul', '17 Jul', '18 Jul', '19 Jul', '20 Jul', '21 Jul', '22 Jul'],
+                    datasets: [{
+                        label: 'ใบเสนอราคา',
+                        data: [0, 0, 1, 1, 0, 0, 0],
+                        borderColor: '#006633',
+                        backgroundColor: 'rgba(0, 102, 51, 0.03)',
+                        borderWidth: 2.5,
+                        fill: true,
+                        tension: 0.4,
+                        pointBackgroundColor: '#006633',
+                        pointBorderColor: '#ffffff',
+                        pointBorderWidth: 2,
+                        pointRadius: 5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: {
+                            min: 0,
+                            max: 1,
+                            ticks: { stepSize: 1, font: { size: 10 } },
+                            grid: { color: '#f3f4f6' }
+                        },
+                        x: {
+                            ticks: { font: { size: 10 } },
+                            grid: { display: false }
+                        }
+                    }
+                }
+            });
+
+            // --- 2. Status Donut Chart ---
+            const ctxStatus = document.getElementById('statusDonutChart').getContext('2d');
+            new Chart(ctxStatus, {
+                type: 'doughnut',
+                data: {
+                    labels: ['New', 'Processing', 'QuotationSent', 'Lost'],
+                    datasets: [{
+                        data: [1, 1, 5, 1],
+                        backgroundColor: [
+                            '#006633', // New (เขียวเข้ม)
+                            '#f59e0b', // Processing (ส้ม)
+                            '#3b82f6', // QuotationSent (ฟ้า)
+                            '#ef4444'  // Lost (แดง)
+                        ],
+                        borderWidth: 3,
+                        borderColor: '#ffffff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '70%',
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                boxWidth: 10,
+                                font: { size: 10 },
+                                padding: 15
+                            }
+                        }
+                    }
+                }
+            });
+
+            // --- 3. Top 5 Products Bar Chart ---
+            const ctxProducts = document.getElementById('topProductsChart').getContext('2d');
+            new Chart(ctxProducts, {
+                type: 'bar',
+                data: {
+                    labels: [
+                        'โรงงานผสมคอนกรีตแบบยกถัง HZS60T',
+                        'โรงงานผสมคอนกรีตแบบยกถัง HZS120T',
+                        'โรงงานผสมคอนกรีตสายพาน HZS270',
+                        'โรงงานผสมยางมะดอย LB2000',
+                        'โรงงานผสมคอนกรีตสายพาน HZS60'
+                    ],
+                    datasets: [{
+                        label: 'จำนวนที่ถูกขอราคา',
+                        data: [2, 2, 2, 2, 1],
+                        backgroundColor: '#006633',
+                        borderRadius: 6,
+                        barThickness: 24
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: { stepSize: 1, font: { size: 10 } },
+                            grid: { color: '#f3f4f6' }
+                        },
+                        x: {
+                            ticks: { font: { size: 10 } },
+                            grid: { display: false }
+                        }
+                    }
+                }
+            });
+
+        });
+    </script>
+}

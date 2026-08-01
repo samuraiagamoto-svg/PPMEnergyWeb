@@ -1,0 +1,72 @@
+﻿@model PPMEnergyWeb.Models.Product
+
+@{
+    ViewData["Title"] = "ยืนยันการลบสินค้า";
+    Layout = "_LayoutAdmin";
+}
+
+<div class="max-w-3xl mx-auto mt-6">
+    <div class="bg-white rounded-2xl shadow-sm border border-red-200 overflow-hidden">
+
+        @* ส่วนหัวกล่องแจ้งเตือน (Warning Header) *@
+        <div class="bg-red-50 p-6 border-b border-red-100 flex items-center">
+            <div class="bg-red-100 text-red-600 p-3 rounded-full mr-4 shadow-sm">
+                <i class="fa-solid fa-triangle-exclamation text-2xl"></i>
+            </div>
+            <div>
+                <h2 class="text-xl font-bold text-red-700">ยืนยันการลบข้อมูลอันตราย</h2>
+                <p class="text-red-600 text-sm mt-1">คุณแน่ใจหรือไม่ว่าต้องการลบสินค้านี้? การกระทำนี้ไม่สามารถย้อนกลับหรือกู้คืนได้</p>
+            </div>
+        </div>
+
+        @* ข้อมูลสินค้าที่จะโดนลบ (Product Detail) *@
+        <div class="p-6">
+            <h3 class="text-sm font-bold text-gray-500 uppercase tracking-wider mb-4">ข้อมูลสินค้าที่จะถูกลบออกจากระบบ</h3>
+
+            <div class="flex flex-col sm:flex-row gap-6 bg-gray-50 p-5 rounded-xl border border-gray-100">
+                @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                {
+                    <img src="@Model.ImageUrl" alt="@Model.Name" class="w-32 h-32 object-cover rounded-lg border border-gray-200 bg-white p-1 shadow-sm" />
+                }
+                else
+                {
+                    <div class="w-32 h-32 bg-gray-200 rounded-lg flex items-center justify-center text-gray-400 border border-gray-300">
+                        <i class="fa-solid fa-image text-4xl"></i>
+                    </div>
+                }
+
+                <div class="space-y-3 flex-1">
+                    <div class="border-b border-gray-200 pb-2">
+                        <p class="text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-1">รหัสสินค้า (ID)</p>
+                        <p class="text-gray-900 font-mono font-semibold">@Model.Id</p>
+                    </div>
+                    <div class="border-b border-gray-200 pb-2">
+                        <p class="text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-1">ชื่อสินค้า</p>
+                        <p class="text-gray-900 font-bold text-lg">@Model.Name</p>
+                    </div>
+                    <div>
+                        <p class="text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-1">หมวดหมู่</p>
+                        <span class="inline-flex items-center px-2.5 py-1 rounded-md bg-green-50 text-ppmgreen border border-green-100 text-xs font-bold">
+                            @(Model.Category?.DisplayName ?? "ไม่ระบุหมวดหมู่")
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @* ปุ่มกดยืนยัน/ยกเลิก (Action Buttons) *@
+        <div class="bg-gray-50/80 px-6 py-5 border-t border-gray-100 flex items-center justify-end space-x-3">
+            <a asp-action="Index" class="inline-flex items-center px-4 py-2.5 bg-white border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 font-semibold text-sm transition-all shadow-sm">
+                <i class="fa-solid fa-arrow-left mr-2"></i> ยกเลิก และกลับไปหน้าหลัก
+            </a>
+
+            <form asp-action="Delete" method="post" class="m-0">
+                <input type="hidden" asp-for="Id" />
+                <button type="submit" class="inline-flex items-center px-4 py-2.5 bg-red-600 border border-transparent text-white rounded-xl hover:bg-red-700 font-semibold text-sm shadow-sm transition-all">
+                    <i class="fa-solid fa-trash-can mr-2"></i> ยืนยันการลบทิ้งถาวร
+                </button>
+            </form>
+        </div>
+
+    </div>
+</div>

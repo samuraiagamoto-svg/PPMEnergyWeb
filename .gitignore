@@ -1,0 +1,5 @@
+bin/
+obj/
+publish_new/
+**/wwwroot/videos/
+*.mp4

@@ -1,0 +1,209 @@
+﻿@model IEnumerable<PPMEnergyWeb.Models.Category>
+@{
+    ViewData["Title"] = "จัดการหมวดหมู่สินค้า";
+    Layout = "_LayoutAdmin";
+
+    var mainCategories = Model.Where(c => c.ParentCategoryId == null).ToList();
+    var subCategories = Model.Where(c => c.ParentCategoryId != null).ToList();
+}
+
+<div class="space-y-6">
+    @* Page Header & Breadcrumb *@
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+            <nav class="flex text-xs font-medium text-gray-400 mb-1 space-x-2">
+                <a href="#" class="hover:text-ppmgreen">คลังสินค้า</a>
+                <span>/</span>
+                <span class="text-gray-600">หมวดหมู่สินค้า</span>
+            </nav>
+            <h1 class="text-2xl font-bold text-gray-900 tracking-tight">หมวดหมู่สินค้า</h1>
+        </div>
+        <div>
+            <a asp-action="Create" class="inline-flex items-center justify-center px-4 py-2.5 bg-ppmgreen text-white text-sm font-semibold rounded-xl hover:bg-ppmgreen-dark transition-all shadow-sm shadow-ppmgreen/10">
+                <i class="fa-solid fa-plus mr-2 text-xs"></i> เพิ่มหมวดหมู่ใหม่
+            </a>
+        </div>
+    </div>
+
+    @* Analytics Overview Blocks *@
+    <div class="grid grid-cols-1 sm:grid-cols-4 gap-5">
+        <div class="bg-white p-5 rounded-2xl border border-gray-200/80 shadow-sm flex items-center space-x-4">
+            <div class="w-12 h-12 rounded-xl bg-ppmgreen/10 flex items-center justify-center text-ppmgreen">
+                <i class="fa-solid fa-layer-group text-xl"></i>
+            </div>
+            <div>
+                <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider">ทั้งหมด</p>
+                <h3 class="text-2xl font-bold text-gray-900 mt-0.5">@Model.Count() <span class="text-sm font-medium text-gray-500">รายการ</span></h3>
+            </div>
+        </div>
+        <div class="bg-white p-5 rounded-2xl border border-gray-200/80 shadow-sm flex items-center space-x-4">
+            <div class="w-12 h-12 rounded-xl bg-ppmgreen/10 flex items-center justify-center text-ppmgreen">
+                <i class="fa-solid fa-folder text-xl"></i>
+            </div>
+            <div>
+                <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Main Category</p>
+                <h3 class="text-2xl font-bold text-gray-900 mt-0.5">@mainCategories.Count <span class="text-sm font-medium text-gray-500">รายการ</span></h3>
+            </div>
+        </div>
+        <div class="bg-white p-5 rounded-2xl border border-gray-200/80 shadow-sm flex items-center space-x-4">
+            <div class="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600">
+                <i class="fa-solid fa-folder-open text-xl"></i>
+            </div>
+            <div>
+                <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Sub Category</p>
+                <h3 class="text-2xl font-bold text-gray-900 mt-0.5">@subCategories.Count <span class="text-sm font-medium text-gray-500">รายการ</span></h3>
+            </div>
+        </div>
+        <div class="bg-white p-5 rounded-2xl border border-gray-200/80 shadow-sm flex items-center space-x-4">
+            <div class="w-12 h-12 rounded-xl bg-amber-50 flex items-center justify-center text-amber-600">
+                <i class="fa-solid fa-clock-rotate-left text-xl"></i>
+            </div>
+            <div>
+                <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider">สถานะระบบ</p>
+                <h3 class="text-sm font-bold text-emerald-600 mt-1 flex items-center">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 inline-block mr-1.5 animate-pulse"></span> พร้อมใช้งาน
+                </h3>
+            </div>
+        </div>
+    </div>
+
+    @* Main Data Table Card *@
+    <div class="bg-white rounded-2xl border border-gray-200/80 shadow-sm overflow-hidden">
+        @* Table Control Bar *@
+        <div class="p-5 border-b border-gray-100 bg-gray-50/50 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div class="relative flex-1 max-w-md">
+                <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+                    <i class="fa-solid fa-magnifying-glass text-sm"></i>
+                </span>
+                <input type="text" id="tableSearch" placeholder="ค้นหาชื่อหมวดหมู่ หรือ รหัสสินค้า..."
+                       class="w-full pl-9 pr-4 py-2 bg-white border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-ppmgreen/20 focus:border-ppmgreen outline-none transition-all text-gray-700" />
+            </div>
+            <div class="flex items-center space-x-2 text-xs text-gray-500">
+                <i class="fa-solid fa-circle-info text-gray-400"></i>
+                <span>คลิกที่ปุ่มเครื่องมือเพื่อแก้ไขหรือลบข้อมูล</span>
+            </div>
+        </div>
+
+        @* Responsive Table *@
+        <div class="overflow-x-auto">
+            <table class="w-full text-sm text-left text-gray-600" id="categoryTable">
+                <thead class="bg-gray-50 text-gray-500 uppercase text-[11px] font-bold tracking-wider border-b border-gray-200">
+                    <tr>
+                        <th scope="col" class="px-6 py-3.5">ชื่อหมวดหมู่</th>
+                        <th scope="col" class="px-6 py-3.5">รหัสอ้างอิง URL (Slug)</th>
+                        <th scope="col" class="px-6 py-3.5">หมวดหมู่หลัก</th>
+                        <th scope="col" class="px-6 py-3.5 text-center">ลำดับ</th>
+                        <th scope="col" class="px-6 py-3.5 text-right">เครื่องมือ</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-100">
+                    @if (!Model.Any())
+                    {
+                        <tr>
+                            <td colspan="5" class="px-6 py-16 text-center">
+                                <div class="max-w-xs mx-auto text-gray-400 space-y-2">
+                                    <i class="fa-solid fa-folder-open text-4xl text-gray-300"></i>
+                                    <p class="font-medium text-sm">ไม่พบข้อมูลหมวดหมู่สินค้าในระบบ</p>
+                                    <p class="text-xs text-gray-400">คุณสามารถเริ่มเพิ่มหมวดหมู่สินค้าแรกได้โดยคลิกปุ่มด้านบน</p>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+
+                    @* วนแสดง Main Category ก่อน แล้ว indent Sub ตามมา *@
+                    @foreach (var main in mainCategories.OrderBy(c => c.DisplayOrder))
+                    {
+                        @* แถว Main Category *@
+                        <tr class="hover:bg-gray-50/70 transition-colors category-row bg-white">
+                            <td class="px-6 py-4 font-semibold text-gray-900">
+                                <div class="flex items-center space-x-2.5">
+                                    <i class="fa-solid fa-folder text-ppmgreen text-sm"></i>
+                                    <span>@main.DisplayName</span>
+                                    <span class="text-[10px] bg-ppmgreen/10 text-ppmgreen border border-ppmgreen/20 font-bold px-2 py-0.5 rounded-full">Main</span>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4">
+                                <span class="inline-flex items-center px-2.5 py-1 rounded-md bg-slate-50 text-slate-700 border border-slate-200 text-xs font-mono font-medium">
+                                    <i class="fa-solid fa-link mr-1.5 text-[10px] text-slate-400"></i>@main.CategoryCode
+                                </span>
+                            </td>
+                            <td class="px-6 py-4">
+                                <span class="text-xs text-gray-400">—</span>
+                            </td>
+                            <td class="px-6 py-4 text-center">
+                                <span class="font-semibold text-gray-700 bg-gray-100 px-2 py-0.5 rounded-full text-xs">@main.DisplayOrder</span>
+                            </td>
+                            <td class="px-6 py-4 text-right space-x-1.5 whitespace-nowrap">
+                                <a asp-action="Edit" asp-route-id="@main.Id"
+                                   class="inline-flex items-center px-3 py-1.5 bg-white text-blue-600 hover:bg-blue-50 border border-blue-200 hover:border-blue-300 rounded-lg text-xs font-semibold transition-all">
+                                    <i class="fa-solid fa-pen mr-1.5"></i> แก้ไข
+                                </a>
+                                <form asp-action="Delete" asp-route-id="@main.Id" method="post" class="inline-block"
+                                      onsubmit="return confirm('ลบหมวดหมู่: @main.DisplayName ?\n\nหมายเหตุ: หมวดหมู่ย่อยที่อยู่ใต้จะถูก Reset เป็น Main Category อัตโนมัติ');">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="inline-flex items-center px-3 py-1.5 bg-white text-red-600 hover:bg-red-50 border border-red-200 hover:border-red-300 rounded-lg text-xs font-semibold transition-all">
+                                        <i class="fa-solid fa-trash-can mr-1.5"></i> ลบ
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+
+                        @* แถว Sub Categories ที่สังกัด Main นี้ *@
+                        @foreach (var sub in subCategories.Where(s => s.ParentCategoryId == main.Id).OrderBy(s => s.DisplayOrder))
+                        {
+                            <tr class="hover:bg-blue-50/30 transition-colors category-row bg-blue-50/10">
+                                <td class="px-6 py-3.5">
+                                    <div class="flex items-center space-x-2.5 pl-6 border-l-2 border-ppmgreen/20 ml-3">
+                                        <i class="fa-solid fa-folder-open text-blue-400 text-xs"></i>
+                                        <span class="font-medium text-gray-700 text-sm">@sub.DisplayName</span>
+                                        <span class="text-[10px] bg-blue-50 text-blue-600 border border-blue-200 font-bold px-2 py-0.5 rounded-full">Sub</span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-3.5">
+                                    <span class="inline-flex items-center px-2.5 py-1 rounded-md bg-slate-50 text-slate-600 border border-slate-200 text-xs font-mono font-medium">
+                                        <i class="fa-solid fa-link mr-1.5 text-[10px] text-slate-400"></i>@sub.CategoryCode
+                                    </span>
+                                </td>
+                                <td class="px-6 py-3.5">
+                                    <div class="flex items-center space-x-1.5 text-xs text-gray-500">
+                                        <i class="fa-solid fa-folder text-ppmgreen text-[10px]"></i>
+                                        <span class="font-medium text-gray-600">@main.DisplayName</span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-3.5 text-center">
+                                    <span class="font-semibold text-gray-600 bg-gray-100 px-2 py-0.5 rounded-full text-xs">@sub.DisplayOrder</span>
+                                </td>
+                                <td class="px-6 py-3.5 text-right space-x-1.5 whitespace-nowrap">
+                                    <a asp-action="Edit" asp-route-id="@sub.Id"
+                                       class="inline-flex items-center px-3 py-1.5 bg-white text-blue-600 hover:bg-blue-50 border border-blue-200 hover:border-blue-300 rounded-lg text-xs font-semibold transition-all">
+                                        <i class="fa-solid fa-pen mr-1.5"></i> แก้ไข
+                                    </a>
+                                    <form asp-action="Delete" asp-route-id="@sub.Id" method="post" class="inline-block"
+                                          onsubmit="return confirm('ลบหมวดหมู่ย่อย: @sub.DisplayName ?');">
+                                        @Html.AntiForgeryToken()
+                                        <button type="submit" class="inline-flex items-center px-3 py-1.5 bg-white text-red-600 hover:bg-red-50 border border-red-200 hover:border-red-300 rounded-lg text-xs font-semibold transition-all">
+                                            <i class="fa-solid fa-trash-can mr-1.5"></i> ลบ
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // ── ค้นหาในตาราง ────────────────────────────────────────────────
+        document.getElementById('tableSearch').addEventListener('keyup', function () {
+            const query = this.value.toLowerCase();
+            document.querySelectorAll('#categoryTable .category-row').forEach(row => {
+                const text = row.innerText.toLowerCase();
+                row.style.display = text.includes(query) ? '' : 'none';
+            });
+        });
+    </script>
+}

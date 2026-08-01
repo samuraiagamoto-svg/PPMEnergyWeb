@@ -1,0 +1,155 @@
+@model IEnumerable<PPMEnergyWeb.Models.ApplicationUser>
+@{
+    ViewData["Title"] = "รายงานลูกค้า";
+    Layout = "_LayoutOwner";
+    var quoteCounts = ViewBag.QuoteCounts as Dictionary<string, int> ?? new();
+    int page       = (int)ViewBag.Page;
+    int totalPages = (int)ViewBag.TotalPages;
+    int totalCount = (int)ViewBag.TotalCount;
+}
+
+<div class="space-y-6">
+    @* Top Navigation & Page Header *@
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+            <a asp-action="Index" class="inline-flex items-center text-xs font-bold text-gray-400 hover:text-[#006633] transition-colors mb-1 group">
+                <i class="fa-solid fa-arrow-left mr-1.5 text-[10px] group-hover:-translate-x-1 transition-transform"></i> กลับไปยัง Dashboard
+            </a>
+            <h1 class="text-2xl font-bold text-gray-900 tracking-tight">👥 รายงานลูกค้า</h1>
+            <p class="text-sm text-gray-500 mt-0.5">รายชื่อลูกค้าทั้งหมดในระบบ (<span class="font-bold text-gray-800">@totalCount</span> คน)</p>
+        </div>
+        <div>
+            <a asp-action="ExportCustomersExcel"
+               class="inline-flex items-center justify-center gap-2 bg-[#006633] hover:bg-[#005229] text-white px-5 py-2.5 rounded-xl font-bold text-xs shadow-sm hover:shadow transition-all duration-200">
+                <i class="fa-solid fa-file-excel text-sm"></i> Export Excel
+            </a>
+        </div>
+    </div>
+
+    @* Search Bar *@
+    <form method="get">
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-2 sm:p-3 flex items-center gap-3">
+            <div class="relative flex-1">
+                <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400">
+                    <i class="fa-solid fa-magnifying-glass text-xs"></i>
+                </div>
+                <input type="text" name="search" value="@ViewBag.Search" placeholder="ค้นหาด้วยชื่อผู้ใช้ อีเมล หรือเบอร์โทรศัพท์..."
+                       class="w-full pl-9 pr-4 py-2 bg-gray-50/80 border border-gray-200 focus:border-[#006633] focus:bg-white rounded-xl text-xs sm:text-sm font-medium text-gray-800 placeholder-gray-400 focus:outline-none transition-all" />
+            </div>
+            <button type="submit" class="px-5 py-2 bg-[#006633] hover:bg-[#005229] text-white rounded-xl font-bold text-xs shadow-sm hover:shadow transition-all">
+                ค้นหา
+            </button>
+        </div>
+    </form>
+
+    @* Customers Data Table Card *@
+    <div class="bg-white rounded-2xl border border-gray-100 shadow-[0_2px_10px_-3px_rgba(6,81,237,0.05)] overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="w-full text-sm text-left">
+                <thead class="bg-gray-50/80 text-gray-500 uppercase text-[11px] font-bold tracking-wider border-b border-gray-100">
+                    <tr>
+                        <th class="px-6 py-4 rounded-tl-lg w-12 text-center">#</th>
+                        <th class="px-6 py-4">ข้อมูลลูกค้า (Customer Info)</th>
+                        <th class="px-6 py-4">เบอร์โทรศัพท์ (Phone)</th>
+                        <th class="px-6 py-4">วันที่สมัคร (Registered Date)</th>
+                        <th class="px-6 py-4 text-center rounded-tr-lg">ใบเสนอราคา (Quotes)</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-50 text-gray-600">
+                    @if (!Model.Any())
+                    {
+                        <tr>
+                            <td colspan="5" class="px-6 py-16 text-center">
+                                <div class="flex flex-col items-center justify-center text-gray-400">
+                                    <i class="fa-regular fa-user text-4xl mb-3 text-gray-300"></i>
+                                    <p class="text-sm font-medium">ไม่พบข้อมูลลูกค้าตามเงื่อนไขที่ค้นหา</p>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                    else
+                    {
+                        int i = (page - 1) * 20 + 1;
+                        foreach (var user in Model)
+                        {
+                            quoteCounts.TryGetValue(user.Id, out int qCount);
+                            <tr class="hover:bg-gray-50/50 transition-colors duration-200 group">
+                                <td class="px-6 py-4 text-xs font-bold text-gray-400 text-center">
+                                    @(i++)
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center gap-3">
+                                        <div class="h-9 w-9 rounded-full bg-[#006633]/10 flex items-center justify-center text-[#006633] font-bold text-xs shrink-0">
+                                            @(string.IsNullOrEmpty(user.UserName) ? "?" : user.UserName.Substring(0, 1).ToUpper())
+                                        </div>
+                                        <div>
+                                            <div class="font-bold text-gray-900 group-hover:text-[#006633] transition-colors">
+                                                @(string.IsNullOrEmpty(user.UserName) ? "ไม่ระบุชื่อ" : user.UserName)
+                                            </div>
+                                            <div class="text-[12px] text-gray-500 mt-0.5 flex items-center">
+                                                <i class="fa-solid fa-envelope mr-1.5 text-gray-400 text-[10px]"></i>@user.Email
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 text-xs font-medium text-gray-600">
+                                    @if (!string.IsNullOrEmpty(user.PhoneNumber))
+                                    {
+                                        <span class="inline-flex items-center">
+                                            <i class="fa-solid fa-phone mr-1.5 text-gray-400 text-[10px]"></i>@user.PhoneNumber
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-gray-300">—</span>
+                                    }
+                                </td>
+                                <td class="px-6 py-4 text-xs font-medium text-gray-500">
+                                    @user.CreatedDate.ToString("dd MMM yyyy")
+                                </td>
+                                <td class="px-6 py-4 text-center">
+                                    @if (qCount > 0)
+                                    {
+                                        <span class="inline-flex items-center justify-center px-2.5 py-1 rounded-full bg-green-50 text-[#006633] border border-green-200 text-xs font-extrabold shadow-sm">
+                                            <i class="fa-solid fa-file-invoice mr-1 text-[10px]"></i> @qCount ใบ
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-gray-300 text-xs">—</span>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        @* Pagination Section *@
+        @if (totalPages > 1)
+        {
+            <div class="p-4 bg-gray-50/50 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-3">
+                <p class="text-xs text-gray-500 font-medium">
+                    กำลังแสดงหน้า <span class="font-bold text-gray-800">@@page</span> จากทั้งหมด <span class="font-bold text-gray-800">@totalPages</span> หน้า
+                </p>
+                <div class="flex items-center gap-1.5">
+                    @if (page > 1)
+                    {
+                        <a asp-action="Customers" asp-route-page="@(page - 1)" asp-route-search="@ViewBag.Search"
+                           class="inline-flex items-center px-3 py-1.5 bg-white border border-gray-200 text-gray-600 rounded-xl text-xs font-bold hover:bg-gray-50 hover:text-gray-900 transition-all shadow-sm">
+                            <i class="fa-solid fa-chevron-left mr-1 text-[9px]"></i> ก่อนหน้า
+                        </a>
+                    }
+                    @if (page < totalPages)
+                    {
+                        <a asp-action="Customers" asp-route-page="@(page + 1)" asp-route-search="@ViewBag.Search"
+                           class="inline-flex items-center px-3 py-1.5 bg-[#006633] text-white rounded-xl text-xs font-bold hover:bg-[#005229] transition-all shadow-sm">
+                            ถัดไป <i class="fa-solid fa-chevron-right ml-1 text-[9px]"></i>
+                        </a>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+</div>

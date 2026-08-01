@@ -1,0 +1,501 @@
+﻿@model IEnumerable<PPMEnergyWeb.Models.Product>
+
+@{
+    ViewData["Title"] = "จัดการระบบสินค้า";
+    Layout = "_LayoutAdmin";
+}
+
+<div class="space-y-6 max-w-[1600px] mx-auto p-2 sm:p-4 animate-fade-in">
+    @* ==========================================
+       1. Page Header
+       ========================================== *@
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
+        <div>
+            <nav class="flex text-xs font-medium text-slate-400 mb-1.5 space-x-2">
+                <a href="#" class="hover:text-ppmgreen transition-colors">คลังสินค้า</a>
+                <span class="text-slate-300">/</span>
+                <span class="text-slate-600 font-semibold">รายการสินค้าทั้งหมด</span>
+            </nav>
+            <h1 class="text-2xl font-bold text-slate-900 tracking-tight">จัดการข้อมูลสินค้า</h1>
+            <p class="text-xs text-slate-500 mt-0.5">เพิ่ม ลบ แก้ไข และติดตามสถิติข้อมูลสินค้าในระบบ</p>
+        </div>
+        <div class="flex items-center gap-2.5 self-end md:self-center">
+            <a asp-action="Create"
+               class="inline-flex items-center justify-center px-4 py-2.5 bg-ppmgreen text-white text-sm font-semibold rounded-xl hover:bg-ppmgreen-dark transition-all shadow-md shadow-ppmgreen/20 hover:translate-y-[-1px]">
+                <i class="fa-solid fa-plus mr-2 text-xs"></i> เพิ่มสินค้าใหม่
+            </a>
+        </div>
+    </div>
+
+    @* ==========================================
+       2. แถบตัวเลขสรุปภาพรวม (KPI Cards)
+       ========================================== *@
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div class="bg-white rounded-2xl border border-slate-100 shadow-sm p-6 flex items-center justify-between relative overflow-hidden group hover:shadow-md transition-all">
+            <div class="absolute top-0 left-0 w-1 h-full bg-blue-500"></div>
+            <div>
+                <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">สินค้าทั้งหมดในระบบ</p>
+                <h3 class="text-3xl font-extrabold text-slate-900 tracking-tight">
+                    @ViewBag.TotalProducts <span class="text-sm font-normal text-slate-400 ml-1">รายการ</span>
+                </h3>
+            </div>
+            <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-xl group-hover:scale-110 transition-transform">
+                <i class="fa-solid fa-boxes-stacked"></i>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-2xl border border-slate-100 shadow-sm p-6 flex items-center justify-between relative overflow-hidden group hover:shadow-md transition-all">
+            <div class="absolute top-0 left-0 w-1 h-full bg-emerald-500"></div>
+            <div>
+                <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">หมวดหมู่หลักทั้งหมด</p>
+                <h3 class="text-3xl font-extrabold text-slate-900 tracking-tight">
+                    @ViewBag.TotalCategories <span class="text-sm font-normal text-slate-400 ml-1">หมวดหมู่</span>
+                </h3>
+            </div>
+            <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-xl group-hover:scale-110 transition-transform">
+                <i class="fa-solid fa-layer-group"></i>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-2xl border border-slate-100 shadow-sm p-6 flex items-center justify-between relative overflow-hidden group hover:shadow-md transition-all sm:col-span-2 lg:col-span-1">
+            <div class="absolute top-0 left-0 w-1 h-full @(ViewBag.IncompleteProducts > 0 ? "bg-rose-500" : "bg-slate-300")"></div>
+            <div>
+                <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">ข้อมูลไม่ครบ / ขาดรูปภาพ</p>
+                <h3 class="text-3xl font-extrabold @(ViewBag.IncompleteProducts > 0 ? "text-rose-600" : "text-slate-900") tracking-tight">
+                    @ViewBag.IncompleteProducts <span class="text-sm font-normal text-slate-400 ml-1">รายการ</span>
+                </h3>
+            </div>
+            <div class="w-12 h-12 rounded-xl @(ViewBag.IncompleteProducts > 0 ? "bg-rose-50 text-rose-600" : "bg-slate-50 text-slate-400") flex items-center justify-center text-xl group-hover:scale-110 transition-transform">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+            </div>
+        </div>
+    </div>
+
+    @* ==========================================
+       3. กราฟสรุปสถิติ (Charts)
+       ========================================== *@
+  @* ==========================================
+   ส่วนแสดงกราฟสรุปสถิติ (Charts Card)
+   ========================================== *@
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-6">
+    <!-- กราฟ 1: Doughnut Chart 2 ชั้น (หมวดหมู่หลัก + ย่อย) -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
+        <h3 class="text-base font-bold text-slate-900 mb-4 flex items-center gap-2">
+            <i class="fa-solid fa-chart-pie text-emerald-500"></i> สัดส่วนสินค้าตามหมวดหมู่
+        </h3>
+        <div class="h-64 relative">
+            <canvas id="categoryChart"></canvas>
+        </div>
+    </div>
+
+    <!-- กราฟ 2: Bar Chart สินค้ายอดฮิต -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
+        <h3 class="text-base font-bold text-slate-900 mb-4 flex items-center gap-2">
+            <i class="fa-solid fa-chart-simple text-blue-500"></i> Top 5 สินค้ายอดฮิต (ขอใบเสนอราคา)
+        </h3>
+        <div class="h-64 relative">
+            <canvas id="topProductsChart"></canvas>
+        </div>
+    </div>
+</div>
+
+
+    @* ==========================================
+   4. แถบเครื่องมือค้นหาและกรอง (Advanced Filters) - ส่งค่าไปประมวลผลที่ Controller
+   ========================================== *@
+    <form method="get" asp-action="Index" class="bg-white rounded-2xl border border-slate-100 shadow-sm p-4 flex flex-col sm:flex-row gap-3 items-center justify-between">
+
+        <div class="relative w-full sm:max-w-xs">
+            <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-slate-400">
+                <i class="fa-solid fa-magnifying-glass text-xs"></i>
+            </span>
+            <input type="text" name="searchString" value="@ViewBag.CurrentSearch" placeholder="ค้นหาชื่อสินค้า หรือรายละเอียด..."
+                   class="w-full pl-9 pr-4 py-2 text-sm text-slate-900 border border-slate-200 rounded-xl focus:outline-none focus:border-ppmgreen focus:ring-2 focus:ring-ppmgreen/10 transition-all" />
+
+            <button type="submit" class="hidden">ค้นหา</button>
+        </div>
+
+        <div class="flex items-center gap-2 w-full sm:w-auto justify-end">
+            <select name="categoryFilter" onchange="this.form.submit()" class="text-sm text-slate-600 border border-slate-200 rounded-xl px-3 py-2 bg-white focus:outline-none focus:border-ppmgreen">
+                <option value="">ทุกหมวดหมู่สินค้า</option>
+                @* ข้อควรระวัง: การใช้ Model.Select ตรงนี้จะเห็นหมวดหมู่แค่ของสินค้า 5 ตัวในหน้านี้ 
+                แนะนำให้สร้าง ViewBag.AllCategories จาก Controller มาวนลูปแทนครับ แต่ถ้าใช้ชั่วคราวก็ตามนี้ก่อน *@
+                @foreach (var catName in Model.Select(m => m.Category?.DisplayName).Where(c => c != null).Distinct())
+                {
+                    <option value="@catName" selected="@(ViewBag.CurrentCategory == catName ? "selected" : null)">@catName</option>
+                }
+            </select>
+
+            <select name="statusFilter" onchange="this.form.submit()" class="text-sm text-slate-600 border border-slate-200 rounded-xl px-3 py-2 bg-white focus:outline-none focus:border-ppmgreen">
+                <option value="all" selected="@(ViewBag.CurrentStatus == "all" ? "selected" : null)">สถานะข้อมูลทั้งหมด</option>
+                <option value="complete" selected="@(ViewBag.CurrentStatus == "complete" ? "selected" : null)">ข้อมูลครบถ้วน</option>
+                <option value="incomplete" selected="@(ViewBag.CurrentStatus == "incomplete" ? "selected" : null)">ข้อมูลไม่ครบ</option>
+            </select>
+        </div>
+    </form>
+
+    @* ==========================================
+       5. ตารางแสดงรายการสินค้า (Main Table)
+       ========================================== *@
+    <div class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="w-full text-sm text-left text-slate-600 border-collapse">
+                <thead class="bg-slate-50/70 text-slate-500 uppercase text-[11px] font-bold tracking-wider border-b border-slate-200/60">
+                    <tr>
+                        <th class="px-6 py-4 w-24 text-center">รูปภาพ</th>
+                        <th class="px-6 py-4">ข้อมูลสินค้า</th>
+                        <th class="px-6 py-4 w-52">หมวดหมู่</th>
+                        <th class="px-6 py-4 hidden md:table-cell">คำอธิบายย่อ</th>
+                        <th class="px-6 py-4 text-center w-36">เครื่องมือ</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100">
+                    @if (!Model.Any())
+                    {
+                        <tr>
+                            <td colspan="5" class="px-6 py-20 text-center">
+                                <div class="max-w-xs mx-auto text-slate-400 space-y-3">
+                                    <div class="w-16 h-16 bg-slate-50 text-slate-300 rounded-full flex items-center justify-center mx-auto text-2xl">
+                                        <i class="fa-solid fa-box-open"></i>
+                                    </div>
+                                    <div>
+                                        <p class="font-semibold text-slate-700 text-sm">ไม่พบข้อมูลสินค้า</p>
+                                        <p class="text-xs text-slate-400 mt-0.5">ระบบยังไม่มีสินค้าหรือไม่มีข้อมูลตามที่คุณค้นหา</p>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                    @foreach (var item in Model)
+                    {
+                        @* 💡 ตรวจสอบความครบถ้วนของข้อมูลสินค้า เพื่อนำไปใช้เป็น Filter หน้าบ้าน *@
+                        var isIncomplete = string.IsNullOrEmpty(item.ImageUrl) || string.IsNullOrEmpty(item.Description);
+                        var statusValue = isIncomplete ? "incomplete" : "complete";
+
+                        <tr class="product-row hover:bg-slate-50/50 transition-colors align-middle"
+                            data-category="@(item.Category?.DisplayName ?? "ไม่มีหมวดหมู่")"
+                            data-status="@statusValue">
+                            <td class="px-6 py-3 text-center">
+                                <div class="w-12 h-12 rounded-xl bg-slate-50 border border-slate-100 overflow-hidden flex items-center justify-center mx-auto shadow-inner group-hover:scale-105 transition-transform">
+                                    @if (!string.IsNullOrEmpty(item.ImageUrl))
+                                    {
+                                        <img src="@item.ImageUrl" class="h-full w-full object-cover" alt="Product Image" />
+                                    }
+                                    else
+                                    {
+                                        <i class="fa-solid fa-image text-slate-300 text-lg"></i>
+                                    }
+                                </div>
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="font-bold text-slate-900 text-sm hover:text-ppmgreen transition-colors">@item.Name</div>
+                                <span class="text-[11px] text-slate-400 font-medium">ID: #@item.Id</span>
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="flex flex-col gap-1">
+                                    @if (item.Category?.ParentCategory != null)
+                                    {
+                                        <span class="inline-flex items-center text-slate-400 text-[10px] font-semibold tracking-wide">
+                                            @item.Category.ParentCategory.DisplayName <i class="fa-solid fa-chevron-right mx-1 text-[8px]"></i>
+                                        </span>
+                                    }
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-100 text-[11px] font-bold w-fit">
+                                        <i class="fa-solid fa-tag mr-1 text-[9px] opacity-70"></i>
+                                        @(item.Category?.DisplayName ?? "ไม่มีหมวดหมู่")
+                                    </span>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 max-w-xs truncate text-slate-400 text-xs hidden md:table-cell">
+                                @(string.IsNullOrEmpty(item.Description) ? "-" : item.Description)
+                            </td>
+                            <td class="px-6 py-4 text-center whitespace-nowrap">
+                                <div class="inline-flex items-center gap-1.5 bg-slate-50 p-1 rounded-xl border border-slate-100">
+                                    <a asp-action="Details" asp-route-id="@item.Id" title="ดูรายละเอียด"
+                                       class="inline-flex items-center justify-center w-8 h-8 text-slate-500 hover:text-slate-800 hover:bg-white rounded-lg transition-all">
+                                        <i class="fa-solid fa-magnifying-glass text-xs"></i>
+                                    </a>
+                                    <a asp-action="Edit" asp-route-id="@item.Id" title="แก้ไขสินค้า"
+                                       class="inline-flex items-center justify-center w-8 h-8 text-blue-600 hover:bg-white rounded-lg transition-all hover:shadow-sm">
+                                        <i class="fa-solid fa-pencil text-xs"></i>
+                                    </a>
+                                    <a asp-action="Delete" asp-route-id="@item.Id" title="ลบสินค้า"
+                                       class="inline-flex items-center justify-center w-8 h-8 text-rose-600 hover:bg-white rounded-lg transition-all hover:shadow-sm">
+                                        <i class="fa-solid fa-trash text-xs"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+
+                    @* 💡 แถวแจ้งเตือนสำหรับเคสที่ผู้ใช้เลือก Filter จนไม่มีข้อมูลแสดงบนหน้าจอเลย *@
+                    <tr id="noFilteredDataRow" style="display: none;">
+                        <td colspan="5" class="px-6 py-20 text-center">
+                            <div class="max-w-xs mx-auto text-slate-400 space-y-3">
+                                <div class="w-16 h-16 bg-slate-50 text-slate-300 rounded-full flex items-center justify-center mx-auto text-2xl">
+                                    <i class="fa-solid fa-filter-circle-xmark"></i>
+                                </div>
+                                <div>
+                                    <p class="font-semibold text-slate-700 text-sm">ไม่พบข้อมูลตามตัวกรอง</p>
+                                    <p class="text-xs text-slate-400 mt-0.5">ไม่มีรายการสินค้าที่ตรงกับคำค้นหาหรือเงื่อนไขที่คุณเลือก</p>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        @* ==========================================
+           6. ส่วนควบคุมหน้าตารางจำลอง (Pagination Bar)
+           ========================================== *@
+        <div class="px-6 py-4 bg-slate-50/50 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs font-medium text-slate-500">
+            <div>
+                แสดงหน้า @ViewBag.CurrentPage จาก @ViewBag.TotalPages (สินค้าทั้งหมด @ViewBag.TotalItems รายการ)
+            </div>
+            <div class="flex items-center gap-2">
+
+                @* -----------------------------------------
+               1. ปุ่มย้อนกลับ (Previous)
+               ----------------------------------------- *@
+                @if (ViewBag.CurrentPage > 1)
+                {
+                    <a href="@Url.Action("Index", new { page = ViewBag.CurrentPage - 1, searchString = ViewBag.CurrentSearch, categoryFilter = ViewBag.CurrentCategory, statusFilter = ViewBag.CurrentStatus })"
+                       class="px-3 py-1.5 rounded-lg border border-slate-200 bg-white text-slate-600 hover:bg-slate-50 flex items-center justify-center transition-colors">
+                        <i class="fa-solid fa-chevron-left"></i>
+                    </a>
+                }
+                else
+                {
+                    <button disabled class="px-3 py-1.5 rounded-lg border border-slate-200 bg-white text-slate-400 cursor-not-allowed flex items-center justify-center">
+                        <i class="fa-solid fa-chevron-left"></i>
+                    </button>
+                }
+
+                @* -----------------------------------------
+               2. แสดงช่องเดี่ยวสำหรับหน้าปัจจุบัน
+               ----------------------------------------- *@
+                <span class="px-4 py-1.5 rounded-lg border border-ppmgreen bg-ppmgreen text-white cursor-default font-semibold shadow-sm">
+                    @ViewBag.CurrentPage
+                </span>
+
+                @* -----------------------------------------
+               3. ปุ่มถัดไป (Next)
+               ----------------------------------------- *@
+                @if (ViewBag.CurrentPage < ViewBag.TotalPages)
+                {
+                    <a href="@Url.Action("Index", new { page = ViewBag.CurrentPage + 1, searchString = ViewBag.CurrentSearch, categoryFilter = ViewBag.CurrentCategory, statusFilter = ViewBag.CurrentStatus })"
+                       class="px-3 py-1.5 rounded-lg border border-slate-200 bg-white text-slate-600 hover:bg-slate-50 flex items-center justify-center transition-colors">
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </a>
+                }
+                else
+                {
+                    <button disabled class="px-3 py-1.5 rounded-lg border border-slate-200 bg-white text-slate-400 cursor-not-allowed flex items-center justify-center">
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </button>
+                }
+
+            </div>
+        </div>
+    </div>
+</div> @* ==========================================
+   7. Scripts สำหรับวาดกราฟ (Chart.js)
+   ========================================== *@
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        // กำหนด Font สากลสำหรับระบบให้ดูโปรขึ้น
+        Chart.defaults.font.family = 'Kanit, sans-serif';
+        Chart.defaults.color = '#64748b'; // slate-500
+
+        const categoryLabels = @Html.Raw(ViewBag.CategoryLabels ?? "[]");
+        const categoryData = @Html.Raw(ViewBag.CategoryData ?? "[]");
+
+        const topProductLabels = @Html.Raw(ViewBag.TopProductLabels ?? "[]");
+        const topProductData = @Html.Raw(ViewBag.TopProductData ?? "[]");
+
+        // 1. Category Doughnut Chart
+        if(categoryLabels.length > 0) {
+            const ctxCat = document.getElementById('categoryChart').getContext('2d');
+            new Chart(ctxCat, {
+                type: 'doughnut',
+                data: {
+                    labels: categoryLabels,
+                    datasets: [{
+                        data: categoryData,
+                        backgroundColor: ['#10b981', '#3b82f6', '#f59e0b', '#ef4444', '#8b5cf6', '#06b6d4', '#ec4899', '#14b8a6'],
+                        borderWidth: 2,
+                        borderColor: '#ffffff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                            labels: {
+                                boxWidth: 10,
+                                usePointStyle: true,
+                                padding: 15,
+                                font: { size: 12 }
+                            }
+                        },
+                        tooltip: {
+                            padding: 10,
+                            cornerRadius: 8
+                        }
+                    },
+                    cutout: '75%'
+                }
+            });
+        } else {
+            document.getElementById('categoryChart').parentElement.innerHTML = '<div class="text-xs text-slate-400 text-center py-10"><i class="fa-solid fa-chart-pie block text-xl mb-1 text-slate-300"></i>ไม่มีข้อมูลสรุปหมวดหมู่</div>';
+        }
+
+        // 2. Top Products Bar Chart
+        if(topProductLabels.length > 0) {
+            const ctxTop = document.getElementById('topProductsChart').getContext('2d');
+            new Chart(ctxTop, {
+                type: 'bar',
+                data: {
+                    labels: topProductLabels,
+                    datasets: [{
+                        label: 'จำนวนครั้งที่ขอใบเสนอราคา (ครั้ง)',
+                        data: topProductData,
+                        backgroundColor: '#3b82f6',
+                        hoverBackgroundColor: '#2563eb',
+                        borderRadius: 6,
+                        barThickness: 16
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: { padding: 10, cornerRadius: 8 }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: '#f1f5f9' },
+                            border: { dash: [5, 5] },
+                            ticks: { precision: 0 }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { maxRotation: 30, minRotation: 30, font: { size: 11 } }
+                        }
+                    }
+                }
+            });
+        } else {
+            document.getElementById('topProductsChart').parentElement.innerHTML = '<div class="text-xs text-slate-400 text-center py-10 flex flex-col justify-center items-center h-full"><i class="fa-solid fa-chart-simple text-xl mb-1 text-slate-300"></i>ยังไม่มีข้อมูลใบเสนอราคาในระบบ</div>';
+        }
+        @@section Scripts {
+    <!-- ดึง Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        Chart.defaults.font.family = 'Kanit, sans-serif';
+        Chart.defaults.color = '#64748b';
+
+        // 1. ดึงข้อมูล JSON จาก ViewBag ที่ส่งมาจาก Controller
+        const mainCatLabels = @Html.Raw(ViewBag.MainCatLabels ?? "[]");
+        const mainCatData = @Html.Raw(ViewBag.MainCatData ?? "[]");
+        const subCatLabels = @Html.Raw(ViewBag.SubCatLabels ?? "[]");
+        const subCatData = @Html.Raw(ViewBag.SubCatData ?? "[]");
+
+        const topProductLabels = @Html.Raw(ViewBag.TopProductLabels ?? "[]");
+        const topProductData = @Html.Raw(ViewBag.TopProductData ?? "[]");
+
+        // ----------------------------------------------------
+        // 📊 2. วาดกราฟ Doughnut Chart 2 ชั้น (หมวดหมู่)
+        // ----------------------------------------------------
+        const catCanvas = document.getElementById('categoryChart');
+        if (catCanvas && (mainCatData.length > 0 || subCatData.length > 0)) {
+            new Chart(catCanvas.getContext('2d'), {
+                type: 'doughnut',
+                data: {
+                    labels: [...subCatLabels, ...mainCatLabels],
+                    datasets: [
+                        // วงนอก: หมวดหมู่ย่อย
+                        {
+                            label: 'หมวดหมู่ย่อย',
+                            data: subCatData,
+                            backgroundColor: ['#10b981', '#3b82f6', '#f59e0b', '#ef4444', '#8b5cf6', '#06b6d4', '#ec4899'],
+                            borderWidth: 2,
+                            borderColor: '#ffffff'
+                        },
+                        // วงใน: หมวดหมู่หลัก
+                        {
+                            label: 'หมวดหมู่หลัก',
+                            data: mainCatData,
+                            backgroundColor: ['#059669', '#2563eb', '#d97706', '#dc2626', '#7c3aed', '#0891b2', '#db2777'],
+                            borderWidth: 2,
+                            borderColor: '#ffffff'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                            labels: { boxWidth: 10, usePointStyle: true, padding: 12, font: { size: 11 } }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const datasetLabel = context.dataset.label || '';
+                                    const value = context.raw || 0;
+                                    const label = context.chart.data.labels[context.dataIndex] || '';
+                                    return ` ${datasetLabel} (${label}): ${value} รายการ`;
+                                }
+                            }
+                        }
+                    },
+                    cutout: '50%'
+                }
+            });
+        } else if (catCanvas) {
+            catCanvas.parentElement.innerHTML = '<div class="text-xs text-slate-400 text-center py-16">ไม่มีข้อมูลหมวดหมู่</div>';
+        }
+
+        // ----------------------------------------------------
+        // 📈 3. วาดกราฟ Bar Chart (Top 5 สินค้า)
+        // ----------------------------------------------------
+        const topCanvas = document.getElementById('topProductsChart');
+        if (topCanvas && topProductLabels.length > 0) {
+            new Chart(topCanvas.getContext('2d'), {
+                type: 'bar',
+                data: {
+                    labels: topProductLabels,
+                    datasets: [{
+                        label: 'คำขอเสนอราคา (ครั้ง)',
+                        data: topProductData,
+                        backgroundColor: '#3b82f6',
+                        borderRadius: 6,
+                        barThickness: 16
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { beginAtZero: true, ticks: { precision: 0 } },
+                        x: { grid: { display: false } }
+                    }
+                }
+            });
+        } else if (topCanvas) {
+            topCanvas.parentElement.innerHTML = '<div class="text-xs text-slate-400 text-center py-16">ยังไม่มีข้อมูลการขอเสนอราคา</div>';
+        }
+    </script>
+}
+    </script>
+}

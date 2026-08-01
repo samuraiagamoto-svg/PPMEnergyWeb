@@ -1,0 +1,28 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+<ul class="navbar-nav flex items-center gap-4">
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <li class="nav-item">
+            <div class="text-right hidden sm:block">
+                <p class="text-xs font-bold text-gray-800 leading-none">@User.Identity?.Name</p>
+                <p class="text-[10px] text-ppmgreen font-bold uppercase tracking-widest">Administrator</p>
+            </div>
+        </li>
+        <li class="nav-item">
+            <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                <button type="submit" class="text-xs font-bold text-red-500 hover:text-red-700 transition-colors">
+                    <i class="fa-solid fa-power-off"></i> ออกจากระบบ
+                </button>
+            </form>
+        </li>
+    }
+    else
+    {
+        <li class="nav-item">
+            <a class="text-xs font-bold text-ppmgreen" asp-area="Identity" asp-page="/Account/Login">เข้าสู่ระบบ</a>
+        </li>
+    }
+</ul>

@@ -1,0 +1,632 @@
+﻿<div class="font-body text-slate-800 antialiased overflow-x-hidden">
+
+    <style>
+        @@keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @@keyframes shimmer {
+            100% {
+                transform: translateX(100%);
+            }
+        }
+
+        .animate-fade-in-up {
+            animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+        }
+
+        .delay-100 {
+            animation-delay: 100ms;
+        }
+
+        .delay-200 {
+            animation-delay: 200ms;
+        }
+
+        .delay-300 {
+            animation-delay: 300ms;
+        }
+
+        .delay-400 {
+            animation-delay: 400ms;
+        }
+
+        .delay-500 {
+            animation-delay: 500ms;
+        }
+    </style>
+
+    @* ── ส่วน Hero Section เดิม ── *@
+    <section class="relative min-h-screen flex items-center overflow-hidden bg-slate-950">
+
+        <div class="absolute inset-0 z-0">
+            <video autoplay loop muted playsinline class="w-full h-full object-cover transform scale-105 pointer-events-none">
+                <source src="~/videos/ppmvideo1.mp4" type="video/mp4">
+            </video>
+
+            <div class="absolute inset-0 bg-gradient-to-r from-slate-950/80 via-slate-950/40 to-transparent"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-transparent"></div>
+            <div class="absolute -left-20 top-1/4 w-[600px] h-[600px] bg-emerald-500/10 rounded-full blur-[150px] pointer-events-none"></div>
+        </div>
+
+        <div class="relative z-10 w-full max-w-7xl mx-auto px-6 py-24 sm:py-32 lg:py-0">
+            <div class="max-w-xl md:max-w-2xl space-y-6 sm:space-y-8">
+
+                <div class="animate-fade-in-up delay-100 inline-flex items-center gap-3 px-4 py-2 rounded-full bg-slate-900/60 border border-white/10 backdrop-blur-md hover:border-emerald-500/30 transition-all duration-300">
+                    <span class="relative flex h-2 w-2">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                    </span>
+                    <span class="text-xs font-bold text-slate-300 tracking-[0.15em] uppercase">PPM Energy (Thailand)</span>
+                </div>
+
+                <div class="animate-fade-in-up delay-200 space-y-3">
+                    <h1 class="text-5xl sm:text-6xl lg:text-8xl font-black text-white tracking-tight leading-none">
+                        PPM <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-emerald-500">Energy</span>
+                    </h1>
+                    <p class="text-2xl sm:text-3xl font-extrabold text-slate-100 tracking-wide mt-2">
+                        ขับเคลื่อนอุตสาหกรรม ด้วยพลังงานคุณภาพสูง
+                    </p>
+                </div>
+
+                <p class="animate-fade-in-up delay-300 text-base sm:text-lg text-slate-300 leading-relaxed font-light max-w-lg border-l-2 border-emerald-500/50 pl-5">
+                    ผู้เชี่ยวชาญด้านพลังงานทดแทน บริการขนส่ง และให้คำปรึกษาระบบวิศวกรรมโรงงานแบบครบวงจร เพื่อเสถียรภาพและการเติบโตที่ยั่งยืนของธุรกิจคุณ
+                </p>
+
+                <div class="animate-fade-in-up delay-400 flex flex-col sm:flex-row gap-4 pt-2">
+                    <a asp-controller="Home" asp-action="Contact" class="group relative px-8 py-4 bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-bold rounded-xl shadow-[0_0_25px_rgba(16,185,129,0.25)] hover:shadow-[0_0_35px_rgba(16,185,129,0.45)] transition-all duration-300 hover:-translate-y-1 text-center overflow-hidden active:scale-98">
+                        <div class="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]"></div>
+                        <span class="relative flex items-center justify-center gap-2 tracking-wide">
+                            ปรึกษาผู้เชี่ยวชาญ
+                            <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                            </svg>
+                        </span>
+                    </a>
+
+                    <a asp-controller="Home" asp-action="Services" class="px-8 py-4 bg-white/5 hover:bg-white/10 text-white border border-white/10 hover:border-white/30 font-bold rounded-xl backdrop-blur-md transition-all duration-300 hover:-translate-y-1 text-center flex items-center justify-center tracking-wide active:scale-98">
+                        ดูบริการของเรา
+                    </a>
+                </div>
+
+                <div class="animate-fade-in-up delay-500 pt-6 grid grid-cols-3 gap-4 max-w-md border-t border-white/5 text-slate-400 text-xs sm:text-sm">
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-shield-halved text-emerald-500"></i>
+                        <span>ปลอดภัย 100%</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-clock text-emerald-500"></i>
+                        <span>บริการ 24 ชม.</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-award text-emerald-500"></i>
+                        <span>มาตรฐานสากล</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-fade-in-up delay-500 z-10 flex flex-col items-center opacity-40 hover:opacity-100 transition-opacity duration-300 cursor-pointer">
+            <span class="text-white text-[10px] tracking-[0.3em] uppercase mb-2">Scroll</span>
+            <div class="w-5 h-9 border border-white/30 rounded-full flex justify-center p-1">
+                <div class="w-1 h-1.5 bg-emerald-400 rounded-full animate-bounce mt-0.5"></div>
+            </div>
+        </div>
+
+    </section>
+
+    @* 🎬 ส่วนวิดีโอแนะนำด้านบนสุด: แสดงผลเฉพาะเมื่อกดหน้าหลัก (เมื่อไม่มีการเลือกหมวดหมู่สินค้า) *@
+    @if (string.IsNullOrEmpty(ViewData["CurrentCategoryCode"]?.ToString()) && string.IsNullOrEmpty(ViewData["CurrentSubCode"]?.ToString()))
+    {
+        <section class="relative bg-slate-950 py-12 sm:py-16 border-b border-white/5">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+                <div class="animate-fade-in-up delay-100 mb-6 text-center lg:text-left">
+                    <span class="text-xs font-bold text-emerald-400 tracking-[0.2em] uppercase block mb-2">Company Profile</span>
+                    <h2 class="text-2xl sm:text-3xl font-black text-white tracking-tight">
+                        PPM <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-300">Energy</span> Video Presentation
+                    </h2>
+                </div>
+
+                <div class="animate-fade-in-up delay-100 relative w-full aspect-video rounded-2xl overflow-hidden shadow-2xl border border-white/10 bg-black">
+                    @* 💡 วิธีใช้งาน: 
+                        สามารถเปลี่ยนชื่อไฟล์ใน src="..." เป็นชื่อไฟล์วิดีโอแนะนำบริษัทที่คุณต้องการเก็บไว้ใน wwwroot ได้เลยครับ
+                    *@
+                    <video controls preload="metadata" class="w-full h-full object-contain">
+                        <source src="~/videos/PPM ENERGY VIDEO EDIT.mp4" type="video/mp4">
+                        <p class="text-white p-4">เบราว์เซอร์ของคุณไม่รองรับการเล่นวิดีโอ</p>
+                    </video>
+                </div>
+
+            </div>
+        </section>
+    }
+
+    @* ── ส่วน Our Core Business ที่นำเข้ามาแทรก ── *@
+    <section class="py-24 bg-surface w-full">
+        <div class="w-full px-6 sm:px-12 lg:px-24 xl:px-32">
+            <div class="mb-24 text-center">
+                <span class="text-primary font-label-md tracking-widest block mb-3 uppercase">Our Core Business</span>
+                <h2 class="font-headline-lg text-3xl sm:text-4xl mb-4 text-on-surface">กลุ่มธุรกิจหลักของเรา</h2>
+                <p class="text-on-surface-variant max-w-2xl mx-auto font-body-lg">ขับเคลื่อนทุกอุตสาหกรรมด้วยสินค้าและบริการคุณภาพสูง ครอบคลุมความต้องการของโรงงานและงานก่อสร้างทุกระดับ</p>
+            </div>
+
+            <div class="space-y-24 max-w-6xl mx-auto">
+
+                <div class="flex flex-col lg:flex-row gap-12 items-center">
+                    <div class="w-full lg:w-1/2 order-2 lg:order-1">
+                        <div class="flex items-center gap-4 mb-4">
+                            <span class="text-5xl sm:text-6xl font-extrabold text-primary/10 font-headline-display">01</span>
+                            <div class="h-px bg-primary/20 flex-grow"></div>
+                            <span class="text-primary font-label-md tracking-widest uppercase">Energy Solutions</span>
+                        </div>
+                        <h3 class="font-headline-md text-2xl sm:text-3xl text-on-surface mb-4">Energy &amp; Alternative Fuels</h3>
+                        <p class="text-on-surface-variant font-body-lg leading-relaxed">ผู้นำการจัดจำหน่ายน้ำมันเชื้อเพลิงคุณภาพ Fuel Oil A และ C พร้อมพลังงานทางเลือกสำหรับโรงงานอุตสาหกรรม</p>
+                    </div>
+
+                    <div class="w-full lg:w-1/2 order-1 lg:order-2">
+                        <div class="relative rounded-3xl overflow-hidden shadow-xl aspect-[16/10] bg-on-surface group">
+
+                            <div id="slider-1" class="flex w-full h-full transition-transform duration-700 ease-in-out">
+                                <div class="w-full h-full flex-shrink-0 relative">
+                                    <img class="w-full h-full object-cover opacity-85" alt="Energy Image 1" src="~/images/product_11.png" />
+                                </div>
+                                <div class="w-full h-full flex-shrink-0 relative">
+                                    <img class="w-full h-full object-cover opacity-85" alt="Energy Image 2" src="~/images/product_12.png" />
+                                </div>
+                                <div class="w-full h-full flex-shrink-0 relative">
+                                    <img class="w-full h-full object-cover opacity-85" alt="Energy Image 3" src="~/images/product_13.png" />
+                                </div>
+                            </div>
+
+                            <button onclick="prevSlide()" class="absolute left-4 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-primary text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 z-10 backdrop-blur-sm shadow-md">
+                                <i class="fa-solid fa-chevron-left text-xl"></i>
+                            </button>
+                            <button onclick="nextSlide()" class="absolute right-4 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-primary text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 z-10 backdrop-blur-sm shadow-md">
+                                <i class="fa-solid fa-chevron-right text-xl"></i>
+                            </button>
+
+                            <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10">
+                                <div id="dot-0" onclick="goToSlide(0)" class="w-2.5 h-2.5 rounded-full bg-white transition-colors cursor-pointer hover:scale-125"></div>
+                                <div id="dot-1" onclick="goToSlide(1)" class="w-2.5 h-2.5 rounded-full bg-white/40 transition-colors cursor-pointer hover:scale-125"></div>
+                                <div id="dot-2" onclick="goToSlide(2)" class="w-2.5 h-2.5 rounded-full bg-white/40 transition-colors cursor-pointer hover:scale-125"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col lg:flex-row gap-12 items-center">
+                    <div class="w-full lg:w-1/2">
+
+                        <div class="relative rounded-3xl overflow-hidden shadow-xl aspect-[16/10] bg-white group">
+
+                            <div id="slider-2" class="flex w-full h-full transition-transform duration-700 ease-in-out">
+                                <div class="w-full h-full flex-shrink-0 relative p-4">
+                                    <img class="w-full h-full object-contain opacity-85" alt="Energy Image 1" src="~/images/คอนกรีตแบบยกถัง รุ่น HZS.png" />
+                                </div>
+                                <div class="w-full h-full flex-shrink-0 relative p-4">
+                                    <img class="w-full h-full object-contain opacity-85" alt="Energy Image 2" src="~/images/คอนกรีตแบบสายพานรุ่น HZS.png" />
+                                </div>
+                                <div class="w-full h-full flex-shrink-0 relative p-4">
+                                    <img class="w-full h-full object-contain opacity-85" alt="Energy Image 3" src="~/images/ยางมะตอยซีรีส์ LB.png" />
+                                </div>
+                                <div class="w-full h-full flex-shrink-0 relative p-4">
+                                    <img class="w-full h-full object-contain opacity-85" alt="Energy Image 4" src="~/images/รุ่น LBRN.png" />
+                                </div>
+                                <div class="w-full h-full flex-shrink-0 relative p-4">
+                                    <img class="w-full h-full object-contain opacity-85" alt="Energy Image 5" src="~/images/คอนกรีตแบบติดตั้งด้านบน รุ่น HZS.jpg" />
+                                </div>
+                                <div class="w-full h-full flex-shrink-0 relative p-4">
+                                    <img class="w-full h-full object-contain opacity-85" alt="Energy Image 6" src="~/images/คอนกรีตแบบติดตั้งกึ่งด้านบน รุ่น HZS.png" />
+                                </div>
+                            </div>
+
+                            <button onclick="prevSlide2()" class="absolute left-4 top-1/2 -translate-y-1/2 bg-black/20 hover:bg-primary text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 z-10 backdrop-blur-sm">
+                                <i class="fa-solid fa-chevron-left text-xl"></i>
+                            </button>
+                            <button onclick="nextSlide2()" class="absolute right-4 top-1/2 -translate-y-1/2 bg-black/20 hover:bg-primary text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 z-10 backdrop-blur-sm">
+                                <i class="fa-solid fa-chevron-right text-xl"></i>
+                            </button>
+
+                            <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10 bg-black/20 px-3 py-1.5 rounded-full backdrop-blur-sm">
+                                <div id="dot2-0" onclick="goToSlide2(0)" class="w-2.5 h-2.5 rounded-full bg-primary transition-colors cursor-pointer hover:scale-125"></div>
+                                <div id="dot2-1" onclick="goToSlide2(1)" class="w-2.5 h-2.5 rounded-full bg-white/60 transition-colors cursor-pointer hover:scale-125"></div>
+                                <div id="dot2-2" onclick="goToSlide2(2)" class="w-2.5 h-2.5 rounded-full bg-white/60 transition-colors cursor-pointer hover:scale-125"></div>
+                                <div id="dot2-3" onclick="goToSlide2(3)" class="w-2.5 h-2.5 rounded-full bg-white/60 transition-colors cursor-pointer hover:scale-125"></div>
+                                <div id="dot2-4" onclick="goToSlide2(4)" class="w-2.5 h-2.5 rounded-full bg-white/60 transition-colors cursor-pointer hover:scale-125"></div>
+                                <div id="dot2-5" onclick="goToSlide2(5)" class="w-2.5 h-2.5 rounded-full bg-white/60 transition-colors cursor-pointer hover:scale-125"></div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="w-full lg:w-1/2">
+                        <div class="flex items-center gap-4 mb-4">
+                            <span class="text-5xl sm:text-6xl font-extrabold text-primary/10 font-headline-display">02</span>
+                            <div class="h-px bg-primary/20 flex-grow"></div>
+                            <span class="text-primary font-label-md tracking-widest uppercase">Heavy Industry</span>
+                        </div>
+                        <h3 class="font-headline-md text-2xl sm:text-3xl text-on-surface mb-4">Heavy Machinery</h3>
+                        <p class="text-on-surface-variant font-body-lg leading-relaxed mb-6">
+                            จัดจำหน่ายและบำรุงรักษาเครื่องจักรหนัก สำหรับอุตสาหกรรมก่อสร้างและโยธา ด้วยเทคโนโลยีการผลิตที่ทันสมัย แม่นยำ และได้มาตรฐานสากล
+                        </p>
+
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="flex items-center gap-2">
+                                
+                                <span class="text-sm font-subtitle text-gray-700">Asphalt Mixing Plants</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="text-sm font-subtitle text-gray-700">Concrete Batching Plants</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col lg:flex-row gap-12 items-center">
+
+                    <div class="w-full lg:w-1/2 order-2 lg:order-1">
+                        <div class="flex items-center gap-4 mb-4">
+                            <span class="text-5xl sm:text-6xl font-extrabold text-primary/10 font-headline-display">03</span>
+                            <div class="h-px bg-primary/20 flex-grow"></div>
+                            <span class="text-primary font-label-md tracking-widest uppercase">Production Systems</span>
+                        </div>
+                        <h3 class="font-headline-md text-2xl sm:text-3xl text-on-surface mb-4">Factory Machinery</h3>
+                        <p class="text-on-surface-variant font-body-lg leading-relaxed">
+                            ระบบการผลิตประสิทธิภาพสูง ทั้งระบบเลื่อย เครื่องอัดอากาศ
+                        </p>
+                    </div>
+
+                    <div class="w-full lg:w-1/2 order-1 lg:order-2">
+                        <div class="relative rounded-3xl overflow-hidden shadow-xl aspect-[16/10] bg-white group border border-outline-variant/20">
+
+                            <div id="slider-3" class="flex w-full h-full transition-transform duration-700 ease-in-out">
+                                <div class="w-full h-full flex-shrink-0 relative p-4">
+                                    <img class="w-full h-full object-contain opacity-85" alt="Factory Image 1" src="~/images/Drachen-BS-712N_Left1-1.png" />
+                                </div>
+                                <div class="w-full h-full flex-shrink-0 relative p-4">
+                                    <img class="w-full h-full object-contain opacity-85" alt="Factory Image 2" src="~/images/DAV-110-Two-Stage-PM-VSD-Screw-Air-Compressor.png" />
+                                </div>
+                                <div class="w-full h-full flex-shrink-0 relative p-4">
+                                    <img class="w-full h-full object-contain opacity-85" alt="Factory Image 3" src="~/images/High-pressure-Oil-free-Screw-Air-Compressor-1.jpg" />
+                                </div>
+                            </div>
+
+                            <button onclick="prevSlide3()" class="absolute left-4 top-1/2 -translate-y-1/2 bg-black/20 hover:bg-primary text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 z-10 backdrop-blur-sm">
+                                <i class="fa-solid fa-chevron-left text-xl"></i>
+                            </button>
+                            <button onclick="nextSlide3()" class="absolute right-4 top-1/2 -translate-y-1/2 bg-black/20 hover:bg-primary text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 z-10 backdrop-blur-sm">
+                                <i class="fa-solid fa-chevron-right text-xl"></i>
+                            </button>
+
+                            <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10 bg-black/20 px-3 py-1.5 rounded-full backdrop-blur-sm">
+                                <div id="dot3-0" onclick="goToSlide3(0)" class="w-2.5 h-2.5 rounded-full bg-primary transition-colors cursor-pointer hover:scale-125"></div>
+                                <div id="dot3-1" onclick="goToSlide3(1)" class="w-2.5 h-2.5 rounded-full bg-white/60 transition-colors cursor-pointer hover:scale-125"></div>
+                                <div id="dot3-2" onclick="goToSlide3(2)" class="w-2.5 h-2.5 rounded-full bg-white/60 transition-colors cursor-pointer hover:scale-125"></div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col lg:flex-row gap-12 items-center">
+
+                    <div class="w-full lg:w-1/2">
+                        <div class="relative rounded-3xl overflow-hidden shadow-xl aspect-[16/10] bg-white group border border-outline-variant/20">
+
+                            <div id="slider-4" class="flex w-full h-full transition-transform duration-700 ease-in-out">
+                                <div class="w-full h-full flex-shrink-0 relative p-4">
+                                    <img class="w-full h-full object-contain opacity-85" alt="Infrastructure Image 1" src="~/images/งานเหล็ก.png" />
+                                </div>
+                                <div class="w-full h-full flex-shrink-0 relative p-4">
+                                    <img class="w-full h-full object-contain opacity-85" alt="Infrastructure Image 2" src="~/images/ยางมะตอยสำเร็จรูป1.png" />
+                                </div>
+                                <div class="w-full h-full flex-shrink-0 relative p-4">
+                                    <img class="w-full h-full object-contain opacity-85" alt="Infrastructure Image 3" src="~/images/ยางAC.png" />
+                                </div>
+                            </div>
+
+                            <button onclick="prevSlide4()" class="absolute left-4 top-1/2 -translate-y-1/2 bg-black/20 hover:bg-primary text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 z-10 backdrop-blur-sm">
+                                <i class="fa-solid fa-chevron-left text-xl"></i>
+                            </button>
+                            <button onclick="nextSlide4()" class="absolute right-4 top-1/2 -translate-y-1/2 bg-black/20 hover:bg-primary text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 z-10 backdrop-blur-sm">
+                                <i class="fa-solid fa-chevron-right text-xl"></i>
+                            </button>
+
+                            <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10 bg-black/20 px-3 py-1.5 rounded-full backdrop-blur-sm">
+                                <div id="dot4-0" onclick="goToSlide4(0)" class="w-2.5 h-2.5 rounded-full bg-primary transition-colors cursor-pointer hover:scale-125"></div>
+                                <div id="dot4-1" onclick="goToSlide4(1)" class="w-2.5 h-2.5 rounded-full bg-white/60 transition-colors cursor-pointer hover:scale-125"></div>
+                                <div id="dot4-2" onclick="goToSlide4(2)" class="w-2.5 h-2.5 rounded-full bg-white/60 transition-colors cursor-pointer hover:scale-125"></div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="w-full lg:w-1/2">
+                        <div class="flex items-center gap-4 mb-4">
+                            <span class="text-5xl sm:text-6xl font-extrabold text-primary/10 font-headline-display">04</span>
+                            <div class="h-px bg-primary/20 flex-grow"></div>
+                            <span class="text-primary font-label-md tracking-widest uppercase">Infrastructure</span>
+                        </div>
+                        <h3 class="font-headline-md text-2xl sm:text-3xl text-on-surface mb-4">Construction Materials</h3>
+                        <p class="text-on-surface-variant font-body-lg leading-relaxed">
+                            ยางมะตอยแบบถุงสำเร็จรูป ยางAC60/70 และเหล็กรูปพรรณที่ได้รับการรับรองมาตรฐานวิศวกรรม
+                        </p>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    @* ── ส่วน Professional Services ── *@
+    <section class="relative min-h-screen py-24 overflow-hidden">
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80&w=2070"
+                 class="w-full h-full object-cover object-center" alt="Industrial Services Background">
+            <div class="absolute inset-0 bg-slate-50/85 backdrop-blur-sm"></div>
+        </div>
+        <div class="relative max-w-7xl mx-auto px-4 text-center mb-16">
+            <h1 class="text-4xl md:text-5xl font-black text-black mb-4">บริการของเรา</h1>
+            <p class="text-ppmgreen font-bold tracking-[0.2em] uppercase text-sm">Professional Services</p>
+        </div>
+        <div class="relative z-10 max-w-7xl mx-auto px-6 md:px-12 lg:px-20">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-16">
+
+                <div class="group transform hover:-translate-y-1 transition-transform duration-300">
+                    <div class="w-14 h-14 bg-white shadow-sm border border-gray-200/60 rounded-xl flex items-center justify-center mb-6">
+                        <i class="fa-solid fa-users-gear text-2xl text-ppmgreen"></i>
+                    </div>
+                    <h3 class="text-xl font-black text-gray-900 mb-1 group-hover:text-ppmgreen transition-colors duration-300">บริการด้านทีมขาย</h3>
+                    <div class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-4">Sale Service</div>
+                    <p class="text-gray-600 leading-relaxed font-medium text-sm">
+                        ทีมขายมืออาชีพ พร้อมให้คำปรึกษาด้านสินค้าและระบบงานอุตสาหกรรมอย่างครบวงจร ช่วยวิเคราะห์ต้นทุน แนะนำโซลูชันที่เหมาะสม และดูแลลูกค้าอย่างใกล้ชิด เพื่อให้ทุกธุรกิจดำเนินงานได้อย่างมีประสิทธิภาพสูงสุด
+                    </p>
+                </div>
+
+                <div class="group transform hover:-translate-y-1 transition-transform duration-300">
+                    <div class="w-14 h-14 bg-white shadow-sm border border-gray-200/60 rounded-xl flex items-center justify-center mb-6">
+                        <i class="fa-solid fa-award text-2xl text-ppmgreen"></i>
+                    </div>
+                    <h3 class="text-xl font-black text-gray-900 mb-1 group-hover:text-ppmgreen transition-colors duration-300">ด้านคุณภาพ</h3>
+                    <div class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-4">Quality Control</div>
+                    <p class="text-gray-600 leading-relaxed font-medium text-sm">
+                        คัดสรรสินค้าและวัตถุดิบคุณภาพมาตรฐาน ผ่านการตรวจสอบอย่างเป็นระบบ โดยทีมงาน QC มืออาชีพ เพื่อสร้างความมั่นใจในทุกขั้นตอนการใช้งาน พร้อมตอบโจทย์งานอุตสาหกรรมอย่างมีประสิทธิภาพ
+                    </p>
+                </div>
+
+                <div class="group transform hover:-translate-y-1 transition-transform duration-300">
+                    <div class="w-14 h-14 bg-white shadow-sm border border-gray-200/60 rounded-xl flex items-center justify-center mb-6">
+                        <i class="fa-solid fa-headset text-2xl text-ppmgreen"></i>
+                    </div>
+                    <h3 class="text-xl font-black text-gray-900 mb-1 group-hover:text-ppmgreen transition-colors duration-300">ประสานงานขาย</h3>
+                    <div class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-4">Sale Coordinator</div>
+                    <p class="text-gray-600 leading-relaxed font-medium text-sm">
+                        บริการประสานงานขายอย่างรวดเร็วและเป็นระบบ เพื่อความสะดวก โปร่งใส และสร้างความมั่นใจให้กับลูกค้า
+                    </p>
+                </div>
+
+                <div class="group transform hover:-translate-y-1 transition-transform duration-300">
+                    <div class="w-14 h-14 bg-white shadow-sm border border-gray-200/60 rounded-xl flex items-center justify-center mb-6">
+                        <i class="fa-solid fa-truck-fast text-2xl text-ppmgreen"></i>
+                    </div>
+                    <h3 class="text-xl font-black text-gray-900 mb-1 group-hover:text-ppmgreen transition-colors duration-300">บริการขนส่งสินค้า</h3>
+                    <div class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-4">Logistics Solution</div>
+                    <p class="text-gray-600 leading-relaxed font-medium text-sm">
+                        บริการขนส่งสินค้าครอบคลุมทุกพื้นที่ ด้วยทีมงานมืออาชีพ จัดส่งตรงเวลา ปลอดภัย และรองรับการให้บริการตลอด 24 ชั่วโมง เพื่อให้สินค้าถึงมือลูกค้าอย่างมีประสิทธิภาพสูงสุด
+                    </p>
+                </div>
+
+                <div class="group transform hover:-translate-y-1 transition-transform duration-300">
+                    <div class="w-14 h-14 bg-white shadow-sm border border-gray-200/60 rounded-xl flex items-center justify-center mb-6">
+                        <i class="fa-solid fa-handshake-angle text-2xl text-ppmgreen"></i>
+                    </div>
+                    <h3 class="text-xl font-black text-gray-900 mb-1 group-hover:text-ppmgreen transition-colors duration-300">บริการหลังการขาย</h3>
+                    <div class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-4">Maintenance Support</div>
+                    <p class="text-gray-600 leading-relaxed font-medium text-sm">
+                        ดูแลและให้คำปรึกษาหลังการขายอย่างครบวงจร พร้อมทีมช่างและผู้เชี่ยวชาญคอยดูแล แก้ไข และตรวจเช็กระบบต่าง ๆ เพื่อให้เครื่องจักรและอุปกรณ์ทำงานได้อย่างเต็มประสิทธิภาพ
+                    </p>
+                </div>
+
+                <div class="group transform hover:-translate-y-1 transition-transform duration-300">
+                    <div class="w-14 h-14 bg-white shadow-sm border border-gray-200/60 rounded-xl flex items-center justify-center mb-6">
+                        <i class="fa-solid fa-microchip text-2xl text-ppmgreen"></i>
+                    </div>
+                    <h3 class="text-xl font-black text-gray-900 mb-1 group-hover:text-ppmgreen transition-colors duration-300">เทคโนโลยีอุตสาหกรรม</h3>
+                    <div class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-4">Innovation</div>
+                    <p class="text-gray-600 leading-relaxed font-medium text-sm">
+                        นำเทคโนโลยีอุตสาหกรรมสมัยใหม่เข้ามาพัฒนาระบบการทำงาน เพื่อเพิ่มความรวดเร็ว แม่นยำ และยกระดับประสิทธิภาพในทุกกระบวนการ ตอบโจทย์ธุรกิจยุคใหม่ด้วยนวัตกรรมที่ทันสมัย
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    @* ── ส่วน JavaScript ของ Slider ทั้งหมด ── *@
+    <script>
+        // ==========================================
+        // Slider Logic (สำหรับ Unit 01)
+        // ==========================================
+        let currentSlide = 0;
+        const totalSlides = 3;
+
+        function updateSlider() {
+            const slider = document.getElementById('slider-1');
+            if(slider) {
+                slider.style.transform = `translateX(-${currentSlide * 100}%)`;
+
+                for(let i = 0; i < totalSlides; i++) {
+                    const dot = document.getElementById(`dot-${i}`);
+                    if(dot) {
+                        if(i === currentSlide) {
+                            dot.classList.remove('bg-white/40');
+                            dot.classList.add('bg-white');
+                        } else {
+                            dot.classList.remove('bg-white');
+                            dot.classList.add('bg-white/40');
+                        }
+                    }
+                }
+            }
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % totalSlides;
+            updateSlider();
+        }
+
+        function prevSlide() {
+            currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+            updateSlider();
+        }
+
+        function goToSlide(index) {
+            currentSlide = index;
+            updateSlider();
+        }
+
+        // เลื่อนรูปอัตโนมัติทุกๆ 5 วินาที
+        setInterval(nextSlide, 5000);
+
+        // ==========================================
+        // Slider Logic (สำหรับ Unit 02 - Heavy Machinery)
+        // ==========================================
+        let currentSlide2 = 0;
+        const totalSlides2 = 6;
+
+        function updateSlider2() {
+            const slider = document.getElementById('slider-2');
+            if(slider) {
+                slider.style.transform = `translateX(-${currentSlide2 * 100}%)`;
+
+                for(let i = 0; i < totalSlides2; i++) {
+                    const dot = document.getElementById(`dot2-${i}`);
+                    if(dot) {
+                        if(i === currentSlide2) {
+                            dot.classList.remove('bg-white/60');
+                            dot.classList.add('bg-primary');
+                        } else {
+                            dot.classList.remove('bg-primary');
+                            dot.classList.add('bg-white/60');
+                        }
+                    }
+                }
+            }
+        }
+
+        function nextSlide2() {
+            currentSlide2 = (currentSlide2 + 1) % totalSlides2;
+            updateSlider2();
+        }
+
+        function prevSlide2() {
+            currentSlide2 = (currentSlide2 - 1 + totalSlides2) % totalSlides2;
+            updateSlider2();
+        }
+
+        function goToSlide2(index) {
+            currentSlide2 = index;
+            updateSlider2();
+        }
+
+        setInterval(nextSlide2, 6000);
+
+        // ==========================================
+        // Slider Logic (สำหรับ Unit 03 - Factory Machinery)
+        // ==========================================
+        let currentSlide3 = 0;
+        const totalSlides3 = 3;
+
+        function updateSlider3() {
+            const slider = document.getElementById('slider-3');
+            if(slider) {
+                slider.style.transform = `translateX(-${currentSlide3 * 100}%)`;
+
+                for(let i = 0; i < totalSlides3; i++) {
+                    const dot = document.getElementById(`dot3-${i}`);
+                    if(dot) {
+                        if(i === currentSlide3) {
+                            dot.classList.remove('bg-white/60');
+                            dot.classList.add('bg-primary');
+                        } else {
+                            dot.classList.remove('bg-primary');
+                            dot.classList.add('bg-white/60');
+                        }
+                    }
+                }
+            }
+        }
+
+        function nextSlide3() {
+            currentSlide3 = (currentSlide3 + 1) % totalSlides3;
+            updateSlider3();
+        }
+
+        function prevSlide3() {
+            currentSlide3 = (currentSlide3 - 1 + totalSlides3) % totalSlides3;
+            updateSlider3();
+        }
+
+        function goToSlide3(index) {
+            currentSlide3 = index;
+            updateSlider3();
+        }
+
+        setInterval(nextSlide3, 7000);
+
+        // ==========================================
+        // Slider Logic (สำหรับ Unit 04 - Infrastructure)
+        // ==========================================
+        let currentSlide4 = 0;
+        const totalSlides4 = 3;
+
+        function updateSlider4() {
+            const slider = document.getElementById('slider-4');
+            if(slider) {
+                slider.style.transform = `translateX(-${currentSlide4 * 100}%)`;
+
+                for(let i = 0; i < totalSlides4; i++) {
+                    const dot = document.getElementById(`dot4-${i}`);
+                    if(dot) {
+                        if(i === currentSlide4) {
+                            dot.classList.remove('bg-white/60');
+                            dot.classList.add('bg-primary');
+                        } else {
+                            dot.classList.remove('bg-primary');
+                            dot.classList.add('bg-white/60');
+                        }
+                    }
+                }
+            }
+        }
+
+        function nextSlide4() {
+            currentSlide4 = (currentSlide4 + 1) % totalSlides4;
+            updateSlider4();
+        }
+
+        function prevSlide4() {
+            currentSlide4 = (currentSlide4 - 1 + totalSlides4) % totalSlides4;
+            updateSlider4();
+        }
+
+        function goToSlide4(index) {
+            currentSlide4 = index;
+            updateSlider4();
+        }
+
+        setInterval(nextSlide4, 8000);
+    </script>
+
+</div>

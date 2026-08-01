@@ -1,0 +1,365 @@
+﻿@model IEnumerable<PPMEnergyWeb.Models.Quote>
+
+@{
+    ViewData["Title"] = "แผงควบคุม (Dashboard)";
+    Layout = "_LayoutAdmin";
+}
+
+<div class="space-y-6">
+    @* Page Header *@
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+            <h1 class="text-2xl font-bold text-gray-900 tracking-tight">Dashboard Overview</h1>
+            <p class="text-sm text-gray-500 mt-1">สรุปภาพรวมระบบและสถิติข้อมูลแบรนด์แบบ Real-time</p>
+        </div>
+        <div>
+            <span class="inline-flex items-center px-3 py-1.5 rounded-full bg-green-50 text-[#006633] text-xs font-bold border border-green-100">
+                <span class="w-2 h-2 rounded-full bg-[#006633] mr-2 animate-pulse"></span> SYSTEM LIVE
+            </span>
+        </div>
+    </div>
+
+    @* ==========================================
+       1. แถบสรุปตัวเลขสำคัญด้านบนสุด (Summary Cards)
+       ========================================== *@
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+
+        @* Card: รายการขอใบเสนอราคา (Quotations) *@
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm hover:-translate-y-1 hover:shadow-md transition-all duration-300 p-5 flex flex-col justify-between min-h-[140px] group">
+            <div class="flex items-center justify-between w-full">
+                <div>
+                    <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">ใบเสนอราคาใหม่ / รอตรวจ</p>
+                    <h3 class="text-4xl font-extrabold text-gray-900 tracking-tight group-hover:text-[#006633] transition-colors">
+                        @ViewBag.PendingQuotes
+                        <span class="text-[10px] font-bold bg-amber-50 text-amber-700 border border-amber-200 px-2 py-0.5 rounded-md ml-1 alignment-baseline">New</span>
+                    </h3>
+                </div>
+                <div class="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center text-xl shadow-sm group-hover:scale-105 transition-transform">
+                    <i class="fa-solid fa-file-invoice-dollar"></i>
+                </div>
+            </div>
+            <div class="mt-4 pt-2 border-t border-gray-50 text-xs text-gray-500">
+                <i class="fa-regular fa-circle-check text-[#006633] mr-1"></i> เดือนนี้สำเร็จแล้ว <span class="font-bold text-gray-800">@ViewBag.CompletedQuotesThisMonth</span> รายการ
+            </div>
+        </div>
+
+        @* Card: จัดการสินค้า (Products) *@
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm hover:-translate-y-1 hover:shadow-md transition-all duration-300 p-5 flex flex-col justify-between min-h-[140px] group">
+            <div class="flex items-center justify-between w-full">
+                <div>
+                    <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">สินค้าทั้งหมดในคลัง</p>
+                    <h3 class="text-4xl font-extrabold text-gray-900 tracking-tight group-hover:text-[#006633] transition-colors">@ViewBag.TotalProducts</h3>
+                </div>
+                <div class="w-12 h-12 rounded-2xl bg-[#006633]/10 text-[#006633] flex items-center justify-center text-xl shadow-sm group-hover:scale-105 transition-transform">
+                    <i class="fa-solid fa-boxes-stacked"></i>
+                </div>
+            </div>
+            <div class="mt-4 pt-2 border-t border-gray-50 text-xs flex items-center justify-between">
+                @if (ViewBag.IncompleteProducts > 0)
+                {
+                    <span class="text-red-600 font-medium flex items-center animate-pulse">
+                        <i class="fa-solid fa-circle-exclamation mr-1"></i> ข้อมูลไม่ครบ @ViewBag.IncompleteProducts รายการ
+                    </span>
+                    <a href="@Url.Action("Index", "AdminProducts")" class="text-[11px] font-bold text-[#006633] hover:underline">ไปจัดการ <i class="fa-solid fa-chevron-right text-[8px]"></i></a>
+                }
+                else
+                {
+                    <span class="text-gray-500"><i class="fa-solid fa-check text-green-500 mr-1"></i> ข้อมูลสินค้าครบถ้วน</span>
+                }
+            </div>
+        </div>
+
+        @* Card: รายชื่อลูกค้า (Customers) *@
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm hover:-translate-y-1 hover:shadow-md transition-all duration-300 p-5 flex flex-col justify-between min-h-[140px] group">
+            <div class="flex items-center justify-between w-full">
+                <div>
+                    <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">รายชื่อลูกค้าทั้งหมด</p>
+                    <h3 class="text-4xl font-extrabold text-gray-900 tracking-tight group-hover:text-[#006633] transition-colors">@ViewBag.TotalCustomers</h3>
+                </div>
+                <div class="w-12 h-12 rounded-2xl bg-purple-50 text-purple-600 flex items-center justify-center text-xl shadow-sm group-hover:scale-105 transition-transform">
+                    <i class="fa-solid fa-users"></i>
+                </div>
+            </div>
+            <div class="mt-4 pt-2 border-t border-gray-50 text-xs text-gray-500">
+                <i class="fa-solid fa-user-plus text-purple-400 mr-1"></i> มีการเคลื่อนไหวในเดือนนี้ <span class="font-bold text-gray-800">@ViewBag.NewCustomersThisMonth</span> ราย
+            </div>
+        </div>
+
+        @* Card: จัดการหมวดหมู่ (Categories) *@
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm hover:-translate-y-1 hover:shadow-md transition-all duration-300 p-5 flex flex-col justify-between min-h-[140px] group">
+            <div class="flex items-center justify-between w-full">
+                <div>
+                    <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">หมวดหมู่สินค้า</p>
+                    <h3 class="text-4xl font-extrabold text-gray-900 tracking-tight group-hover:text-[#006633] transition-colors">@ViewBag.TotalCategories</h3>
+                </div>
+                <div class="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center text-xl shadow-sm group-hover:scale-105 transition-transform">
+                    <i class="fa-solid fa-layer-group"></i>
+                </div>
+            </div>
+            <div class="mt-4 pt-2 border-t border-gray-50 text-xs text-gray-500 truncate">
+                <i class="fa-solid fa-tags text-blue-400 mr-1"></i> กลุ่มน้ำมันเตา และเครื่องจักรโรงงาน
+            </div>
+        </div>
+    </div>
+
+    @* ==========================================
+       2. ส่วนวิเคราะห์ข้อมูลด้วยกราฟตรงกลาง (Charts Section)
+       ========================================== *@
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+
+        @* กราฟเส้น (Line Chart) - แนวโน้มการขอใบเสนอราคา (8 ช่องใน Desktop) *@
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 lg:col-span-8 flex flex-col justify-between">
+            <div class="mb-2">
+                <h3 class="text-sm font-bold text-gray-800">แนวโน้มการขอใบเสนอราคา (Quotation Trends)</h3>
+                <p class="text-[11px] text-gray-400 mt-0.5">สถิติจำนวนใบเสนอราคาที่ส่งเข้ามาในรอบ 7 วันล่าสุด</p>
+            </div>
+            <div class="relative h-60 w-full">
+                <canvas id="trendsChart"></canvas>
+            </div>
+        </div>
+
+        @* กราฟโดนัท (Donut Chart) - สัดส่วนสถานะใบเสนอราคา (4 ช่องใน Desktop ปรับให้เล็กลงประหยัดพื้นที่) *@
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 lg:col-span-4 flex flex-col justify-between">
+            <div class="mb-2">
+                <h3 class="text-sm font-bold text-gray-800">สัดส่วนสถานะใบเสนอราคา</h3>
+                <p class="text-[11px] text-gray-400 mt-0.5">ภาพรวมการดำเนินงานของทีมขาย</p>
+            </div>
+            <div class="relative h-60 w-full flex justify-center items-center">
+                <canvas id="statusChart"></canvas>
+            </div>
+        </div>
+
+        @* กราฟแท่ง (Bar Chart) - สินค้ายอดนิยม (เต็มความกว้าง 12 ช่อง เพื่อให้อ่านชื่อสินค้าแกน X ง่าย ไม่เบียดกัน) *@
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 lg:col-span-12">
+            <div class="mb-4">
+                <h3 class="text-sm font-bold text-gray-800">Top 5 สินค้ายอดนิยม (อ้างอิงตามจำนวนในใบเสนอราคา)</h3>
+                <p class="text-[11px] text-gray-400 mt-0.5">เปรียบเทียบความต้องการของลูกค้ารายผลิตภัณฑ์</p>
+            </div>
+            <div class="relative h-64 w-full">
+                <canvas id="topProductsChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+@* ==========================================
+       3. ตารางรายการล่าสุดด้านล่างสุด (Recent Quotes) - Premium Design
+       ========================================== *@
+    <div class="bg-white rounded-2xl border border-gray-100 shadow-[0_2px_10px_-3px_rgba(6,81,237,0.05)] overflow-hidden">
+
+        <div class="p-6 border-b border-gray-100 flex justify-between items-center bg-gradient-to-r from-gray-50/50 to-white">
+            <div>
+                <h3 class="text-lg font-bold text-gray-900 tracking-tight">Recent Quotes</h3>
+                <p class="text-xs text-gray-500 mt-1">รายการขอใบเสนอราคาล่าสุด 5 รายการในระบบ</p>
+            </div>
+            <a asp-controller="Quote" asp-action="Index" class="inline-flex items-center text-xs font-semibold text-gray-700 bg-white border border-gray-200 px-4 py-2.5 rounded-xl hover:bg-[#006633] hover:text-white hover:border-[#006633] transition-all duration-300 shadow-sm group">
+                ดูทั้งหมด <i class="fa-solid fa-arrow-right ml-2 text-[10px] group-hover:translate-x-1 transition-transform"></i>
+            </a>
+        </div>
+
+        <div class="overflow-x-auto">
+            <table class="w-full text-sm text-left">
+                <thead class="bg-gray-50/80 text-gray-500 uppercase text-[11px] font-bold tracking-wider border-b border-gray-100">
+                    <tr>
+                        <th class="px-6 py-4 rounded-tl-lg">ลูกค้า (Customer)</th>
+                        <th class="px-6 py-4">วันที่ขอ (Date)</th>
+                        <th class="px-6 py-4 text-center">สถานะ (Status)</th>
+                        <th class="px-6 py-4 text-right rounded-tr-lg">จัดการ (Action)</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-50 text-gray-600">
+                    @if (!Model.Any())
+                    {
+                        <tr>
+                            <td colspan="4" class="px-6 py-16 text-center">
+                                <div class="flex flex-col items-center justify-center text-gray-400">
+                                    <i class="fa-regular fa-folder-open text-4xl mb-3 text-gray-300"></i>
+                                    <p class="text-sm font-medium">ไม่มีรายการขอใบเสนอราคาในขณะนี้</p>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                    @foreach (var item in Model)
+                    {
+                        <tr class="hover:bg-gray-50/50 transition-colors duration-200 group">
+                            <td class="px-6 py-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="h-9 w-9 rounded-full bg-[#006633]/10 flex items-center justify-center text-[#006633] font-bold text-sm shrink-0">
+                                        @(string.IsNullOrEmpty(item.CompanyName) ? "?" : item.CompanyName.Substring(0, 1).ToUpper())
+                                    </div>
+                                    <div>
+                                        <div class="font-bold text-gray-900 group-hover:text-[#006633] transition-colors">
+                                            @(string.IsNullOrEmpty(item.CompanyName) ? "ลูกค้าไม่ได้ระบุชื่อบริษัท" : item.CompanyName)
+                                        </div>
+                                        <div class="text-[12px] text-gray-500 mt-0.5 flex items-center">
+                                            <i class="fa-solid fa-envelope mr-1.5 text-gray-400 text-[10px]"></i>@item.Email
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+
+                            <td class="px-6 py-4 text-sm font-medium text-gray-500">
+                                @item.CreatedDate.ToString("dd MMM yyyy")
+                                <span class="text-xs text-gray-400 ml-1">@item.CreatedDate.ToString("HH:mm")</span>
+                            </td>
+
+                            <td class="px-6 py-4 text-center">
+                                @if (item.Status == PPMEnergyWeb.Models.QuoteStatus.New)
+                                {
+                                    <span class="inline-flex items-center px-3 py-1.5 rounded-full bg-blue-50 text-blue-600 border border-blue-100 text-[11px] font-bold tracking-wide">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-blue-500 mr-1.5 animate-pulse"></span> มาใหม่
+                                    </span>
+                                }
+                                else if (item.Status == PPMEnergyWeb.Models.QuoteStatus.Processing)
+                                {
+                                    <span class="inline-flex items-center px-3 py-1.5 rounded-full bg-amber-50 text-amber-600 border border-amber-100 text-[11px] font-bold tracking-wide">
+                                        <i class="fa-solid fa-spinner fa-spin mr-1.5 text-[10px]"></i> กำลังดำเนินการ
+                                    </span>
+                                }
+                                else if (item.Status == PPMEnergyWeb.Models.QuoteStatus.QuotationSent)
+                                {
+                                    <span class="inline-flex items-center px-3 py-1.5 rounded-full bg-purple-50 text-purple-600 border border-purple-100 text-[11px] font-bold tracking-wide">
+                                        <i class="fa-regular fa-paper-plane mr-1.5 text-[10px]"></i> ส่งใบเสนอราคาแล้ว
+                                    </span>
+                                }
+                                else if (item.Status == PPMEnergyWeb.Models.QuoteStatus.Won)
+                                {
+                                    <span class="inline-flex items-center px-3 py-1.5 rounded-full bg-green-50 text-[#006633] border border-green-200 text-[11px] font-bold tracking-wide">
+                                        <i class="fa-solid fa-check-circle mr-1.5 text-[10px]"></i> ปิดการขายได้
+                                    </span>
+                                }
+                                else if (item.Status == PPMEnergyWeb.Models.QuoteStatus.Lost)
+                                {
+                                    <span class="inline-flex items-center px-3 py-1.5 rounded-full bg-red-50 text-red-600 border border-red-100 text-[11px] font-bold tracking-wide">
+                                        <i class="fa-solid fa-xmark mr-1.5 text-[10px]"></i> ยกเลิก/พลาดงาน
+                                    </span>
+                                }
+                            </td>
+
+                            <td class="px-6 py-4 text-right">
+                                <a asp-controller="Quote" asp-action="Details" asp-route-id="@item.Id" class="inline-flex items-center justify-center px-4 py-2 bg-white border border-gray-200 text-gray-700 hover:bg-[#006633] hover:text-white hover:border-[#006633] rounded-xl text-xs font-bold shadow-sm transition-all duration-300">
+                                    ตรวจเช็ค <i class="fa-solid fa-chevron-right ml-2 text-[9px]"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        Chart.defaults.font.family = 'Kanit, sans-serif';
+
+        // รับค่าข้อมูลกราฟ
+        const statusLabels = @Html.Raw(ViewBag.StatusLabels ?? "[]");
+        const statusData = @Html.Raw(ViewBag.StatusData ?? "[]");
+
+        const topProductLabels = @Html.Raw(ViewBag.TopProductLabels ?? "[]");
+        const topProductData = @Html.Raw(ViewBag.TopProductData ?? "[]");
+
+        const trendLabels = @Html.Raw(ViewBag.TrendLabels ?? "[]");
+        const trendData = @Html.Raw(ViewBag.TrendData ?? "[]");
+
+        // 📉 กราฟที่ 1: แนวโน้มการขอใบเสนอราคา (Line Chart เพิ่มใหม่)
+        new Chart(document.getElementById('trendsChart').getContext('2d'), {
+            type: 'line',
+            data: {
+                labels: trendLabels,
+                datasets: [{
+                    label: 'ใบเสนอราคาที่ส่งเข้ามา',
+                    data: trendData,
+                    borderColor: '#006633',
+                    backgroundColor: 'rgba(0, 102, 51, 0.04)',
+                    fill: true,
+                    tension: 0.35,
+                    borderWidth: 3,
+                    pointBackgroundColor: '#006633',
+                    pointHoverRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: { beginAtZero: true, grid: { color: '#f3f4f6' }, ticks: { precision: 0, color: '#9ca3af' } },
+                    x: { grid: { display: false }, ticks: { color: '#6b7280' } }
+                }
+            }
+        });
+
+        // 📊 กราฟที่ 2: สัดส่วนสถานะใบเสนอราคา (Donut Chart - ขนาดกะทัดรัดขึ้น เลื่อนคำอธิบายลงล่าง)
+        if (statusLabels.length > 0) {
+            new Chart(document.getElementById('statusChart').getContext('2d'), {
+                type: 'doughnut',
+                data: {
+                    labels: statusLabels,
+                    datasets: [{
+                        data: statusData,
+                        backgroundColor: ['#006633', '#f59e0b', '#3b82f6', '#ef4444', '#a855f7'],
+                        borderWidth: 3,
+                        borderColor: '#ffffff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: { boxWidth: 10, padding: 12, font: { size: 11 } }
+                        }
+                    },
+                    cutout: '75%'
+                }
+            });
+        }
+
+                // 📈 กราฟที่ 3: สินค้ายอดนิยม (Bar Chart - สีหลัก #006633 ของแบรนด์)
+        if (topProductLabels.length > 0) {
+            new Chart(document.getElementById('topProductsChart').getContext('2d'), {
+                type: 'bar',
+                data: {
+                    labels: topProductLabels, // ตรงนี้จะดึงชื่อสินค้ามาแสดง เช่น น้ำมันเตา A, HZS60T
+                    datasets: [{
+                        label: 'จำนวนใบเสนอราคา',
+                        data: topProductData,
+                        backgroundColor: '#006633', // คุมโทนสีเขียวประจำแบรนด์
+                        hoverBackgroundColor: '#005229',
+                        borderRadius: 8,
+                        barThickness: 32
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        // เพิ่ม Tooltip ให้อ่านง่ายขึ้น
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return ' ถูกขอใบเสนอราคา: ' + context.parsed.y + ' ใบ';
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: '#f3f4f6' },
+                            // บังคับแกน Y ให้เป็นเลขจำนวนเต็ม (stepSize: 1)
+                            ticks: { precision: 0, color: '#9ca3af', stepSize: 1 }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { color: '#4b5563', font: { family: 'Kanit' } }
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+}

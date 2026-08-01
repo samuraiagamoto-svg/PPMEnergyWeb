@@ -1,0 +1,172 @@
+﻿@model PPMEnergyWeb.Models.RegisterViewModel
+@{
+    ViewData["Title"] = "สมัครสมาชิก";
+    Layout = "_Layout";
+}
+
+<style>
+    @@import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;700;800&display=swap');
+
+    body {
+        font-family: 'Sarabun', sans-serif;
+    }
+
+    /* Animation Keyframes */
+    @@keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @@keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
+    }
+
+    .animate-fadeInUp {
+        animation: fadeInUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    .animate-fadeIn {
+        animation: fadeIn 1s ease-out forwards;
+    }
+</style>
+
+<!-- ปรับความสูงรวมให้สัมพันธ์กับ Navbar ด้านบน -->
+<div class="h-[calc(100vh-140px)] min-h-[650px] flex flex-col items-center justify-center p-4 relative overflow-hidden w-full">
+
+    <!-- Background Image & Overlay -->
+    <div class="absolute inset-0 z-0">
+        <!-- Overlay ไล่สี -->
+        <div class="absolute inset-0 bg-gradient-to-br from-gray-900/90 via-gray-900/70 to-ppmgreen/60 z-10 mix-blend-multiply"></div>
+        <img src="~/images/A4.jpg" alt="Industrial Background" class="w-full h-full object-cover scale-105" />
+    </div>
+
+    <!-- Top Logo Section -->
+    <div class="relative z-10 mb-4 animate-fadeIn text-center">
+        <div class="inline-flex items-center space-x-2 bg-white/10 backdrop-blur-md px-5 py-2 rounded-full border border-white/20 shadow-lg">
+            <div class="w-6 h-6 bg-ppmgreen rounded-full flex items-center justify-center shadow-lg shadow-ppmgreen/50">
+                <i class="fa-solid fa-user-plus text-white text-[10px]"></i>
+            </div>
+            <span class="text-xl font-black text-white tracking-widest uppercase">PPM Energy</span>
+        </div>
+    </div>
+
+    <!-- Register Form Card -->
+    <div class="relative z-10 w-full max-w-[400px] bg-white/95 backdrop-blur-xl rounded-[2rem] shadow-[0_10px_40px_rgba(0,0,0,0.25)] border border-white/50 overflow-hidden animate-fadeInUp">
+        <div class="p-8">
+
+            <!-- Header -->
+            <div class="text-center mb-6">
+                <h2 class="text-2xl font-black text-gray-900 tracking-tight">สร้างบัญชีสมาชิกใหม่</h2>
+                <p class="text-gray-600 mt-1.5 text-sm font-medium">เริ่มต้นจัดการพลังงานอย่างมืออาชีพกับเรา</p>
+            </div>
+
+            <!-- Form -->
+            <form asp-controller="Account" asp-action="Register" method="post" class="space-y-3.5">
+
+                <div asp-validation-summary="ModelOnly" class="p-3 bg-red-50/90 border border-red-200 rounded-xl flex items-start text-red-600 text-[13px] shadow-sm">
+                    <i class="fa-solid fa-circle-exclamation mt-0.5 mr-2"></i>
+                    <span class="font-medium">โปรดตรวจสอบข้อมูลที่คุณกรอกให้ถูกต้อง</span>
+                </div>
+
+                <!-- Company Name Input -->
+                <div class="space-y-1">
+                    <label asp-for="CompanyName" class="text-[10px] font-black text-gray-500 uppercase tracking-widest ml-1">Company Name</label>
+                    <div class="relative group">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400 group-focus-within:text-ppmgreen transition-colors">
+                            <i class="fa-solid fa-building text-sm"></i>
+                        </div>
+                        <input asp-for="CompanyName" class="block w-full pl-10 pr-4 py-3 bg-white/80 border-2 border-gray-100 rounded-xl focus:bg-white focus:border-ppmgreen focus:ring-4 focus:ring-ppmgreen/10 transition-all outline-none text-gray-800 text-sm font-medium placeholder-gray-400" placeholder="ชื่อบริษัท / องค์กรของคุณ" />
+                    </div>
+                    <span asp-validation-for="CompanyName" class="text-red-500 text-[11px] mt-0.5 block ml-1"></span>
+                </div>
+
+                <!-- Email Input -->
+                <div class="space-y-1">
+                    <label asp-for="Email" class="text-[10px] font-black text-gray-500 uppercase tracking-widest ml-1">Corporate Email</label>
+                    <div class="relative group">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400 group-focus-within:text-ppmgreen transition-colors">
+                            <i class="fa-solid fa-envelope text-sm"></i>
+                        </div>
+                        <input asp-for="Email" class="block w-full pl-10 pr-4 py-3 bg-white/80 border-2 border-gray-100 rounded-xl focus:bg-white focus:border-ppmgreen focus:ring-4 focus:ring-ppmgreen/10 transition-all outline-none text-gray-800 text-sm font-medium placeholder-gray-400" placeholder="name@company.com" />
+                    </div>
+                    <span asp-validation-for="Email" class="text-red-500 text-[11px] mt-0.5 block ml-1"></span>
+                </div>
+
+                <!-- Password Input -->
+                <div class="space-y-1">
+                    <label asp-for="Password" class="text-[10px] font-black text-gray-500 uppercase tracking-widest ml-1">Password</label>
+                    <div class="relative group">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400 group-focus-within:text-ppmgreen transition-colors">
+                            <i class="fa-solid fa-lock text-sm"></i>
+                        </div>
+                        <input asp-for="Password" type="password" class="block w-full pl-10 pr-4 py-3 bg-white/80 border-2 border-gray-100 rounded-xl focus:bg-white focus:border-ppmgreen focus:ring-4 focus:ring-ppmgreen/10 transition-all outline-none text-gray-800 text-sm font-medium placeholder-gray-400" placeholder="••••••••" />
+                    </div>
+                    <span asp-validation-for="Password" class="text-red-500 text-[11px] mt-0.5 block ml-1"></span>
+                </div>
+
+                <!-- Confirm Password Input -->
+                <div class="space-y-1">
+                    <label asp-for="ConfirmPassword" class="text-[10px] font-black text-gray-500 uppercase tracking-widest ml-1">Confirm Password</label>
+                    <div class="relative group">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400 group-focus-within:text-ppmgreen transition-colors">
+                            <i class="fa-solid fa-shield-check text-sm"></i>
+                        </div>
+                        <input asp-for="ConfirmPassword" type="password" class="block w-full pl-10 pr-4 py-3 bg-white/80 border-2 border-gray-100 rounded-xl focus:bg-white focus:border-ppmgreen focus:ring-4 focus:ring-ppmgreen/10 transition-all outline-none text-gray-800 text-sm font-medium placeholder-gray-400" placeholder="••••••••" />
+                    </div>
+                    <span asp-validation-for="ConfirmPassword" class="text-red-500 text-[11px] mt-0.5 block ml-1"></span>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="pt-2">
+                    <button type="submit" class="group relative w-full flex items-center justify-center py-3.5 px-6 bg-gray-900 text-white rounded-xl font-black text-base shadow-lg hover:bg-ppmgreen transition-all duration-300 transform hover:-translate-y-0.5 active:scale-95 overflow-hidden border border-gray-800 hover:border-ppmgreen">
+                        <span class="relative z-10">สร้างบัญชีสมาชิก</span>
+                        <i class="fa-solid fa-chevron-right ml-2 text-sm relative z-10 group-hover:translate-x-1 transition-transform"></i>
+                        <div class="absolute inset-0 bg-gradient-to-r from-ppmgreen to-[#004d18] opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    </button>
+                </div>
+            </form>
+
+            <!-- Login Link -->
+            <div class="mt-5 pt-4 border-t border-gray-200/60 text-center">
+                <p class="text-gray-500 font-medium text-[13px]">
+                    มีบัญชีอยู่แล้ว?
+                    <a asp-controller="Account" asp-action="Login" class="text-ppmgreen font-black hover:text-[#004d18] transition-colors underline underline-offset-2">
+                        เข้าสู่ระบบที่นี่
+                    </a>
+                </p>
+            </div>
+
+            <!-- Terms and Privacy -->
+            <p class="mt-4 text-[10px] text-gray-400 font-medium text-center leading-relaxed">
+                การคลิกสร้างบัญชีแสดงว่าคุณยอมรับ <a href="#" class="underline hover:text-gray-600 transition-colors">ข้อกำหนดการใช้งาน</a> <br />
+                และ <a href="#" class="underline hover:text-gray-600 transition-colors">นโยบายความเป็นส่วนตัว</a> ของ PPM Energy
+            </p>
+
+        </div>
+    </div>
+
+    <!-- Footer Copyright -->
+    <div class="relative z-10 mt-6 text-center animate-fadeIn">
+        <p class="text-[10px] text-white/70 font-black uppercase tracking-[0.15em]">
+            &copy; @DateTime.Now.Year PPM Energy Thailand . Official Portal
+        </p>
+    </div>
+
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

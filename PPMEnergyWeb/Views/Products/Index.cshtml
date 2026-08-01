@@ -1,0 +1,284 @@
+﻿@model IEnumerable<PPMEnergyWeb.Models.Product>
+@{
+    ViewData["Title"] = "สินค้าของเรา";
+    var currentCategoryCode = ViewData["CurrentCategoryCode"]?.ToString();
+    var currentSubCode = ViewData["CurrentSubCode"]?.ToString();
+    var parentCategories = ViewData["ParentCategories"] as IEnumerable<PPMEnergyWeb.Models.Category>
+                              ?? Enumerable.Empty<PPMEnergyWeb.Models.Category>();
+    var allSubCategories = ViewData["AllSubCategories"] as IEnumerable<PPMEnergyWeb.Models.Category>
+                              ?? Enumerable.Empty<PPMEnergyWeb.Models.Category>();
+
+    var activeCatName = string.IsNullOrEmpty(currentCategoryCode) ? ""
+        : parentCategories.FirstOrDefault(p => p.CategoryCode == currentCategoryCode)?.DisplayName ?? "";
+
+    // รองรับทั้ง sub-category name และ main-only (น้ำมันเตา)
+    var activeSubName = ViewData["ActiveSubName"]?.ToString()
+        ?? (string.IsNullOrEmpty(currentSubCode) ? ""
+            : allSubCategories.FirstOrDefault(s => s.CategoryCode == currentSubCode)?.DisplayName ?? "");
+}
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+@* ── HERO ─────────────────────────────────────────────────── *@
+<section class="relative bg-[#0f172a] py-20 overflow-hidden">
+    <div class="absolute inset-0 opacity-20">
+        <img src="~/images/Services.png"
+             class="w-full h-full object-cover" alt="Products Background"
+             onerror="this.src='https://images.unsplash.com/photo-1513828583688-c52646db42da?auto=format&fit=crop&q=80&w=2070'">
+    </div>
+    <div class="relative max-w-7xl mx-auto px-4 text-center">
+        <h1 class="text-4xl md:text-5xl font-black text-white mb-4">สินค้า</h1>
+        <p class="text-ppmgreen font-bold tracking-[0.2em] uppercase text-sm">Industrial Solutions & Energy Equipment</p>
+    </div>
+</section>
+
+@* ── BREADCRUMB ───────────────────────────────────────────── *@
+@if (!string.IsNullOrEmpty(currentCategoryCode))
+{
+    <nav class="bg-white border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex items-center gap-2 text-sm flex-wrap">
+            <a href="@Url.Action("Index", "Products")"
+               class="font-bold text-gray-400 hover:text-ppmgreen transition-colors">
+                สินค้าทั้งหมด
+            </a>
+            <i class="fa-solid fa-chevron-right text-gray-300 text-xs"></i>
+            <a href="@Url.Action("Index", "Products", new { category = currentCategoryCode })"
+               class="font-bold @(string.IsNullOrEmpty(currentSubCode) ? "text-ppmgreen" : "text-gray-400 hover:text-ppmgreen transition-colors")">
+                @activeCatName
+            </a>
+            @if (!string.IsNullOrEmpty(activeSubName) && activeSubName != activeCatName)
+            {
+                <i class="fa-solid fa-chevron-right text-gray-300 text-xs"></i>
+                <span class="font-bold text-ppmgreen">@activeSubName</span>
+            }
+        </div>
+    </nav>
+}
+
+<div class="max-w-7xl mx-auto px-4 py-12">
+
+    @* ════════════════════════════════════════════
+        STEP 1 — เลือก Main Category
+    ════════════════════════════════════════════ *@
+    @if (string.IsNullOrEmpty(currentCategoryCode))
+    {
+        <div class="text-center mb-10">
+            <h2 class="text-2xl font-black text-gray-800 mb-2">เลือกหมวดสินค้า</h2>
+            <p class="text-gray-500 text-sm">เลือกหมวดหมู่หลักที่ต้องการ</p>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
+            @foreach (var cat in parentCategories)
+            {
+                var subCount = allSubCategories.Count(s => s.ParentCategoryId == cat.Id);
+                <a href="@Url.Action("Index", "Products", new { category = cat.CategoryCode })"
+                   class="group bg-white rounded-[2rem] border border-gray-100 overflow-hidden
+                                          hover:shadow-2xl hover:shadow-ppmgreen/10 hover:-translate-y-2
+                                          transition-all duration-500 cursor-pointer">
+
+                    @* 📸 แสดงรูปภาพหมวดหมู่หลัก (Main Category) *@
+                    <div class="aspect-[4/3] bg-gray-100 flex items-center justify-center relative overflow-hidden">
+                        @if (!string.IsNullOrEmpty(cat.ImageUrl))
+                        {
+                            <img src="@cat.ImageUrl" alt="@cat.DisplayName"
+                                 class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                                 onerror="this.src='https://images.unsplash.com/photo-1513828583688-c52646db42da?auto=format&fit=crop&q=80&w=2070'">
+                        }
+                        else
+                        {
+                            <img src="https://images.unsplash.com/photo-1513828583688-c52646db42da?auto=format&fit=crop&q=80&w=2070"
+                                 alt="@cat.DisplayName"
+                                 class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                        }
+                        <div class="absolute inset-0 bg-black/10 group-hover:bg-ppmgreen/20 transition-all duration-300"></div>
+                        <div class="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-black/60 to-transparent"></div>
+                        <div class="absolute bottom-3 left-4">
+                            <span class="text-white font-semibold text-xs bg-black/40 px-2 py-0.5 rounded-full backdrop-blur-sm">
+                                @(subCount > 0 ? $"{subCount} หมวดย่อย" : "สินค้าโดยตรง")
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="p-5">
+                        <h3 class="font-black text-gray-900 text-base mb-3 group-hover:text-ppmgreen transition-colors">
+                            @cat.DisplayName
+                        </h3>
+                        <div class="flex items-center gap-1 text-ppmgreen text-xs font-bold">
+                            ดูสินค้า
+                            <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                        </div>
+                    </div>
+                </a>
+            }
+        </div>
+    }
+
+    @* ════════════════════════════════════════════
+        STEP 2 — เลือก Sub-Category
+    ════════════════════════════════════════════ *@
+    @if (!string.IsNullOrEmpty(currentCategoryCode) && string.IsNullOrEmpty(currentSubCode))
+    {
+        var currentParent = parentCategories.FirstOrDefault(p => p.CategoryCode == currentCategoryCode);
+        var currentParentId = currentParent?.Id ?? 0;
+        var subsToShow = allSubCategories.Where(s => s.ParentCategoryId == currentParentId).ToList();
+
+        <div class="text-center mb-10">
+            <h2 class="text-2xl font-black text-gray-800 mb-2">@activeCatName</h2>
+            <p class="text-gray-500 text-sm">เลือกประเภทสินค้าที่ต้องการ</p>
+        </div>
+
+        @if (!subsToShow.Any())
+        {
+            <div class="text-center py-20 bg-white rounded-[2.5rem] border border-dashed border-gray-200">
+                <i class="fa-solid fa-box-open text-5xl text-gray-200 mb-4"></i>
+                <h3 class="text-xl font-bold text-gray-400">ยังไม่มีหมวดย่อยในหมวดนี้</h3>
+            </div>
+        }
+        else
+        {
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                @foreach (var sub in subsToShow)
+                {
+                    <a href="@Url.Action("Index", "Products", new { category = currentCategoryCode, sub = sub.CategoryCode })"
+                       class="group bg-white rounded-[2rem] border border-gray-100 p-6
+                                                      hover:shadow-2xl hover:shadow-ppmgreen/10 hover:border-ppmgreen/30 hover:-translate-y-1
+                                                      transition-all duration-300 flex items-center gap-5">
+
+                        @* 📸 แสดงรูปภาพหมวดหมู่ย่อย (Sub-Category) *@
+                        <div class="w-14 h-14 rounded-2xl bg-gray-100 flex items-center justify-center shrink-0 overflow-hidden
+                                                group-hover:shadow-lg group-hover:shadow-ppmgreen/30 transition-all duration-300">
+                            @if (!string.IsNullOrEmpty(sub.ImageUrl))
+                            {
+                                <img src="@sub.ImageUrl" alt="@sub.DisplayName"
+                                     class="w-full h-full object-cover"
+                                     onerror="this.src='https://ui-avatars.com/api/?name=@(Uri.EscapeDataString(sub.DisplayName))&background=0a8f08&color=fff'">
+                            }
+                            else
+                            {
+                                <img src="https://ui-avatars.com/api/?name=@(Uri.EscapeDataString(sub.DisplayName))&background=0a8f08&color=fff"
+                                     alt="@sub.DisplayName"
+                                     class="w-full h-full object-cover">
+                            }
+                        </div>
+
+                        <div class="flex-1 min-w-0">
+                            <h3 class="font-black text-gray-900 text-sm group-hover:text-ppmgreen transition-colors line-clamp-2">
+                                @sub.DisplayName
+                            </h3>
+                        </div>
+                        <i class="fa-solid fa-chevron-right text-gray-300 group-hover:text-ppmgreen
+                                                          group-hover:translate-x-1 transition-all shrink-0"></i>
+                    </a>
+                }
+            </div>
+        }
+    }
+
+    @* ════════════════════════════════════════════
+        STEP 3 — แสดง Products
+    ════════════════════════════════════════════ *@
+    @if (!string.IsNullOrEmpty(currentSubCode) || (!string.IsNullOrEmpty(currentCategoryCode) && string.IsNullOrEmpty(currentSubCode) && Model != null && Model.Any()))
+    {
+        // บังคับแสดงผลรายการสินค้าเมื่อเข้าเงื่อนไขมีรหัสหมวดหมู่ย่อย หรือ เป็นหมวดหมู่หลักที่ไม่มีหมวดย่อยแต่มีสินค้าผูกอยู่ตรงๆ
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
+            <div>
+                <h2 class="text-xl font-black text-gray-800">@(string.IsNullOrEmpty(currentSubCode) ? activeCatName : activeSubName)</h2>
+                <p class="text-gray-500 text-sm mt-0.5">พบ @(Model?.Count() ?? 0) รายการ</p>
+            </div>
+            <div class="relative w-full sm:w-72">
+                <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                <input type="text" id="productSearch" placeholder="ค้นหาชื่อสินค้า..."
+                       class="w-full pl-11 pr-4 py-2.5 bg-gray-50 border border-gray-100 rounded-xl text-sm
+                                      focus:outline-none focus:ring-2 focus:ring-ppmgreen/20 focus:bg-white transition-all">
+            </div>
+        </div>
+
+        @if (Model == null || !Model.Any())
+        {
+            <div class="text-center py-20 bg-white rounded-[2.5rem] border border-dashed border-gray-200">
+                <i class="fa-solid fa-box-open text-5xl text-gray-200 mb-4"></i>
+                <h3 class="text-xl font-bold text-gray-400">ไม่พบสินค้าในหมวดหมู่ที่ท่านเลือก</h3>
+                <a href="@Url.Action("Index", "Products", new { category = currentCategoryCode })"
+                   class="text-ppmgreen font-bold mt-4 inline-block hover:underline">← กลับ</a>
+            </div>
+        }
+        else
+        {
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8" id="productContainer">
+                @foreach (var item in Model)
+                {
+                    <div class="product-card group bg-white rounded-[2rem] overflow-hidden border border-gray-100
+                                                        hover:shadow-2xl hover:shadow-ppmgreen/10 transition-all duration-500 flex flex-col h-full">
+                        <div class="relative aspect-square overflow-hidden bg-gray-100">
+                            <img src="@item.ImageUrl" alt="@item.Name"
+                                 class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                                 onerror="this.src='https://ui-avatars.com/api/?name=PPM&background=0a8f08&color=fff'">
+
+                            @* 💡 แสดง Badge รูปหรือชื่อหมวดหมู่สินค้าที่ตัวการ์ดสินค้า *@
+                            <div class="absolute top-4 left-4 flex items-center gap-1.5 bg-white/95 backdrop-blur pl-2 pr-3 py-1 rounded-full shadow-sm">
+                                @if (item.Category != null && !string.IsNullOrEmpty(item.Category.ImageUrl))
+                                {
+                                    <img src="@item.Category.ImageUrl" class="w-4 h-4 rounded-full object-cover" alt="cat-icon" />
+                                }
+                                <span class="text-[10px] font-black text-ppmgreen uppercase tracking-widest">
+                                    @(item.Category?.DisplayName ?? "ทั่วไป")
+                                </span>
+                            </div>
+                        </div>
+                        <div class="p-6 flex flex-col flex-grow">
+                            <h3 class="text-lg font-black text-gray-900 mb-2 line-clamp-1 group-hover:text-ppmgreen transition-colors">
+                                @item.Name
+                            </h3>
+                            <p class="text-gray-500 text-xs leading-relaxed line-clamp-2 mb-6 flex-grow">
+                                @item.Description
+                            </p>
+                            <div class="pt-4 border-t border-gray-50 flex items-center justify-between">
+                                <a asp-action="Details" asp-route-id="@item.Id"
+                                   class="text-xs font-black text-gray-400 hover:text-ppmgreen uppercase tracking-widest transition-colors">
+                                    รายละเอียด <i class="fa-solid fa-arrow-right ml-1"></i>
+                                </a>
+                                <a asp-action="Details" asp-route-id="@item.Id"
+                                   class="w-10 h-10 bg-ppmgreen text-white rounded-xl flex items-center justify-center
+                                                                  hover:bg-ppmgreen-dark shadow-lg shadow-ppmgreen/20 transition-all transform hover:-translate-y-1">
+                                    <i class="fa-solid fa-paper-plane text-xs"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    }
+
+</div>
+
+@section Scripts {
+    <script>
+        const searchInput = document.getElementById('productSearch');
+        if (searchInput) {
+            searchInput.addEventListener('input', function (e) {
+                const term = e.target.value.toLowerCase();
+                document.querySelectorAll('.product-card').forEach(card => {
+                    const title = card.querySelector('h3').textContent.toLowerCase();
+                    card.style.display = title.includes(term) ? 'flex' : 'none';
+                });
+            });
+        }
+    </script>
+
+    <style>
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+}

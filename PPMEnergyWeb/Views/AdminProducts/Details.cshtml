@@ -1,0 +1,167 @@
+﻿@model PPMEnergyWeb.Models.Product
+
+@{
+    ViewData["Title"] = "รายละเอียดสินค้า - " + Model.Name;
+    Layout = "_LayoutAdmin";
+}
+
+<div class="space-y-6 max-w-5xl mx-auto">
+    @* ==========================================
+       ส่วนหัวและปุ่มนำทาง (Top Bar) 
+       ========================================== *@
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+            <a asp-action="Index" class="inline-flex items-center text-sm font-semibold text-gray-500 hover:text-ppmgreen transition-colors mb-1">
+                <i class="fa-solid fa-arrow-left mr-2 text-xs"></i> ย้อนกลับไปรายการสินค้า
+            </a>
+            <h1 class="text-2xl font-bold text-gray-900 tracking-tight">ข้อมูลสินค้าโดยละเอียด</h1>
+        </div>
+        <div class="flex items-center space-x-3">
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="inline-flex items-center justify-center px-4 py-2.5 bg-blue-600 text-white text-sm font-semibold rounded-xl hover:bg-blue-700 transition-all shadow-sm">
+                <i class="fa-solid fa-pen mr-2 text-xs"></i> แก้ไขข้อมูลชิ้นนี้
+            </a>
+        </div>
+    </div>
+
+    @* ==========================================
+       ส่วนเนื้อหาหลัก 
+       ========================================== *@
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+
+        @* ฝั่งซ้าย: ข้อมูลเนื้อหาเชิงลึก (2 คอลัมน์) *@
+        <div class="lg:col-span-2 space-y-6">
+
+            @* 🟢 กล่องข้อมูลทั่วไป *@
+            <div class="bg-white border border-gray-200/80 shadow-sm rounded-2xl p-6 space-y-6">
+                <div class="border-b border-gray-100 pb-3 flex justify-between items-center">
+                    <h2 class="text-base font-bold text-gray-900">
+                        <i class="fa-solid fa-circle-info text-ppmgreen mr-2"></i>รายละเอียดทั่วไป
+                    </h2>
+                    <span class="text-[10px] bg-slate-100 border border-slate-200 text-slate-600 font-bold px-2 py-1 rounded-md font-mono">ID: @Model.Id</span>
+                </div>
+
+                <div class="grid grid-cols-1 gap-5">
+                    <div>
+                        <label class="block text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-1">ชื่อสินค้า</label>
+                        <p class="text-lg font-bold text-gray-900">@Model.Name</p>
+                    </div>
+
+                    <div>
+                        <label class="block text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-1">คำอธิบายย่อ (Description)</label>
+                        <p class="text-sm text-gray-700 leading-relaxed bg-gray-50 p-4 rounded-xl border border-gray-100">
+                            @(string.IsNullOrEmpty(Model.Description) ? "-" : Model.Description)
+                        </p>
+                    </div>
+
+                    @* แก้ไข: ใช้ Html.Raw เพื่อรองรับการจัด Format ของ Text Editor *@
+                    <div>
+                        <label class="block text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-1">คุณสมบัติทั่วไป (General Features)</label>
+                        <div class="text-sm text-gray-700 leading-relaxed bg-gray-50 p-4 rounded-xl border border-gray-100 prose prose-sm max-w-none">
+                            @if (!string.IsNullOrEmpty(Model.GeneralFeatures))
+                            {
+                                @Html.Raw(Model.GeneralFeatures)
+                            }
+                            else
+                            {
+                                <span class="text-gray-400">-</span>
+                            }
+                        </div>
+                    </div>
+
+                    @* แก้ไข: ใช้ Html.Raw เพื่อรองรับการจัด Format ของ Text Editor *@
+                    <div>
+                        <label class="block text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-1">รายละเอียดเชิงลึก (Full Content)</label>
+                        <div class="text-sm text-gray-700 leading-relaxed bg-gray-50 p-4 rounded-xl border border-gray-100 min-h-[100px] prose prose-sm max-w-none">
+                            @if (!string.IsNullOrEmpty(Model.FullContent))
+                            {
+                                @Html.Raw(Model.FullContent)
+                            }
+                            else
+                            {
+                                <span class="text-gray-400">-</span>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @* 🟢 กล่องคุณลักษณะพิเศษ (Attributes / Spec) *@
+            @if (Model.Attributes != null && Model.Attributes.Any())
+            {
+                <div class="bg-white border border-gray-200/80 shadow-sm rounded-2xl p-6 space-y-4">
+                    <div class="border-b border-gray-100 pb-3">
+                        <h2 class="text-base font-bold text-gray-900">
+                            <i class="fa-solid fa-microchip text-blue-600 mr-2"></i>คุณสมบัติเฉพาะทาง (Specifications)
+                        </h2>
+                    </div>
+                    <div class="border border-gray-200 rounded-xl overflow-hidden shadow-sm">
+                        <table class="w-full text-sm text-left">
+                            <thead class="bg-slate-50 text-slate-500 text-xs font-bold uppercase tracking-wider border-b border-gray-200">
+                                <tr>
+                                    <th class="px-6 py-3 w-1/2">หัวข้อคุณลักษณะ</th>
+                                    <th class="px-6 py-3 w-1/2">ค่า / รายละเอียด</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-100 text-gray-700">
+                                @foreach (var attr in Model.Attributes)
+                                {
+                                    <tr class="hover:bg-slate-50/50 transition-colors">
+                                        <td class="px-6 py-3.5 font-semibold text-gray-900">@attr.AttributeName</td>
+                                        <td class="px-6 py-3.5 text-gray-600 font-mono">@attr.AttributeValue</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            }
+        </div>
+
+        @* ฝั่งขวา: หมวดหมู่และรูปภาพสินค้า (1 คอลัมน์) *@
+        <div class="space-y-6">
+
+            @* 🟢 กล่องข้อมูลหมวดหมู่ (อัปเดตให้โชว์หมวดหมู่หลักด้วย) *@
+            <div class="bg-white border border-gray-200/80 shadow-sm rounded-2xl p-6 space-y-4">
+                <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider border-b border-gray-100 pb-2">การจัดกลุ่มสินค้า</h3>
+                <div class="space-y-3 pt-1">
+                    @* หมวดหมู่หลัก *@
+                    <div>
+                        <label class="block text-[10px] font-bold text-gray-400 uppercase mb-1">หมวดหมู่หลัก</label>
+                        <div class="text-sm font-semibold text-gray-700 flex items-center">
+                            <i class="fa-solid fa-folder-open text-gray-400 mr-2"></i>
+                            @(Model.Category?.ParentCategory?.DisplayName ?? "-")
+                        </div>
+                    </div>
+
+                    @* หมวดหมู่ย่อย *@
+                    <div>
+                        <label class="block text-[10px] font-bold text-gray-400 uppercase mb-1">หมวดหมู่ย่อย</label>
+                        <span class="inline-flex items-center px-3 py-1.5 rounded-xl bg-green-50 text-ppmgreen border border-green-100 text-sm font-bold shadow-sm">
+                            <i class="fa-solid fa-tag mr-2 text-xs"></i>
+                            @(Model.Category?.DisplayName ?? "ไม่มีหมวดหมู่")
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            @* 🟢 กล่องแสดงรูปภาพสินค้า *@
+            <div class="bg-white border border-gray-200/80 shadow-sm rounded-2xl p-6 space-y-4">
+                <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider border-b border-gray-100 pb-2">ภาพสินค้าหลัก</h3>
+                <div class="w-full bg-gray-50 border border-gray-100 rounded-xl overflow-hidden flex items-center justify-center p-4 min-h-[200px]">
+                    @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                    {
+                        <img src="@Model.ImageUrl" class="max-w-full max-h-64 object-contain rounded-lg shadow-sm" alt="Product Main Image" />
+                    }
+                    else
+                    {
+                        <div class="text-center text-gray-400 py-8">
+                            <i class="fa-solid fa-image text-5xl mb-3 text-gray-300"></i>
+                            <p class="text-xs font-semibold">ไม่ได้อัปโหลดรูปภาพ</p>
+                        </div>
+                    }
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
